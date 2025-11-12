@@ -1,0 +1,7 @@
+# .gitignore
+
+# Node.js
+/backend/node_modules
+
+# 환경 변수 (비밀번호 등)
+/backend/.env

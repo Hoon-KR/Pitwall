@@ -1,0 +1,90 @@
+/* 폼 컨테이너 스타일 */
+.form-container {
+  max-width: 400px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: var(--secondary-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+/* 폼 그룹 (라벨 + 입력창) */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: #c9d1d9;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 5px;
+  border: 1px solid #2a3f5a;
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+/* 폼 버튼 */
+.form-btn {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+/* 폼 하단 링크 (회원가입/로그인) */
+.form-switch {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.form-switch p {
+  color: #c9d1d9;
+}
+
+.form-switch a {
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+/* 검증 메시지 스타일 */
+.validation-message {
+  font-size: 0.875rem;
+  padding-top: 0.25rem;
+  min-height: 1.25rem; /* 메시지 공간 확보 */
+}
+
+/* 성공 메시지 (초록색) */
+.validation-message.success {
+  color: #34d399;
+}
+
+/* 실패 메시지 (빨간색) */
+.validation-message.error {
+  color: #f87171;
+}
+
+/* 로그인, 회원가입 영역 로고 스타일 */
+.main-logo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.main-logo a {
+  font-size: 2.5rem; /* 글씨 크기 키움 */
+  font-weight: 700;
+  color: var(--accent-color);
+  text-decoration: none;
+}

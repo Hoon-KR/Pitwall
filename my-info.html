@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내 정보 관리 - Pitwall</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="form-style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="index.html">Pitwall</a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#">최신 뉴스</a></li>
+          <li><a href="#">일정/결과</a></li>
+          <li><a href="#">순위</a></li>
+          <li><a href="board.html">커뮤니티</a></li>
+        </ul>
+      </nav>
+      <div class="user-actions">
+        <div id="logged-out-view" style="display: none">
+          <a href="login.html" class="btn">로그인</a>
+          <a href="signup.html" class="btn btn-accent">회원가입</a>
+        </div>
+        <div id="logged-in-view" style="display: none">
+          <span id="user-nickname" class="nickname-display"></span>
+          <a href="my-info.html" class="btn active">내 정보 관리</a>
+          <a href="#" id="logout-button" class="btn">로그아웃</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="form-container">
+        <h2>내 정보 관리</h2>
+
+        <div class="info-group">
+          <p>
+            <strong>아이디:</strong>
+            <span id="current-username">불러오는 중...</span>
+          </p>
+          <p>
+            <strong>이메일:</strong>
+            <span id="current-email">불러오는 중...</span>
+          </p>
+        </div>
+
+        <hr class="form-divider" />
+
+        <form id="nickname-form">
+          <h3>닉네임 변경</h3>
+          <div class="form-group">
+            <label for="nickname">새 닉네임</label>
+            <input type="text" id="nickname" name="nickname" required />
+            <div class="validation-message"></div>
+          </div>
+          <button type="submit" class="btn btn-accent form-btn">
+            닉네임 변경
+          </button>
+        </form>
+
+        <hr class="form-divider" />
+
+        <form id="password-form">
+          <h3>비밀번호 변경</h3>
+          <div class="form-group">
+            <label for="current-password">현재 비밀번호</label>
+            <input
+              type="password"
+              id="current-password"
+              name="current-password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="new-password">새 비밀번호</label>
+            <input
+              type="password"
+              id="new-password"
+              name="new-password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-accent form-btn">
+            비밀번호 변경
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Pitwall. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

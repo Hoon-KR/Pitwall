@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pitwall - F1 정보 허브</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="index.html">Pitwall</a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#" class="active">최신 뉴스</a></li>
+          <li><a href="#">일정/결과</a></li>
+          <li><a href="#">순위</a></li>
+          <li><a href="board.html">커뮤니티</a></li>
+        </ul>
+      </nav>
+
+      <div class="user-actions">
+        <div id="logged-out-view">
+          <a href="login.html" class="btn">로그인</a>
+          <a href="signup.html" class="btn btn-accent">회원가입</a>
+        </div>
+        <div id="logged-in-view" style="display: none">
+          <span id="user-nickname" class="nickname-display"></span>
+          <a href="my-info.html" class="btn">내 정보 관리</a>
+          <a href="#" id="logout-button" class="btn">로그아웃</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>F1의 모든 것, Pitwall에서 만나보세요.</h1>
+        <p>가장 빠르고 정확한 F1 소식과 데이터를 제공합니다.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Pitwall. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
