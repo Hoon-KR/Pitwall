@@ -118,7 +118,10 @@ const driverData = [
         teamLogo: "레드불.png",
         dob: "2000-05-11",
         nationality: "Japanese 🇯🇵",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [
+            { team: "AlphaTauri / RB", years: "2021-2025" },
+            { team: "Red Bull", years: "2025-Present" }
+        ]
     },
     // === Aston Martin ===
     {
@@ -131,7 +134,16 @@ const driverData = [
         teamLogo: "에스턴마틴.png",
         dob: "1981-07-29",
         nationality: "Spanish 🇪🇸",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [
+            { team: "Minardi", years: "2001" },
+            { team: "Renault", years: "2003-2006" },
+            { team: "McLaren", years: "2007" },
+            { team: "Renault", years: "2008-2009" },
+            { team: "Ferrari", years: "2010-2014" },
+            { team: "McLaren", years: "2015-2018" },
+            { team: "Alpine", years: "2021-2022" },
+            { team: "Aston Martin", years: "2023-Present" }
+        ]
     },
     {
         number: 18,
@@ -143,7 +155,10 @@ const driverData = [
         teamLogo: "에스턴마틴.png",
         dob: "1998-10-29",
         nationality: "Canadian 🇨🇦",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [
+            { team: "Williams", years: "2017-2018" },
+            { team: "Racing Point / Aston Martin", years: "2019-Present" }
+        ]
     },
     // === Williams ===
     {
@@ -156,7 +171,11 @@ const driverData = [
         teamLogo: "윌리엄스.png",
         dob: "1996-03-23",
         nationality: "Thai 🇹🇭",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [
+            { team: "Toro Rosso", years: "2019" },
+            { team: "Red Bull", years: "2019-2020" },
+            { team: "Williams", years: "2022-Present" }
+        ]
     },
     {
         number: 55,
@@ -168,7 +187,13 @@ const driverData = [
         teamLogo: "윌리엄스.png",
         dob: "1994-09-01",
         nationality: "Spanish 🇪🇸",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [
+            { team: "Toro Rosso", years: "2015-2017" },
+            { team: "Renault", years: "2017-2018" },
+            { team: "McLaren", years: "2019-2020" },
+            { team: "Ferrari", years: "2021-2024" },
+            { team: "Williams", years: "2025-Present" }
+        ]
     },
     // === Visa Cash App RB ===
 
@@ -182,8 +207,10 @@ const driverData = [
         teamLogo: "레이싱불스2.png",
         dob: "2002-02-11",
         nationality: "New Zealander 🇳🇿",
-        career: [ /* ... (경력 추가) ... */ ]
-        
+        career: [
+            { team: "AlphaTauri / RB", years: "2023 (Sub) / 2025-Present" }
+        ]
+
     },
     {
         number: 6,
@@ -195,7 +222,7 @@ const driverData = [
         teamLogo: "레이싱불스2.png",
         dob: "2004-09-28",
         nationality: "French 🇫🇷",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [ /* ... (경력 추가) ... */]
     },
     // === Sauber ===
     {
@@ -208,7 +235,16 @@ const driverData = [
         teamLogo: "킥자우버.png",
         dob: "1987-08-19",
         nationality: "German 🇩🇪",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [ 
+            { team: "Williams", years: "2010" },
+            { team: "Force India", years: "2012" },
+            { team: "Sauber", years: "2013" },
+            { team: "Force India", years: "2014-2016" },
+            { team: "Renault", years: "2017-2019" },
+            { team: "Racing Point / Aston Martin", years: "2020, 2022 (Sub)" },
+            { team: "Haas", years: "2023-2024" },
+            { team: "Sauber", years: "2025-Present" }
+        ]
     },
     {
         number: 87,
@@ -220,7 +256,9 @@ const driverData = [
         teamLogo: "킥자우버.png",
         dob: "2004-10-14",
         nationality: "Brazilian 🇧🇷",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [ 
+            { team: "Sauber", years: "2025 (Debut)" }
+        ]
     },
     // === Haas ===
     {
@@ -233,7 +271,10 @@ const driverData = [
         teamLogo: "하스.png",
         dob: "2005-05-08",
         nationality: "British 🇬🇧",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [ 
+            { team: "Ferrari", years: "2024 (Sub)" },
+            { team: "Haas", years: "2025-Present" }
+        ]
     },
     {
         number: 31,
@@ -245,7 +286,12 @@ const driverData = [
         teamLogo: "하스.png",
         dob: "1996-09-17",
         nationality: "French 🇫🇷",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [ 
+            { team: "Manor", years: "2016" },
+            { team: "Force India", years: "2017-2018" },
+            { team: "Renault / Alpine", years: "2020-2024" },
+            { team: "Haas", years: "2025-Present" }
+        ]
     },
     // === Alpine ===
     {
@@ -258,7 +304,12 @@ const driverData = [
         teamLogo: "알핀.png",
         dob: "1996-02-07",
         nationality: "French 🇫🇷",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [ 
+            { team: "Toro Rosso", years: "2017-2018" },
+            { team: "Red Bull", years: "2019" },
+            { team: "Toro Rosso / AlphaTauri", years: "2019-2022" },
+            { team: "Alpine", years: "2023-Present" }
+        ]
     },
     {
         number: 43,
@@ -270,7 +321,10 @@ const driverData = [
         teamLogo: "알핀.png",
         dob: "2003-05-27",
         nationality: "Argentine 🇦🇷",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [ 
+            { team: "Williams", years: "2024 (Replacement)" },
+            { team: "Alpine", years: "2025-Present" }
+        ]
     },
     {
         number: 7,
@@ -282,6 +336,8 @@ const driverData = [
         teamLogo: "알핀.png",
         dob: "2003-01-20",
         nationality: "Australian 🇦🇺",
-        career: [ /* ... (경력 추가) ... */ ]
+        career: [ 
+            { team: "Alpine", years: "2024 (Debut)" }
+        ]
     }
 ];
