@@ -190,6 +190,7 @@ const driverData = [
         name: "Isack Hadjar",
         team: "Visa Cash App RB",
         teamSlug: "rb",
+        slug: "isack_hadjar",
         image: "아이작 하자르.png",
         teamLogo: "레이싱불스2.png",
         dob: "2004-09-28",
