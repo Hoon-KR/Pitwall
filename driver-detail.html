@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>드라이버 상세 정보</title>
+    <link rel="stylesheet" href="driver-detail.css">
+</head>
+
+<body>
+
+    <a href="driver.html" class="back-link">← 그리드로 돌아가기</a>
+
+    <div class="profile-container">
+
+        <div class="profile-image">
+            <img id="driver-img" src="" alt="드라이버 사진">
+        </div>
+
+        <div class="profile-info">
+            <h1 id="driver-name"></h1>
+            <p id="driver-number"></p>
+            <hr>
+
+            <h2>기본 정보</h2>
+            <div class="info-grid">
+                <p><strong>국적:</strong> <span id="driver-nationality"></span></p>
+                <p><strong>나이:</strong> <span id="driver-age"></span></p>
+                <p><strong>생년월일:</strong> <span id="driver-dob"></span></p>
+                <p><strong>소속 팀:</strong> <span id="driver-team"></span></p>
+            </div>
+
+            <h2>F1 커리어</h2>
+            <ul id="driver-career" class="career-list">
+            </ul>
+        </div>
+    </div>
+
+    <script src="driver-data.js"></script>
+    <script src="driver-detail.js"></script>
+</body>
+
+</html>
