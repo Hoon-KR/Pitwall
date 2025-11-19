@@ -1,15 +1,13 @@
-// HTML 문서가 모두 로드되면 이 코드를 실행합니다.
+// pickteam.js
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    // HTML에서 버튼과 결과 표시 영역을 찾습니다.
     const calculateButton = document.getElementById('calculate-btn');
     const resultArea = document.getElementById('result-area');
     const quizForm = document.getElementById('f1-quiz-form');
-
-    // 총 질문 개수 (수정 필요 시 이 숫자만 변경)
     const TOTAL_QUESTIONS = 14;
 
-    // 점수 계산 규칙 (Python의 if문을 객체(딕셔너리)로 변경)
+    // 점수 계산 규칙
     const scoringRules = {
         'q1': {
             "오랜 역사와 전통 그리고 변치 않는 열정": ['Ferrari', 'Williams'],
@@ -36,15 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
             "미국의 도전 정신": ['Haas']
         },
         'q5': {
-            "압도적인 지배력으로 승리를 쟁취하는 팀": ['RedBull', 'Mercedes', 'McLaren'],
+            "압도적인 지배력으로 승리를 쟁취하는 팀": ['RedBull', 'Mercedes'],
             "꾸준히 상위권에서 우승을 다투는 팀": ['Ferrari', 'AstonMartin'],
-            "중위권에서 치열하게 경쟁하며 포디움에 오르는 팀": ['Alpine'],
+            "중위권에서 치열하게 경쟁하며 포디움에 오르는 팀": ['McLaren', 'Alpine'],
             "하위권에서 점진적으로 성장하며 반전을 노리는 팀": ['Williams', 'Sauber', 'Haas']
         },
         'q6': {
-            "챔피언십 우승을 목표로 하는 최상위권": ['RedBull', 'Mercedes', 'Ferrari', 'McLaren'],
+            "챔피언십 우승을 목표로 하는 최상위권": ['RedBull', 'Mercedes', 'Ferrari'],
             "꾸준히 포디움에 오르며 승리를 노리는 상위권": ['AstonMartin'],
-            "포인트 피니시와 가끔 포디움을 노리는 중위권": ['Alpine'],
+            "포인트 피니시와 가끔 포디움을 노리는 중위권": ['McLaren', 'Alpine'],
             "개선된 성능으로 순위를 끌어올리는 하위권": ['Williams', 'RB', 'Sauber', 'Haas']
         },
         'q7': {
@@ -97,60 +95,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // '결과 확인하기' 버튼을 클릭했을 때 실행할 함수
+    // ★ 팀 이름(Key)을 URL용 슬러그(Slug)로 변환하는 맵핑 ★
+    const teamSlugMap = {
+        'RedBull': 'redbull',
+        'Ferrari': 'ferrari',
+        'Mercedes': 'mercedes',
+        'McLaren': 'mclaren',
+        'AstonMartin': 'astonmartin',
+        'Alpine': 'alpine',
+        'Williams': 'williams',
+        'RB': 'rb',
+        'Sauber': 'sauber',
+        'Haas': 'haas'
+    };
+
     calculateButton.addEventListener('click', () => {
         let teamScores = {
             'RedBull': 0, 'Ferrari': 0, 'Mercedes': 0, 'McLaren': 0, 'AstonMartin': 0,
             'Alpine': 0, 'Williams': 0, 'RB': 0, 'Sauber': 0, 'Haas': 0
         };
 
-        // 폼에서 모든 질문(q1~q14)의 답을 가져옵니다.
         const formData = new FormData(quizForm);
         const answers = {};
-        
         let answeredCount = 0;
 
         for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
             const q_id = 'q' + i;
-            const answer = formData.get(q_id); // 선택된 radio 버튼의 value
+            const answer = formData.get(q_id);
             if (answer) {
                 answers[q_id] = answer;
                 answeredCount++;
             }
         }
-        
-        // 모든 질문에 답했는지 확인
+
         if (answeredCount < TOTAL_QUESTIONS) {
             alert("모든 질문에 답해주세요!");
-            resultArea.style.display = 'none'; // 결과창 숨기기
-            return; // 계산 중단
+            resultArea.style.display = 'none';
+            return;
         }
 
-        // --- 점수 계산 로직 ---
+        // 점수 계산
         for (const q_id in answers) {
             const answerText = answers[q_id];
-            // 규칙에 해당 질문과 답변이 있는지 확인
             if (scoringRules[q_id] && scoringRules[q_id][answerText]) {
                 const teamsToScore = scoringRules[q_id][answerText];
-                // 해당되는 팀들의 점수를 1씩 올림
                 for (const team of teamsToScore) {
-                    if (teamScores.hasOwnProperty(team)) { // 팀 이름이 유효한지 확인
+                    if (teamScores.hasOwnProperty(team)) {
                         teamScores[team]++;
                     }
                 }
             }
         }
 
-        // --- 최고점 팀 찾기 (동점자 처리 포함) ---
-        let maxScore = 0;
+        // 최고점 팀 찾기
+        let maxScore = Math.max(...Object.values(teamScores));
         let bestTeams = [];
-
-        // Object.values()로 점수들만 뽑아서 최대값을 찾습니다.
-        maxScore = Math.max(...Object.values(teamScores));
-        
-        // 점수가 0이 아닌 경우 (즉, 유효한 선택을 한 경우)
         if (maxScore > 0) {
-            // teamScores를 순회하며 최고점과 같은 팀을 bestTeams 배열에 추가
             for (const team in teamScores) {
                 if (teamScores[team] === maxScore) {
                     bestTeams.push(team);
@@ -158,19 +158,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // --- 결과 표시 ---
+        // ★ 결과 표시 (HTML 생성) ★
         if (bestTeams.length > 0) {
-            // 동점일 경우 '팀1 또는 팀2' 형식으로 보여줍니다.
-            resultArea.textContent = `당신에게 추천하는 팀은 [ ${bestTeams.join(' 또는 ')} ] 입니다!`;
+            let resultHTML = "당신의 성향에 딱 맞는 팀은:<br>";
+
+            // 추천 팀마다 이름과 버튼 생성
+            bestTeams.forEach(teamName => {
+                const slug = teamSlugMap[teamName] || ''; // 슬러그 찾기
+
+                resultHTML += `
+                    <div style="margin-top: 30px;">
+                        <span class="recommend-team-name">${teamName}</span>
+                        <a href="constructor-detail.html?team=${slug}" class="go-detail-btn">
+                            ${teamName} 팀에 대해 더 알고 싶다면? →
+                        </a>
+                    </div>
+                `;
+            });
+
+            resultArea.innerHTML = resultHTML;
         } else {
-            // 이 경우는 모든 답변이 0점일 때 (논리상 발생하기 어려움)
             resultArea.textContent = "추천할 팀을 찾지 못했습니다. 다시 시도해주세요.";
         }
-        
-        // 숨겨뒀던 결과 영역을 보여줍니다.
-        resultArea.style.display = 'block';
 
-        // 결과 영역으로 스크롤
+        resultArea.style.display = 'block';
         resultArea.scrollIntoView({ behavior: 'smooth' });
     });
 });
