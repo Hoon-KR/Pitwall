@@ -196,7 +196,7 @@ const constructorData = [
     },
     // 9위: 자우버 (킥)
     {
-        rank: 10,
+        rank: 9,
         teamName: "자우버",
         teamNameFull: "Stake F1 Team Kick Sauber",
         teamSlug: "sauber",
@@ -220,7 +220,7 @@ const constructorData = [
     },
     // 10위: 알핀
     {
-        rank: 9,
+        rank: 10,
         teamName: "알핀",
         teamNameFull: "BWT Alpine F1 Team",
         teamSlug: "alpine",
