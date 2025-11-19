@@ -1,0 +1,200 @@
+/* 초기화 */
+html, body { margin: 0; padding: 0; width: 100%; box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f0f2f5;
+    padding: 20px 0; /* 좌우 여백 제거하여 공간 확보 */
+}
+
+h1 { text-align: center; color: #333; margin-bottom: 30px; }
+
+/* ========== ⬇️ 5열 그리드로 변경 ⬇️ ========== */
+.constructor-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* ⬅️ 4 -> 5로 수정 (핵심) */
+    gap: 15px; /* ⬅️ 간격을 20px -> 15px로 줄여서 카드 공간 확보 */
+    max-width: 1800px; /* ⬅️ 5열이므로 전체 폭을 넓게 잡음 */
+    margin: 0 auto;
+    padding: 0 20px; /* 화면 끝에 딱 붙지 않게 최소한의 여백 */
+}
+/* ========== ⬆️ 5열 그리드로 변경 ⬆️ ========== */
+
+
+/* --- 팀 카드 디자인 --- */
+.team-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 15px; /* ⬅️ 내부 여백 20px -> 15px로 축소 */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+}
+
+/* 팀별 상단 컬러 바 */
+.team-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px; /* 6px -> 5px */
+    background-color: #ccc; 
+}
+
+/* 1. 헤더: 순위와 포인트 */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.rank-number {
+    font-size: 2rem; /* ⬅️ 2.5rem -> 2rem (좁아진 폭에 맞춤) */
+    font-weight: 900;
+    line-height: 1;
+    color: #000;
+}
+
+.total-points {
+    font-size: 0.9rem; /* ⬅️ 1rem -> 0.9rem */
+    font-weight: bold;
+    color: #555;
+    background-color: #f5f5f5;
+    padding: 3px 6px;
+    border-radius: 5px;
+}
+
+/* 2. F1 차량 이미지 */
+.car-image-container {
+    width: 100%;
+    height: 90px; /* ⬅️ 100px -> 90px */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.car-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+}
+
+/* 3. 팀 이름 */
+.team-name {
+    font-size: 1.2rem; /* ⬅️ 1.4rem -> 1.2rem */
+    font-weight: 800;
+    margin: 0 0 12px 0;
+    color: #111;
+    white-space: nowrap; /* 이름이 길어도 줄바꿈 방지 (선택) */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 4. 드라이버 리스트 */
+.drivers-list {
+    border-top: 1px solid #eee;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.driver-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 드라이버 좌측 */
+.driver-left {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 간격 축소 */
+}
+
+.driver-face {
+    width: 35px; /* ⬅️ 40px -> 35px */
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.driver-info-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.driver-name {
+    font-size: 0.85rem; /* ⬅️ 0.95rem -> 0.85rem */
+    font-weight: bold;
+    color: #333;
+}
+
+.tcam-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-top: 3px;
+}
+.tcam-dot.yellow { background-color: #ffeb3b; border: 1px solid #ccc; }
+.tcam-dot.black { background-color: #000; }
+
+/* 드라이버 우측 */
+.driver-stats {
+    text-align: right;
+    font-size: 0.8rem; /* 폰트 축소 */
+    color: #666;
+    min-width: 45px; /* 최소 너비 확보 */
+}
+
+.driver-stats .d-rank { display: block; font-weight: bold; margin-bottom: 1px; }
+.driver-stats .d-points { display: block; font-size: 0.75rem; color: #999; }
+
+/* <a> 태그 링크 스타일 제거 */
+.team-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* --- 팀별 컬러 정의 --- */
+.team-card[data-team="mclaren"]::before { background-color: #FF8700; }
+.team-card[data-team="mercedes"]::before { background-color: #00D2BE; }
+.team-card[data-team="redbull"]::before { background-color: #0600EF; }
+.team-card[data-team="ferrari"]::before { background-color: #DC0000; }
+.team-card[data-team="williams"]::before { background-color: #005AFF; }
+.team-card[data-team="rb"]::before { background-color: #0032FF; }
+.team-card[data-team="astonmartin"]::before { background-color: #006F62; }
+.team-card[data-team="haas"]::before { background-color: #B6B6B4; }
+.team-card[data-team="sauber"]::before { background-color: #00E00A; }
+.team-card[data-team="alpine"]::before { background-color: #0090FF; }
+
+/* 모바일 반응형: 화면이 작아지면 자동으로 줄어듦 */
+@media (max-width: 1200px) {
+    .constructor-grid {
+        grid-template-columns: repeat(3, 1fr); /* 중간 화면 3열 */
+    }
+}
+@media (max-width: 800px) {
+    .constructor-grid {
+        grid-template-columns: repeat(2, 1fr); /* 태블릿 2열 */
+    }
+}
+@media (max-width: 500px) {
+    .constructor-grid {
+        grid-template-columns: 1fr; /* 모바일 1열 */
+    }
+}

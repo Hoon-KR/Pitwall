@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 팀 상세 정보</title>
+    <link rel="stylesheet" href="constructor-detail.css">
+</head>
+
+<body>
+
+    <a href="constructor.html" class="back-btn">
+        <span class="arrow">←</span> Back to Grid
+    </a>
+
+    <header class="team-hero" id="hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <img id="d-logo" src="" alt="Team Logo" class="hero-logo">
+                <h1 id="d-name-full"></h1>
+                <p class="hero-base">📍 <span id="d-base"></span></p>
+            </div>
+            <img id="d-car" src="" alt="F1 Car" class="hero-car">
+        </div>
+    </header>
+
+    <main class="detail-container">
+
+        <section class="spec-card">
+            <h2>Team Key Specs</h2>
+            <ul class="spec-list">
+                <li>
+                    <span class="label">Team Principal</span>
+                    <span class="value" id="d-chief"></span>
+                </li>
+                <li>
+                    <span class="label">Technical Chief</span>
+                    <span class="value" id="d-tech"></span>
+                </li>
+                <li>
+                    <span class="label">Chassis</span>
+                    <span class="value" id="d-chassis"></span>
+                </li>
+                <li>
+                    <span class="label">Power Unit</span>
+                    <span class="value" id="d-pu"></span>
+                </li>
+                <li>
+                    <span class="label">First Entry</span>
+                    <span class="value" id="d-entry"></span>
+                </li>
+                <li>
+                    <span class="label">World Titles</span>
+                    <span class="value highlight" id="d-titles"></span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="history-card">
+            <h2>Team History</h2>
+            <div class="history-text" id="d-history">
+            </div>
+        </section>
+
+    </main>
+
+    <script src="constructor-data.js"></script>
+    <script src="constructor-detail.js"></script>
+</body>
+
+</html>

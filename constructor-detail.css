@@ -1,0 +1,178 @@
+/* 기본 설정 */
+html, body { margin: 0; padding: 0; width: 100%; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+/* 뒤로가기 버튼 (왼쪽 상단 고정) */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    z-index: 100;
+    padding: 10px 15px;
+    background-color: rgba(255,255,255,0.2); /* 반투명 */
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
+    transition: background 0.3s;
+}
+.back-btn:hover {
+    background-color: rgba(255,255,255,0.4);
+}
+
+/* 1. 히어로 섹션 (상단 배경) */
+.team-hero {
+    position: relative;
+    min-height: 400px; /* 높이 확보 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 60px; /* 상단 여백 */
+    overflow: hidden;
+    transition: background-color 0.5s ease; /* 색상 바뀔 때 부드럽게 */
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 10;
+}
+
+/* 텍스트 영역 */
+.hero-text {
+    flex: 1;
+}
+
+.hero-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.9);
+    padding: 10px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.hero-text h1 {
+    /*font-size: 3.5rem;*/
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 900;
+    margin: 0 0 10px 0;
+    line-height: 1.1;
+}
+
+.hero-base {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* 차량 이미지 (오른쪽에서 튀어나옴) */
+.hero-car {
+    flex: 1.5; /* 텍스트보다 더 넓게 차지 */
+    max-width: 700px;
+    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.4)); /* 그림자로 입체감 */
+    transform: translateX(20px) rotate(-2deg); /* 살짝 기울여서 역동적으로 */
+    border-radius: 20px;
+}
+
+
+/* 2. 상세 정보 컨테이너 (흰색 박스들) */
+.detail-container {
+    max-width: 1200px;
+    margin: -50px auto 50px; /* 히어로 섹션 위로 살짝 겹치게 올림 */
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 350px 1fr; /* 왼쪽 스펙: 350px, 오른쪽 역사: 나머지 */
+    gap: 30px;
+    position: relative;
+    z-index: 20;
+}
+
+/* 공통 카드 스타일 */
+.spec-card, .history-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    color: #111;
+}
+
+/* 스펙 리스트 스타일 */
+.spec-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.spec-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f4f4f4;
+}
+.spec-list li:last-child { border-bottom: none; }
+
+.spec-list .label {
+    color: #888;
+    font-weight: 500;
+}
+.spec-list .value {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1rem;
+    text-align: right;
+}
+.spec-list .highlight {
+    color: #e10600; /* F1 레드 */
+    font-size: 1.3rem;
+}
+
+/* 역사 텍스트 스타일 */
+.history-text {
+    line-height: 1.8;
+    color: #444;
+    font-size: 1.1rem;
+    white-space: pre-line; /* 줄바꿈 반영 */
+}
+
+/* 반응형 디자인 (모바일) */
+@media (max-width: 900px) {
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 0 20px;
+    }
+    
+    .hero-text h1 { font-size: 2.5rem; }
+    
+    .hero-car {
+        margin-top: 40px;
+        width: 100%;
+        transform: none;
+    }
+
+    .detail-container {
+        grid-template-columns: 1fr; /* 1열로 변경 */
+        margin-top: -30px;
+    }
+}
