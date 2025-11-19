@@ -28,7 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         <div class="team-info">
                             <img src="img/constructor/logo/${driver.teamLogo}" alt="${driver.team}" class="team-logo">
-                            <h3>${driver.name}</h3>
+                            <div class="name-wrapper">
+                                <h3>${driver.name}</h3>
+                                <div class="name-kr">${driver.nameKr}</div>
+                            </div>
                         </div>
                     </div>
 

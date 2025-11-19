@@ -5,6 +5,7 @@ const driverData = [
     {
         number: 63,
         name: "George Russell",
+        nameKr: "조지 러셀",
         team: "Mercedes-AMG Petronas",
         teamSlug: "mercedes",
         slug: "george_russell", // ⬅️ (필수) URL용 ID
@@ -20,6 +21,7 @@ const driverData = [
     {
         number: 12,
         name: "Kimi Antonelli",
+        nameKr: "키미 안토넬리",
         team: "Mercedes-AMG Petronas",
         teamSlug: "mercedes",
         slug: "kimi_antonelli",
@@ -35,6 +37,7 @@ const driverData = [
     {
         number: 16,
         name: "Charles Leclerc",
+        nameKr: "샤를 르클레르",
         team: "Scuderia Ferrari",
         teamSlug: "ferrari",
         slug: "charles_leclerc",
@@ -50,6 +53,7 @@ const driverData = [
     {
         number: 44,
         name: "Lewis Hamilton",
+        nameKr: "루이스 해밀턴",
         team: "Scuderia Ferrari",
         teamSlug: "ferrari",
         slug: "lewis_hamilton",
@@ -67,6 +71,7 @@ const driverData = [
     {
         number: 4,
         name: "Lando Norris",
+        nameKr: "랜도 노리스",
         team: "McLaren F1 Team",
         teamSlug: "mclaren",
         slug: "lando_norris",
@@ -81,6 +86,7 @@ const driverData = [
     {
         number: 81,
         name: "Oscar Piastri",
+        nameKr: "오스카 피아스트리",
         team: "McLaren F1 Team",
         teamSlug: "mclaren",
         slug: "oscar_piastri",
@@ -96,6 +102,7 @@ const driverData = [
     {
         number: 1,
         name: "Max Verstappen",
+        nameKr: "막스 베르스타펜",
         team: "Red Bull Racing",
         teamSlug: "redbull",
         slug: "max_verstappen", // ⬅️ (필수) URL용 ID
@@ -111,6 +118,7 @@ const driverData = [
     {
         number: 22,
         name: "Yuki Tsunoda",
+        nameKr: "츠노다 유키",
         team: "Red Bull Racing",
         teamSlug: "redbull",
         slug: "yuki_tsunoda",
@@ -127,6 +135,7 @@ const driverData = [
     {
         number: 14,
         name: "Fernando Alonso",
+        nameKr: "페르난도 알론소",
         team: "Aston Martin F1 Team",
         teamSlug: "astonmartin",
         slug: "fernando_alonso",
@@ -148,6 +157,7 @@ const driverData = [
     {
         number: 18,
         name: "Lance Stroll",
+        nameKr: "랜스 스트롤",
         team: "Aston Martin F1 Team",
         teamSlug: "astonmartin",
         slug: "lance_stroll",
@@ -164,6 +174,7 @@ const driverData = [
     {
         number: 23,
         name: "Alex Albon",
+        nameKr: "알렉스 알본",
         team: "Williams Racing",
         teamSlug: "williams",
         slug: "alex_albon",
@@ -180,6 +191,7 @@ const driverData = [
     {
         number: 55,
         name: "Carlos Sainz",
+        nameKr: "카를로스 사인츠",
         team: "Williams Racing",
         teamSlug: "williams",
         slug: "carlos_sainz",
@@ -200,6 +212,7 @@ const driverData = [
     {
         number: 30,
         name: "Liam Lawson",
+        nameKr: "리암 로슨",
         team: "Visa Cash App RB",
         teamSlug: "rb",
         slug: "liam_lawson",
@@ -215,6 +228,7 @@ const driverData = [
     {
         number: 6,
         name: "Isack Hadjar",
+        nameKr: "아이작 하자르",
         team: "Visa Cash App RB",
         teamSlug: "rb",
         slug: "isack_hadjar",
@@ -228,6 +242,7 @@ const driverData = [
     {
         number: 27,
         name: "Nico Hülkenberg",
+        nameKr: "니코 휠켄베르크",
         team: "Stake F1 Team Kick Sauber",
         teamSlug: "sauber",
         slug: "nico_hulkenberg",
@@ -249,6 +264,7 @@ const driverData = [
     {
         number: 87,
         name: "Gabriel Bortoleto",
+        nameKr: "가브리에우 보르툴레투",
         team: "Stake F1 Team Kick Sauber",
         teamSlug: "sauber",
         slug: "gabriel_bortoleto",
@@ -264,6 +280,7 @@ const driverData = [
     {
         number: 50,
         name: "Oliver Bearman",
+        nameKr: "올리버 베어먼",
         team: "Haas F1 Team",
         teamSlug: "haas",
         slug: "oliver_bearman",
@@ -279,6 +296,7 @@ const driverData = [
     {
         number: 31,
         name: "Esteban Ocon",
+        nameKr: "에스테반 오콘",
         team: "Haas F1 Team",
         teamSlug: "haas",
         slug: "esteban_ocon",
@@ -297,6 +315,7 @@ const driverData = [
     {
         number: 10,
         name: "Pierre Gasly",
+        nameKr: "피에르 가슬리",
         team: "Alpine F1 Team",
         teamSlug: "alpine",
         slug: "pierre_gasly",
@@ -314,6 +333,7 @@ const driverData = [
     {
         number: 43,
         name: "Franco Colapinto",
+        nameKr: "프랑코 콜라핀토",
         team: "Alpine F1 Team",
         teamSlug: "alpine",
         slug: "franco_colapinto",
@@ -329,6 +349,7 @@ const driverData = [
     {
         number: 7,
         name: "Jack Doohan",
+        nameKr: "잭 두한",
         team: "Alpine F1 Team",
         teamSlug: "alpine",
         slug: "jack_doohan",

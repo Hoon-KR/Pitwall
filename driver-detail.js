@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('driver-img').src = `img/drivers/detail/${driver.image}`;
     document.getElementById('driver-img').alt = driver.name;
     document.getElementById('driver-name').textContent = driver.name;
+    document.getElementById('driver-name-kr').textContent = driver.nameKr;
     document.getElementById('driver-number').textContent = `No. ${driver.number}`;
     
     // 기본 정보
