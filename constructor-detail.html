@@ -1,72 +1,105 @@
 <!DOCTYPE html>
 <html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F1 팀 상세 정보 - Pitwall</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="constructor-detail.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 팀 상세 정보</title>
-    <link rel="stylesheet" href="constructor-detail.css">
-</head>
-
-<body>
-
-    <a href="constructor.html" class="back-btn">
-        <span class="arrow">←</span> Back to Grid
-    </a>
-
-    <header class="team-hero" id="hero-section">
-        <div class="hero-content">
-            <div class="hero-text">
-                <img id="d-logo" src="" alt="Team Logo" class="hero-logo">
-                <h1 id="d-name-full"></h1>
-                <p class="hero-base">📍 <span id="d-base"></span></p>
-            </div>
-            <img id="d-car" src="" alt="F1 Car" class="hero-car">
+  <body>
+    <header>
+      <div class="logo">
+        <a href="index.html">Pitwall</a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#">최신 뉴스</a></li>
+          <li><a href="#">일정/결과</a></li>
+          <li><a href="#">순위</a></li>
+          <li>
+            <a href="constructor.html" class="active">F1 정보 ▾</a>
+            <ul class="dropdown-content">
+              <li><a href="constructor.html">팀</a></li>
+              <li><a href="driver.html">드라이버</a></li>
+              <li><a href="glossary.html">용어</a></li>
+            </ul>
+          </li>
+          <li><a href="board.html">커뮤니티</a></li>
+        </ul>
+      </nav>
+      <div class="user-actions">
+        <div id="logged-out-view" style="display: none">
+          <a href="login.html" class="btn">로그인</a>
+          <a href="signup.html" class="btn btn-accent">회원가입</a>
         </div>
+        <div id="logged-in-view" style="display: none">
+          <span id="user-nickname" class="nickname-display"></span>
+          <a href="my-info.html" class="btn">내 정보 관리</a>
+          <a href="#" id="logout-button" class="btn">로그아웃</a>
+        </div>
+      </div>
     </header>
 
+    <section class="team-hero" id="hero-section">
+      <a href="constructor.html" class="back-btn">← 그리드로 돌아가기</a>
+
+      <div class="hero-content">
+        <div class="hero-text">
+          <img id="d-logo" src="" alt="Team Logo" class="hero-logo" />
+          <h1 id="d-name-full"></h1>
+          <p class="hero-base">📍 <span id="d-base"></span></p>
+        </div>
+        <img id="d-car" src="" alt="F1 Car" class="hero-car" />
+      </div>
+    </section>
+
     <main class="detail-container">
+      <section class="spec-card">
+        <h2>Team Key Specs</h2>
+        <ul class="spec-list">
+          <li>
+            <span class="label">Team Principal</span>
+            <span class="value" id="d-chief"></span>
+          </li>
+          <li>
+            <span class="label">Technical Chief</span>
+            <span class="value" id="d-tech"></span>
+          </li>
+          <li>
+            <span class="label">Chassis</span>
+            <span class="value" id="d-chassis"></span>
+          </li>
+          <li>
+            <span class="label">Power Unit</span>
+            <span class="value" id="d-pu"></span>
+          </li>
+          <li>
+            <span class="label">First Entry</span>
+            <span class="value" id="d-entry"></span>
+          </li>
+          <li>
+            <span class="label">World Titles</span>
+            <span class="value highlight" id="d-titles"></span>
+          </li>
+        </ul>
+      </section>
 
-        <section class="spec-card">
-            <h2>Team Key Specs</h2>
-            <ul class="spec-list">
-                <li>
-                    <span class="label">Team Principal</span>
-                    <span class="value" id="d-chief"></span>
-                </li>
-                <li>
-                    <span class="label">Technical Chief</span>
-                    <span class="value" id="d-tech"></span>
-                </li>
-                <li>
-                    <span class="label">Chassis</span>
-                    <span class="value" id="d-chassis"></span>
-                </li>
-                <li>
-                    <span class="label">Power Unit</span>
-                    <span class="value" id="d-pu"></span>
-                </li>
-                <li>
-                    <span class="label">First Entry</span>
-                    <span class="value" id="d-entry"></span>
-                </li>
-                <li>
-                    <span class="label">World Titles</span>
-                    <span class="value highlight" id="d-titles"></span>
-                </li>
-            </ul>
-        </section>
-
-        <section class="history-card">
-            <h2>Team History</h2>
-            <div class="history-text" id="d-history">
-            </div>
-        </section>
-
+      <section class="history-card">
+        <h2>Team History</h2>
+        <div class="history-text" id="d-history"></div>
+      </section>
     </main>
 
+    <script src="script.js"></script>
     <script src="constructor-data.js"></script>
     <script src="constructor-detail.js"></script>
-</body>
-
+  </body>
 </html>

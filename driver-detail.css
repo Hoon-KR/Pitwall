@@ -1,199 +1,167 @@
-/* detail.css */
+/* driver-detail.css */
 
-/* 1. 기본 페이지 설정 */
+/* 1. 기본 설정: body 배경색 삭제 (style.css 상속) */
+/* 기존 body {} 전체 삭제하거나 아래처럼 덮어쓰기 */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #f0f2f5;
-    /* 메인 페이지와 같은 배경색 */
-    margin: 0;
-    padding: 40px 20px;
-    color: #333;
+  padding: 0; /* style.css와 충돌 방지 */
 }
 
-/* 2. 뒤로가기 버튼 */
+/* 2. 뒤로가기 버튼 (다크모드 스타일) */
 .back-link {
-    display: inline-block;
-    margin-bottom: 30px;
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    font-size: 1rem;
-    background: white;
-    padding: 12px 25px;
-    border-radius: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: white; /* 글자색 흰색 */
+  font-weight: bold;
+  font-size: 1rem;
+  background: var(--accent-color); /* 포인트 색상 사용 */
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
 }
 
 .back-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  background-color: #e03e00; /* 호버 시 조금 어둡게 */
 }
 
-/* 3. 전체 컨테이너 (사진 + 정보 박스) */
+/* 3. 프로필 컨테이너 (흰색 -> 다크모드 배경) */
 .profile-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    gap: 50px;
-    background-color: white;
-    padding: 50px;
+  max-width: 1100px;
+  margin: 0 auto 50px auto; /* 하단 여백 추가 */
+  display: flex;
+  gap: 50px;
 
-    /* ========== ⬇️ 이 부분을 수정/추가하세요 ⬇️ ========== */
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    align-items: flex-start;
+  /* 배경색 변경 */
+  background-color: var(--secondary-bg);
+  color: var(--text-color);
 
-    /* 굵은 왼쪽 테두리 추가 (기본 회색, JS가 색상 변경함) */
-    border-left: 15px solid #ccc;
-
-    /* 테두리가 둥근 모서리를 뚫고 나가지 않게 함 */
-    overflow: hidden;
-    /* ================================================= */
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  align-items: flex-start;
+  border-left: 10px solid #ccc; /* JS가 팀 컬러로 변경 */
+  overflow: hidden;
 }
 
-/* 4. [핵심] 사진 영역 크기 조절 */
+/* 4. 사진 영역 */
 .profile-image {
-    flex: 0 0 350px;
-    /* ⬅️ 너비를 350px로 딱 고정! (이러면 너무 크지 않아요) */
+  flex: 0 0 350px;
 }
 
 #driver-img {
-    width: 100%;
-    /* 350px 안을 꽉 채움 */
-    height: auto;
-    /* 비율 유지 */
-    border-radius: 15px;
-    /* 모서리 둥글게 */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    /* 그림자 효과 */
-    object-fit: cover;
-    background-color: #eee;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+  background-color: #2a3f5a; /* 이미지 로딩 전 배경 */
 }
 
 /* 5. 정보 영역 */
 .profile-info {
-    flex: 1;
-    /* 남은 공간 다 쓰기 */
+  flex: 1;
 }
 
-/* 이름 스타일 */
+/* 텍스트 색상 변경 */
 #driver-name {
-    margin: 0;
-    font-size: 3.2rem;
-    font-weight: 900;
-    line-height: 1.1;
-    color: #111;
+  margin: 0;
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--text-color); /* 흰색 */
 }
 
 .korean-name {
-    margin-top: 8px;
-    font-size: 1.8rem;
-    color: #888;
-    font-weight: 600;
-    margin-bottom: 20px;
+  margin-top: 8px;
+  font-size: 1.8rem;
+  color: #ccc; /* 연한 회색 */
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
-/* 드라이버 번호 */
 #driver-number {
-    display: inline-block;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #e10600;
-    /* F1 레드 */
-    border: 2px solid #e10600;
-    padding: 5px 15px;
-    border-radius: 50px;
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-color);
+  border: 2px solid var(--accent-color);
+  padding: 5px 15px;
+  border-radius: 50px;
 }
 
-/* 구분선 */
 hr {
-    border: 0;
-    height: 1px;
-    background: #eee;
-    margin: 30px 0;
+  border: 0;
+  height: 1px;
+  background: #2a3f5a; /* 어두운 구분선 */
+  margin: 30px 0;
 }
 
-/* 소제목 */
 h2 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: #222;
-    border-left: 5px solid #e10600;
-    padding-left: 10px;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--text-color);
+  border-left: 5px solid var(--accent-color);
+  padding-left: 10px;
 }
 
-/* 6. 기본 정보 (나이, 국적 등) */
-.info-grid p {
-    font-size: 1.1rem;
-    margin: 12px 0;
-    display: flex;
-    align-items: center;
-}
-
+/* 기본 정보 라벨 */
 .info-grid strong {
-    width: 100px;
-    /* 라벨 너비 고정 */
-    color: #666;
+  width: 100px;
+  color: #8892b0; /* 연한 파란 회색 */
 }
 
-/* 7. 커리어 리스트 */
+/* 6. 커리어 리스트 (배경색 어둡게) */
 .career-list {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .career-list li {
-    background-color: #f9f9f9;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    font-size: 1.05rem;
-    border-left: 4px solid #ccc;
+  /* 배경색: 아주 약간 밝은 남색 */
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  border-left: 4px solid #555;
+  color: var(--text-color);
 }
 
 .career-list li strong {
-    display: inline-block;
-    width: 120px;
-    color: #333;
+  display: inline-block;
+  width: 120px;
+  color: var(--accent-color);
 }
 
-/* 8. 반응형 (모바일에서는 세로로 배치) */
+/* 반응형 */
 @media (max-width: 850px) {
-    .profile-container {
-        flex-direction: column;
-        /* 세로 배치로 변경 */
-        padding: 30px;
-        align-items: center;
-        text-align: center;
-    }
-
-    .profile-image {
-        flex: auto;
-        width: 100%;
-        max-width: 300px;
-        /* 모바일에서는 조금 더 작게 */
-        margin-bottom: 30px;
-    }
-
-    .info-grid p {
-        justify-content: center;
-    }
-
-    .info-grid strong {
-        width: auto;
-        margin-right: 10px;
-    }
-
-    h2 {
-        border-left: none;
-        border-bottom: 3px solid #e10600;
-        display: inline-block;
-        padding-bottom: 5px;
-        padding-left: 0;
-    }
-
-    .career-list li {
-        text-align: left;
-    }
+  .profile-container {
+    flex-direction: column;
+    padding: 30px;
+    align-items: center;
+    text-align: center;
+  }
+  .profile-image {
+    flex: auto;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 30px;
+  }
+  .info-grid p {
+    justify-content: center;
+  }
+  .info-grid strong {
+    width: auto;
+    margin-right: 10px;
+  }
+  h2 {
+    border-left: none;
+    border-bottom: 3px solid var(--accent-color);
+    padding-left: 0;
+  }
+  .career-list li {
+    text-align: left;
+  }
 }

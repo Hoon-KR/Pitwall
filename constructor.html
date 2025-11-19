@@ -1,23 +1,68 @@
 <!DOCTYPE html>
 <html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F1 2025 컨스트럭터 - Pitwall</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="constructor.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="index.html">Pitwall</a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#">최신 뉴스</a></li>
+          <li><a href="#">일정/결과</a></li>
+          <li><a href="#">순위</a></li>
+          <li>
+            <a href="constructor.html" class="active">F1 정보 ▾</a>
+            <ul class="dropdown-content">
+              <li><a href="constructor.html">팀</a></li>
+              <li><a href="driver.html">드라이버</a></li>
+              <li><a href="glossary.html">용어</a></li>
+            </ul>
+          </li>
+          <li><a href="board.html">커뮤니티</a></li>
+        </ul>
+      </nav>
+      <div class="user-actions">
+        <div id="logged-out-view" style="display: none">
+          <a href="login.html" class="btn">로그인</a>
+          <a href="signup.html" class="btn btn-accent">회원가입</a>
+        </div>
+        <div id="logged-in-view" style="display: none">
+          <span id="user-nickname" class="nickname-display"></span>
+          <a href="my-info.html" class="btn">내 정보 관리</a>
+          <a href="#" id="logout-button" class="btn">로그아웃</a>
+        </div>
+      </div>
+    </header>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 2025 컨스트럭터 챔피언십</title>
-    <link rel="stylesheet" href="constructor.css">
-</head>
+    <main>
+      <section class="hero">
+        <h1>2025 컨스트럭터 순위</h1>
+        <p>F1 팀들의 상세 정보를 확인하세요.</p>
+      </section>
 
-<body>
+      <div class="constructor-grid" id="constructor-grid"></div>
+    </main>
 
-    <h1>2025 컨스트럭터 순위</h1>
+    <footer>
+      <p>&copy; 2025 Pitwall. All rights reserved.</p>
+    </footer>
 
-    <div class="constructor-grid" id="constructor-grid">
-    </div>
-
+    <script src="script.js"></script>
     <script src="driver-data.js"></script>
     <script src="constructor-data.js"></script>
     <script src="constructor.js"></script>
-</body>
-
+  </body>
 </html>

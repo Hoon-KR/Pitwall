@@ -198,3 +198,52 @@ footer {
   resize: vertical; /* 세로 크기만 조절 가능 */
   min-height: 150px;
 }
+
+/* --- 드롭다운 메뉴 스타일 추가 --- */
+
+/* 드롭다운 부모 메뉴 (F1 정보) 위치 설정 */
+nav ul li {
+  position: relative;
+}
+
+/* 드롭다운 내용 (기본적으로 숨김) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--secondary-bg); /* 테마 색상 사용 */
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%); /* 가운데 정렬 보정 */
+  border-radius: 4px;
+  padding: 0.5rem 0;
+}
+
+/* 드롭다운 메뉴 항목 스타일 */
+.dropdown-content li {
+  display: block;
+  width: 100%;
+  margin: 0; /* 기존 마진 초기화 */
+}
+
+.dropdown-content li a {
+  padding: 10px 20px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  color: var(--text-color);
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+/* 마우스를 올렸을 때 드롭다운 보이기 */
+nav ul li:hover .dropdown-content {
+  display: block;
+}
+
+/* 드롭다운 항목 호버 효과 */
+.dropdown-content li a:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
