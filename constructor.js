@@ -57,8 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </a>
         `;
-        // =========================================================
-
         gridContainer.innerHTML += cardHTML;
     });
 });

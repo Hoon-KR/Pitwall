@@ -200,7 +200,7 @@ const constructorData = [
         teamName: "자우버",
         teamNameFull: "Stake F1 Team Kick Sauber",
         teamSlug: "sauber",
-        points: 12,
+        points: 62,
         carImage: "킥 자우버.png",
         logoImage: "킥자우버.png",
 
@@ -224,7 +224,7 @@ const constructorData = [
         teamName: "알핀",
         teamNameFull: "BWT Alpine F1 Team",
         teamSlug: "alpine",
-        points: 45,
+        points: 22,
         carImage: "알핀.png",
         logoImage: "알핀.png",
 
