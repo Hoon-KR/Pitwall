@@ -39,6 +39,30 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("driver-name").textContent = driver.name;
   document.getElementById("driver-name-kr").textContent = driver.nameKr;
 
+  const nationality = driver.nationality || "";
+    let flagFile = "default.png"; // 기본값
+
+    // 국적 텍스트에 포함된 단어를 보고 파일명 결정
+    if (nationality.includes("British")) flagFile = "영국.png";
+    else if (nationality.includes("Italian")) flagFile = "이탈리아.png";
+    else if (nationality.includes("Monegasque")) flagFile = "모나코.png";
+    else if (nationality.includes("Australian")) flagFile = "호주.png";
+    else if (nationality.includes("Dutch")) flagFile = "네덜란드.png";
+    else if (nationality.includes("Mexican")) flagFile = "멕시코.png";
+    else if (nationality.includes("Spanish")) flagFile = "스페인.png";
+    else if (nationality.includes("Canadian")) flagFile = "캐나다.png";
+    else if (nationality.includes("Thai")) flagFile = "태국.png";
+    else if (nationality.includes("Japanese")) flagFile = "일본.png";
+    else if (nationality.includes("New Zealander")) flagFile = "뉴질랜드.png";
+    else if (nationality.includes("German")) flagFile = "독일.png";
+    else if (nationality.includes("Brazilian")) flagFile = "브라질.png";
+    else if (nationality.includes("French")) flagFile = "프랑스.png";
+    else if (nationality.includes("Argentine")) flagFile = "아르헨티나.png";
+
+    // 이미지 src 설정
+    document.getElementById('driver-flag').src = `img/country/${flagFile}`;
+    document.getElementById('driver-flag').alt = nationality;
+
   // 드라이버 번호
   const numberEl = document.getElementById("driver-number");
   numberEl.textContent = `No. ${driver.number}`;
