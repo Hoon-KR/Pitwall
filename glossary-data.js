@@ -1,5 +1,6 @@
 // glossary-data.js
 const glossaryData = [
+    // 1. 기본 경기 용어
     {
         term: "Pitwall",
         fullTerm: "피트월 (현장 작전센터)",
@@ -13,8 +14,25 @@ const glossaryData = [
     {
         term: "Circuit",
         fullTerm: "서킷",
-        description: "경주를 하는 트랙을 의미합니다. 크게 3가지로 나뉩니다.<br>• <strong>고정형(Permanent):</strong> 전용 상설 트랙 (예: 스즈카, 실버스톤)<br>• <strong>도심형(Street):</strong> 일반 도로를 임시 폐쇄한 트랙 (예: 모나코, 라스베가스)<br>• <strong>하이브리드(Semi-Street):</strong> 일부 구간만 공공도로를 사용 (예: 바쿠, 알버트 파크)"
+        description: "경주를 하는 트랙을 의미합니다. 크게 3가지로 나뉩니다.<br>• 고정형(Permanent): 전용 상설 트랙 (예: 스즈카, 실버스톤)<br>• 도심형(Street): 일반 도로를 임시 폐쇄한 트랙 (예: 모나코, 라스베가스)<br>• 하이브리드(Semi-Street): 일부 구간만 공공도로를 사용 (예: 바쿠, 알버트 파크)"
     },
+    {
+        term: "Sector",
+        fullTerm: "섹터",
+        description: "서킷을 3개의 구간으로 나눈 단위입니다. (섹터 1, 2, 3) 각 섹터별 기록을 통해 드라이버의 구간별 강약점을 파악할 수 있습니다."
+    },
+    {
+        term: "Grid",
+        fullTerm: "그리드",
+        description: "레이스 출발을 위해 트랙 노면에 그려진 출발 위치입니다. 예선 성적에 따라 순서대로 배정받습니다."
+    },
+    {
+        term: "Formation Lap",
+        fullTerm: "포메이션 랩",
+        description: "결승 레이스 시작 직전, 모든 차량이 트랙을 한 바퀴 돌며 타이어와 브레이크 예열을 하고 자신의 그리드(출발 위치)로 정렬하는 과정입니다."
+    },
+
+    // 2. 피트 및 팀 구역
     {
         term: "Pit",
         fullTerm: "피트",
@@ -31,10 +49,22 @@ const glossaryData = [
         description: "피트스탑을 위해 차량이 드나드는 도로입니다. 이곳에서는 속도 제한(보통 80km/h)이 엄격하게 적용됩니다."
     },
     {
+        term: "Box",
+        fullTerm: "박스",
+        description: "피트(Pit)를 의미합니다. 팀 라디오에서 \"Box, Box\"라고 하면 \"지금 피트인 해라\"라는 뜻입니다."
+    },
+    {
         term: "Paddock",
         fullTerm: "패독",
         description: "피트 빌딩 뒤편에 위치한 공간으로, 팀 본부(모터홈), 미디어 센터, VIP 존 등이 모여 있는 통제 구역입니다."
     },
+    {
+        term: "Parc Fermé",
+        fullTerm: "파크 페르메",
+        description: "프랑스어로 '닫힌 공원'이라는 뜻으로, 예선 이후부터 결승 전까지 차량 수리나 세팅 변경을 엄격히 금지하는 규정(또는 그 구역)을 말합니다."
+    },
+
+    // 3. 경기 진행 및 규칙
     {
         term: "Qualifying",
         fullTerm: "퀄리파잉 (예선)",
@@ -46,6 +76,16 @@ const glossaryData = [
         description: "퀄리파잉(예선)에서 1위를 기록하여, 본 레이스에서 맨 앞자리(1번 그리드)에서 출발하는 것을 말합니다."
     },
     {
+        term: "Sprint",
+        fullTerm: "스프린트",
+        description: "일부 그랑프리 주말에 열리는 '미니 레이스'입니다. 약 100km(30분 정도)를 달리며, 1위부터 8위까지 보너스 포인트가 주어집니다."
+    },
+    {
+        term: "Sprint Qualifying (SQ)",
+        fullTerm: "스프린트 퀄리파잉",
+        description: "스프린트 레이스의 출발 순서를 정하는 예선 세션입니다. 일반 퀄리파잉보다 시간이 짧지만 방식(SQ1, SQ2, SQ3)은 유사합니다."
+    },
+    {
         term: "Lap",
         fullTerm: "랩",
         description: "서킷을 한 바퀴 도는 것을 의미합니다. (예: 랩 5 = 다섯 번째 바퀴)"
@@ -53,7 +93,7 @@ const glossaryData = [
     {
         term: "Lap Time",
         fullTerm: "랩타임",
-        description: "서킷 한 바퀴를 도는 데 걸린 시간입니다s."
+        description: "서킷 한 바퀴를 도는 데 걸린 시간입니다."
     },
     {
         term: "DNF",
@@ -65,6 +105,13 @@ const glossaryData = [
         fullTerm: "포디움",
         description: "1위, 2위, 3위로 경기를 마쳐 시상대에 오르는 것을 의미합니다."
     },
+    {
+        term: "Steward",
+        fullTerm: "스튜어드 (심판)",
+        description: "경기 중 발생하는 사고나 규정 위반을 심사하고 페널티를 부과하는 심판관입니다."
+    },
+
+    // 4. 챔피언십 및 포인트
     {
         term: "Points",
         fullTerm: "포인트",
@@ -85,6 +132,8 @@ const glossaryData = [
         fullTerm: "컨스트럭터",
         description: "F1 팀을 의미하며, 규정상 차량(섀시)을 직접 제작하는 제작사를 뜻합니다."
     },
+
+    // 5. 깃발 신호 및 안전 차량
     {
         term: "Blue Flag",
         fullTerm: "블루 플래그 (청색기)",
@@ -103,7 +152,7 @@ const glossaryData = [
     {
         term: "Red / White Flag",
         fullTerm: "레드 / 화이트 플래그",
-        description: "• <strong>레드 플래그:</strong> 경기를 중단합니다. (심각한 사고나 악천후)<br>• <strong>화이트 플래그:</strong> 트랙에 느린 차량(엠뷸런스 등)이 있음을 경고합니다."
+        description: "• 레드 플래그: 경기를 중단합니다. (심각한 사고나 악천후)<br>• 화이트 플래그: 트랙에 느린 차량(엠뷸런스 등)이 있음을 경고합니다."
     },
     {
         term: "Safety Car (SC)",
@@ -113,72 +162,58 @@ const glossaryData = [
     {
         term: "Virtual Safety Car (VSC)",
         fullTerm: "가상 세이프티 카",
-        description: "실제 차량 투입 없이 전자 신호로 발령됩니다. 모든 차량은 트랙 위에서 일정 속도(델타 타임) 이하로 서행해야 하며 추월은 금지됩니다. 비교적 경미한 사고 처리에 사용됩니다."
+        description: "실제 차량 투입 없이 전자 신호로 발령됩니다. 모든 차량은 트랙 위에서 일정 속도(델타 타임) 이하로 서행해야 하며 추월은 금지됩니다."
     },
-    {
-        term: "Undercut",
-        fullTerm: "언더컷",
-        description: "앞차보다 <strong>먼저</strong> 피트인하여 새 타이어의 빠른 속도로 격차를 줄인 뒤, 앞차가 피트인하고 나올 때 추월하는 전략입니다."
-    },
-    {
-        term: "Overcut",
-        fullTerm: "오버컷",
-        description: "앞차보다 <strong>늦게</strong> 피트인하여, 낡은 타이어로도 충분히 빠른 속도를 유지하거나 트랙 상황을 활용해 추월하는 전략입니다."
-    },
-    {
-        term: "Sprint",
-        fullTerm: "스프린트",
-        description: "일부 그랑프리 주말에 열리는 '미니 레이스'입니다. 약 100km(30분 정도)를 달리며, 1위부터 8위까지 보너스 포인트가 주어집니다."
-    },
-    {
-        term: "Sprint Qualifying (SQ)",
-        fullTerm: "스프린트 퀄리파잉",
-        description: "스프린트 레이스의 출발 순서를 정하는 예선 세션입니다. 일반 퀄리파잉보다 시간이 짧지만 방식(SQ1, SQ2, SQ3)은 유사합니다."
-    },
+
+    // 6. 주행 기술 및 전략
     {
         term: "DRS",
         fullTerm: "Drag Reduction System",
         description: "리어 윙(뒷날개)을 열어 공기 저항을 줄이고 속도를 높이는 장치입니다. 지정된 구간에서 앞차와 1초 이내일 때만 사용하여 추월을 돕습니다."
     },
-    
     {
-        term: "DRS",
-        fullTerm: "Drag Reduction System",
-        description: "뒷날개(리어 윙)를 열어 공기 저항을 줄이고 직선 구간에서 속도를 높이는 장치입니다. 앞차와 1초 이내일 때만 사용 가능하며 추월을 돕습니다."
+        term: "Slipstream",
+        fullTerm: "슬립스트림",
+        description: "직선 구간에서 앞차 바로 뒤에 붙어서 공기 저항을 적게 받아 속도를 높이는 기술입니다. 추월할 때 자주 사용됩니다."
+    },
+    {
+        term: "Dirty Air",
+        fullTerm: "더티 에어",
+        description: "앞차가 지나가면서 발생시킨 불안정한 공기 흐름(난기류)입니다. 뒤따라가는 차는 이 때문에 다운포스를 잃어 코너링이 불안정해지고 타이어가 빨리 닳게 됩니다."
     },
     {
         term: "Undercut",
         fullTerm: "언더컷",
-        description: "앞차보다 **먼저** 피트인하여 새 타이어의 빠른 속도로 앞차와의 격차를 줄인 뒤, 앞차가 피트인하고 나올 때 추월하는 전략입니다."
+        description: "앞차보다 먼저 피트인하여 새 타이어의 빠른 속도로 격차를 줄인 뒤, 앞차가 피트인하고 나올 때 추월하는 전략입니다."
     },
     {
         term: "Overcut",
         fullTerm: "오버컷",
-        description: "앞차가 피트인한 후에도 **더 오래** 트랙에 머물며 랩타임을 벌린 뒤, 나중에 피트인하여 추월하는 전략입니다. (타이어 소모가 적거나 트랙이 비었을 때 유리)"
+        description: "앞차보다 늦게 피트인하여, 낡은 타이어로도 충분히 빠른 속도를 유지하거나 트랙 상황을 활용해 추월하는 전략입니다."
     },
     {
-        term: "Pole Position",
-        fullTerm: "폴 포지션",
-        description: "예선(Qualifying)에서 1위를 차지하여, 결승 레이스 출발 시 가장 앞자리(맨 앞 그리드)에서 출발하는 것을 말합니다."
+        term: "Lock-up",
+        fullTerm: "락업",
+        description: "급브레이크를 밟았을 때 타이어가 회전을 멈추고 잠겨버리는 현상입니다. 타이어에서 흰 연기가 나며, 타이어 표면이 평평하게 깎이는 '플랫 스팟'을 유발합니다."
     },
     {
-        term: "Paddock",
-        fullTerm: "패독",
-        description: "피트 빌딩 뒤편에 위치한 공간으로, 팀 관계자, 드라이버, 미디어, VIP 등 허가된 인원만 출입할 수 있는 통제 구역입니다."
+        term: "Downforce",
+        fullTerm: "다운포스",
+        description: "공기 역학을 이용해 차량을 지면 쪽으로 꾹 눌러주는 힘입니다. 다운포스가 높을수록 타이어 접지력이 좋아져 코너를 더 빠르게 돌아나갈 수 있습니다."
     },
     {
-        term: "Safety Car (SC)",
-        fullTerm: "세이프티 카",
-        description: "트랙에 큰 사고나 위험 요소가 있을 때 투입되는 차량입니다. 모든 경주차는 SC 추월이 금지되며 속도를 줄여야 합니다."
+        term: "Chicane",
+        fullTerm: "시케인",
+        description: "속도를 줄이기 위해 인위적으로 만든 'S'자 형태의 연속 코너 구간입니다."
     },
     {
-        term: "Sector",
-        fullTerm: "섹터",
-        description: "서킷을 3개의 구간으로 나눈 단위입니다. (섹터 1, 2, 3) 각 섹터별 기록을 통해 드라이버의 강약점을 파악할 수 있습니다."
+        term: "Apex",
+        fullTerm: "에이펙스 (클리핑 포인트)",
+        description: "코너를 돌 때 안쪽 가장자리와 가장 가깝게 스치는 지점입니다. 이곳을 정확히 밟고 지나가야 가장 빠른 라인으로 코너를 탈출할 수 있습니다."
     },
     {
-        term: "Box",
-        fullTerm: "박스",
-        description: "피트(Pit)를 의미합니다. 팀 라디오에서 \"Box, Box\"라고 하면 \"피트인 해라\"라는 뜻입니다."
+        term: "Tire Compound",
+        fullTerm: "타이어 컴파운드 (C1~C5)",
+        description: "타이어 고무의 재질을 말합니다. <br>• 슬릭(Slick): 마른 노면용 (소프트-빨강, 미디엄-노랑, 하드-흰색)<br>• 인터미디어트: 비가 조금 올 때 (초록색)<br>• 웨트: 폭우가 쏟아질 때 (파란색)"
     }
 ];
