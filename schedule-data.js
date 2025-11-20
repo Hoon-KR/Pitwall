@@ -67,11 +67,11 @@ const scheduleData = [
         isSprint: false,
         gmtOffset: 3, // 바레인 (GMT+3)
         sessions: [
-            { name: "FP1", date: "4/11 (금)", time: "20:30" }, // 현지 14:30
-            { name: "FP2", date: "4/12 (토)", time: "00:00" }, // 현지 18:00
+            { name: "FP1", date: "4/11 (금)", time: "20:30" },
+            { name: "FP2", date: "4/12 (토)", time: "00:00" },
             { name: "FP3", date: "4/12 (토)", time: "21:30" },
             { name: "퀄리파잉", date: "4/13 (일)", time: "01:00" },
-            { name: "레이스", date: "4/14 (월)", time: "00:00" } // 현지 일요일 18:00
+            { name: "레이스", date: "4/14 (월)", time: "00:00" }
         ]
     },
     {
@@ -391,11 +391,11 @@ const scheduleData = [
         isSprint: false,
         gmtOffset: -8, // 미국 서부 (GMT-8)
         sessions: [
-            { name: "FP1", date: "11/21 (금)", time: "11:30" }, // 현지 목 18:30
-            { name: "FP2", date: "11/21 (금)", time: "15:00" }, // 현지 목 22:00
-            { name: "FP3", date: "11/22 (토)", time: "11:30" }, // 현지 금 18:30
-            { name: "퀄리파잉", date: "11/22 (토)", time: "15:00" }, // 현지 금 22:00
-            { name: "레이스", date: "11/23 (일)", time: "15:00" }  // 현지 토 22:00
+            { name: "FP1", date: "11/21 (금)", time: "09:30" }, // 현지 목 18:30
+            { name: "FP2", date: "11/21 (금)", time: "13:00" }, // 현지 목 22:00
+            { name: "FP3", date: "11/22 (토)", time: "09:30" }, // 현지 금 18:30
+            { name: "퀄리파잉", date: "11/22 (토)", time: "13:00" }, // 현지 금 22:00
+            { name: "레이스", date: "11/23 (일)", time: "13:00" }  // 현지 토 22:00
         ]
     },
     {
