@@ -11,7 +11,7 @@ const constructorData = [
         points: 756,
         carImage: "맥라렌.png",
         logoImage: "맥라렌.png",
-        
+
         base: "Woking Surrey, United Kingdom",
         teamChief: "Andrea Stella",
         techChief: "Rob Marshall",
@@ -20,7 +20,7 @@ const constructorData = [
         firstEntry: "1966 ~",
         worldChampionships: "8",
         history: "브루스 맥라렌에 의해 설립된 맥라렌은 F1 역사상 두 번째로 성공적인 팀입니다. 아일톤 세나, 알랭 프로스트, 루이스 해밀턴 등 전설적인 드라이버들과 함께 수많은 우승을 차지했습니다. 최근 젊고 강력한 드라이버 라인업과 기술적 혁신을 통해 긴 암흑기를 끝내고 다시 챔피언십의 최강자로 우뚝 섰습니다.",
-        
+
         drivers: [
             { name: "랜도 노리스", rank: 1, points: 390, tcam: "yellow" },
             { name: "오스카 피아스트리", rank: 2, points: 366, tcam: "black" }
@@ -35,7 +35,7 @@ const constructorData = [
         points: 398,
         carImage: "메르세데스.png",
         logoImage: "메르세데스.png",
-        
+
         base: "Brackley, United Kingdom",
         teamChief: "Toto Wolff",
         techChief: "James Allison",
@@ -92,7 +92,7 @@ const constructorData = [
         firstEntry: "1950 ~",
         worldChampionships: "16",
         history: "F1 그 자체이자 역사상 가장 유명한 레이싱 팀입니다. 1950년 첫 시즌부터 참가한 유일한 팀으로, 이탈리아의 자존심이자 '티포시(Tifosi)'라 불리는 전 세계적인 팬덤을 보유하고 있습니다. 2025년 루이스 해밀턴의 합류로 드림팀을 구성하며 다시 한번 왕좌 탈환을 노리고 있습니다.",
-        
+
         drivers: [
             { name: "샤를 르클레르", rank: 5, points: 214, tcam: "black" },
             { name: "루이스 해밀턴", rank: 6, points: 148, tcam: "yellow" }

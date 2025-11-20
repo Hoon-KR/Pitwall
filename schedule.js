@@ -51,7 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             <p class="circuit-name">${gp.circuitName}</p>
                             <span class="circuit-loc">${gp.location}</span>
                         </div>
-                        <img src="img/circuit/${gp.circuitImage}" class="circuit-layout-img" alt="Track" onerror="this.style.opacity='0'">
+
+                        <a href="circuit.html" class="circuit-link" title="서킷 상세 정보 보기">
+                            <img src="img/circuit/${gp.circuitImage}" class="circuit-layout-img" alt="Track" onerror="this.style.opacity='0'">
+                        </a>
+
                     </div>
 
                     <div class="session-list">

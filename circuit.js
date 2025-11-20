@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 이미지 경로 (없으면 기본 이미지)
         // ⚠️ 실제 이미지가 'img/circuit/' 폴더에 있어야 합니다.
-        const imgSrc = `img/circuit/${circuit.image}`; 
+        const imgSrc = `img/circuit/${circuit.image}`;
 
         card.innerHTML = `
             <div class="track-image-container">

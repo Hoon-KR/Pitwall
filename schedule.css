@@ -209,6 +209,26 @@ body {
     border-color: #ccc;
 }
 
+.circuit-link {
+    display: block;
+    /* 이미지를 감싸기 위해 블록 요소로 */
+    text-decoration: none;
+    cursor: pointer;
+    /* 손가락 커서 */
+    transition: transform 0.2s ease;
+    /* 부드러운 움직임 */
+}
+
+/* 마우스 올렸을 때 효과 */
+.circuit-link:hover .circuit-layout-img {
+    transform: scale(1.1);
+    /* 1.1배 확대 */
+    opacity: 1;
+    /* 혹시 흐리게 되어있다면 선명하게 */
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    /* 그림자 추가 */
+}
+
 /* ========== ⬇️ 반응형 수정 (4열 대응) ⬇️ ========== */
 @media (max-width: 1400px) {
     .schedule-grid {
