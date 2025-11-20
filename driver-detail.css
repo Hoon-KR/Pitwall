@@ -3,7 +3,8 @@
 /* 1. 기본 설정: body 배경색 삭제 (style.css 상속) */
 /* 기존 body {} 전체 삭제하거나 아래처럼 덮어쓰기 */
 body {
-  padding: 0; /* style.css와 충돌 방지 */
+  padding: 0;
+  /* style.css와 충돌 방지 */
 }
 
 /* 2. 뒤로가기 버튼 (다크모드 스타일) */
@@ -11,10 +12,12 @@ body {
   display: inline-block;
   margin-bottom: 20px;
   text-decoration: none;
-  color: white; /* 글자색 흰색 */
+  color: white;
+  /* 글자색 흰색 */
   font-weight: bold;
   font-size: 1rem;
-  background: var(--accent-color); /* 포인트 색상 사용 */
+  background: var(--accent-color);
+  /* 포인트 색상 사용 */
   padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -23,13 +26,15 @@ body {
 
 .back-link:hover {
   transform: translateY(-2px);
-  background-color: #e03e00; /* 호버 시 조금 어둡게 */
+  background-color: #e03e00;
+  /* 호버 시 조금 어둡게 */
 }
 
 /* 3. 프로필 컨테이너 (흰색 -> 다크모드 배경) */
 .profile-container {
   max-width: 1100px;
-  margin: 0 auto 50px auto; /* 하단 여백 추가 */
+  margin: 0 auto 50px auto;
+  /* 하단 여백 추가 */
   display: flex;
   gap: 50px;
 
@@ -41,7 +46,8 @@ body {
   border-radius: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   align-items: flex-start;
-  border-left: 10px solid #ccc; /* JS가 팀 컬러로 변경 */
+  border-left: 10px solid #ccc;
+  /* JS가 팀 컬러로 변경 */
   overflow: hidden;
 }
 
@@ -56,7 +62,8 @@ body {
   border-radius: 15px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   object-fit: cover;
-  background-color: #2a3f5a; /* 이미지 로딩 전 배경 */
+  background-color: #2a3f5a;
+  /* 이미지 로딩 전 배경 */
 }
 
 /* 5. 정보 영역 */
@@ -70,13 +77,15 @@ body {
   font-size: 3.2rem;
   font-weight: 900;
   line-height: 1.1;
-  color: var(--text-color); /* 흰색 */
+  color: var(--text-color);
+  /* 흰색 */
 }
 
 .korean-name {
   margin-top: 8px;
   font-size: 1.8rem;
-  color: #ccc; /* 연한 회색 */
+  color: #ccc;
+  /* 연한 회색 */
   font-weight: 600;
   margin-bottom: 20px;
 }
@@ -94,7 +103,8 @@ body {
 hr {
   border: 0;
   height: 1px;
-  background: #2a3f5a; /* 어두운 구분선 */
+  background: #2a3f5a;
+  /* 어두운 구분선 */
   margin: 30px 0;
 }
 
@@ -109,7 +119,8 @@ h2 {
 /* 기본 정보 라벨 */
 .info-grid strong {
   width: 100px;
-  color: #8892b0; /* 연한 파란 회색 */
+  color: #8892b0;
+  /* 연한 파란 회색 */
 }
 
 /* 6. 커리어 리스트 (배경색 어둡게) */
@@ -135,6 +146,43 @@ h2 {
   color: var(--accent-color);
 }
 
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-item {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #eee;
+  transition: 0.2s;
+}
+
+.stat-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #333;
+  line-height: 1.2;
+}
+
 /* 반응형 */
 @media (max-width: 850px) {
   .profile-container {
@@ -143,24 +191,29 @@ h2 {
     align-items: center;
     text-align: center;
   }
+
   .profile-image {
     flex: auto;
     width: 100%;
     max-width: 300px;
     margin-bottom: 30px;
   }
+
   .info-grid p {
     justify-content: center;
   }
+
   .info-grid strong {
     width: auto;
     margin-right: 10px;
   }
+
   h2 {
     border-left: none;
     border-bottom: 3px solid var(--accent-color);
     padding-left: 0;
   }
+
   .career-list li {
     text-align: left;
   }

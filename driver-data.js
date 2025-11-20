@@ -15,8 +15,16 @@ const driverData = [
         nationality: "British 🇬🇧", // ⬅️ (추가) 국적
         career: [ // ⬅️ (추가) F1 경력
             { team: "Williams", years: "2019-2021" },
-            { team: "Mercedes", years: "2022-Present" }
-        ]
+            { team: "Mercedes", years: "2022-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 5,
+            podiums: 23,
+            poles: 7,
+            points: 276,
+            entries: 149
+        }
     },
     {
         number: 12,
@@ -30,8 +38,16 @@ const driverData = [
         dob: "2006-08-25",
         nationality: "Italian 🇮🇹",
         career: [
-            { team: "Mercedes", years: "2025 (Debut)" }
-        ]
+            { team: "Mercedes", years: "2025-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 2,
+            poles: 0,
+            points: 122,
+            entries: 21
+        }
     },
     // === Ferrari ===
     {
@@ -47,8 +63,16 @@ const driverData = [
         nationality: "Monegasque 🇲🇨",
         career: [
             { team: "Sauber", years: "2018" },
-            { team: "Ferrari", years: "2019-Present" }
-        ]
+            { team: "Ferrari", years: "2019-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 8,
+            podiums: 50,
+            poles: 27,
+            points: 214,
+            entries: 170
+        }
     },
     {
         number: 44,
@@ -64,8 +88,16 @@ const driverData = [
         career: [
             { team: "McLaren", years: "2007-2012" },
             { team: "Mercedes", years: "2013-2024" },
-            { team: "Ferrari", years: "2025-Present" }
-        ]
+            { team: "Ferrari", years: "2025-ing" }
+        ],
+        stats: {
+            championships: 7,
+            wins: 105,
+            podiums: 202,
+            poles: 104,
+            points: 148,
+            entries: 377
+        }
     },
     // === McLaren ===
     {
@@ -80,8 +112,16 @@ const driverData = [
         dob: "1999-11-13",
         nationality: "British 🇬🇧",
         career: [
-            { team: "McLaren", years: "2019-Present" }
-        ]
+            { team: "McLaren", years: "2019-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 11,
+            podiums: 43,
+            poles: 15,
+            points: 390,
+            entries: 149
+        }
     },
     {
         number: 81,
@@ -95,8 +135,16 @@ const driverData = [
         dob: "2001-04-06",
         nationality: "Australian 🇦🇺",
         career: [
-            { team: "McLaren", years: "2023-Present" }
-        ]
+            { team: "McLaren", years: "2023-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 9,
+            podiums: 24,
+            poles: 5,
+            points: 366,
+            entries: 67
+        }
     },
     // === Red Bull Racing ===
     {
@@ -112,8 +160,16 @@ const driverData = [
         nationality: "Dutch 🇳🇱", // ⬅️ (추가) 국적
         career: [ // ⬅️ (추가) F1 경력
             { team: "Toro Rosso", years: "2015-2016" },
-            { team: "Red Bull", years: "2016-Present" }
-        ]
+            { team: "Red Bull", years: "2016-ing" }
+        ],
+        stats: {
+            championships: 4,
+            wins: 68,
+            podiums: 124,
+            poles: 47,
+            points: 341,
+            entries: 230
+        }
     },
     {
         number: 22,
@@ -128,8 +184,16 @@ const driverData = [
         nationality: "Japanese 🇯🇵",
         career: [
             { team: "AlphaTauri / RB", years: "2021-2025" },
-            { team: "Red Bull", years: "2025-Present" }
-        ]
+            { team: "Red Bull", years: "2025-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 0,
+            poles: 0,
+            points: 28,
+            entries: 111
+        }
     },
     // === Aston Martin ===
     {
@@ -151,8 +215,16 @@ const driverData = [
             { team: "Ferrari", years: "2010-2014" },
             { team: "McLaren", years: "2015-2018" },
             { team: "Alpine", years: "2021-2022" },
-            { team: "Aston Martin", years: "2023-Present" }
-        ]
+            { team: "Aston Martin", years: "2023-ing" }
+        ],
+        stats: {
+            championships: 2,
+            wins: 32,
+            podiums: 106,
+            poles: 22,
+            points: 40,
+            entries: 425
+        }
     },
     {
         number: 18,
@@ -167,8 +239,16 @@ const driverData = [
         nationality: "Canadian 🇨🇦",
         career: [
             { team: "Williams", years: "2017-2018" },
-            { team: "Racing Point / Aston Martin", years: "2019-Present" }
-        ]
+            { team: "Racing Point / Aston Martin", years: "2019-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 3,
+            poles: 1,
+            points: 32,
+            entries: 189
+        }
     },
     // === Williams ===
     {
@@ -185,8 +265,16 @@ const driverData = [
         career: [
             { team: "Toro Rosso", years: "2019" },
             { team: "Red Bull", years: "2019-2020" },
-            { team: "Williams", years: "2022-Present" }
-        ]
+            { team: "Williams", years: "2022-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 2,
+            poles: 0,
+            points: 73,
+            entries: 126
+        }
     },
     {
         number: 55,
@@ -204,8 +292,16 @@ const driverData = [
             { team: "Renault", years: "2017-2018" },
             { team: "McLaren", years: "2019-2020" },
             { team: "Ferrari", years: "2021-2024" },
-            { team: "Williams", years: "2025-Present" }
-        ]
+            { team: "Williams", years: "2025-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 4,
+            podiums: 28,
+            poles: 6,
+            points: 38,
+            entries: 229
+        }
     },
     // === Visa Cash App RB ===
 
@@ -221,8 +317,16 @@ const driverData = [
         dob: "2002-02-11",
         nationality: "New Zealander 🇳🇿",
         career: [
-            { team: "AlphaTauri / RB", years: "2023 (Sub) / 2025-Present" }
-        ]
+            { team: "AlphaTauri / RB", years: "2023 (Sub) / 2025-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 0,
+            poles: 0,
+            points: 36,
+            entries: 32
+        }
 
     },
     {
@@ -236,7 +340,17 @@ const driverData = [
         teamLogo: "레이싱불스2.png",
         dob: "2004-09-28",
         nationality: "French 🇫🇷",
-        career: [ /* ... (경력 추가) ... */]
+        career: [
+            { team: "RB", years: "2025-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 1,
+            poles: 0,
+            points: 43,
+            entries: 21
+        }
     },
     // === Sauber ===
     {
@@ -250,7 +364,7 @@ const driverData = [
         teamLogo: "킥자우버.png",
         dob: "1987-08-19",
         nationality: "German 🇩🇪",
-        career: [ 
+        career: [
             { team: "Williams", years: "2010" },
             { team: "Force India", years: "2012" },
             { team: "Sauber", years: "2013" },
@@ -258,8 +372,16 @@ const driverData = [
             { team: "Renault", years: "2017-2019" },
             { team: "Racing Point / Aston Martin", years: "2020, 2022 (Sub)" },
             { team: "Haas", years: "2023-2024" },
-            { team: "Sauber", years: "2025-Present" }
-        ]
+            { team: "Sauber", years: "2025-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 1,
+            poles: 1,
+            points: 43,
+            entries: 251
+        }
     },
     {
         number: 87,
@@ -272,9 +394,17 @@ const driverData = [
         teamLogo: "킥자우버.png",
         dob: "2004-10-14",
         nationality: "Brazilian 🇧🇷",
-        career: [ 
+        career: [
             { team: "Sauber", years: "2025 (Debut)" }
-        ]
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 0,
+            poles: 0,
+            points: 19,
+            entries: 21
+        }
     },
     // === Haas ===
     {
@@ -288,10 +418,18 @@ const driverData = [
         teamLogo: "하스.png",
         dob: "2005-05-08",
         nationality: "British 🇬🇧",
-        career: [ 
+        career: [
             { team: "Ferrari", years: "2024 (Sub)" },
-            { team: "Haas", years: "2025-Present" }
-        ]
+            { team: "Haas", years: "2025-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 0,
+            poles: 0,
+            points: 40,
+            entries: 24
+        }
     },
     {
         number: 31,
@@ -304,12 +442,20 @@ const driverData = [
         teamLogo: "하스.png",
         dob: "1996-09-17",
         nationality: "French 🇫🇷",
-        career: [ 
+        career: [
             { team: "Manor", years: "2016" },
             { team: "Force India", years: "2017-2018" },
             { team: "Renault / Alpine", years: "2020-2024" },
-            { team: "Haas", years: "2025-Present" }
-        ]
+            { team: "Haas", years: "2025-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 1,
+            podiums: 4,
+            poles: 0,
+            points: 30,
+            entries: 177
+        }
     },
     // === Alpine ===
     {
@@ -323,12 +469,20 @@ const driverData = [
         teamLogo: "알핀.png",
         dob: "1996-02-07",
         nationality: "French 🇫🇷",
-        career: [ 
+        career: [
             { team: "Toro Rosso", years: "2017-2018" },
             { team: "Red Bull", years: "2019" },
             { team: "Toro Rosso / AlphaTauri", years: "2019-2022" },
-            { team: "Alpine", years: "2023-Present" }
-        ]
+            { team: "Alpine", years: "2023-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 1,
+            podiums: 5,
+            poles: 0,
+            points: 22,
+            entries: 175
+        }
     },
     {
         number: 43,
@@ -341,10 +495,18 @@ const driverData = [
         teamLogo: "알핀.png",
         dob: "2003-05-27",
         nationality: "Argentine 🇦🇷",
-        career: [ 
+        career: [
             { team: "Williams", years: "2024 (Replacement)" },
-            { team: "Alpine", years: "2025-Present" }
-        ]
+            { team: "Alpine", years: "2025-ing" }
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 0,
+            poles: 0,
+            points: 0,
+            entries: 24
+        }
     },
     {
         number: 7,
@@ -357,8 +519,16 @@ const driverData = [
         teamLogo: "알핀.png",
         dob: "2003-01-20",
         nationality: "Australian 🇦🇺",
-        career: [ 
+        career: [
             { team: "Alpine", years: "2024 (Debut)" }
-        ]
+        ],
+        stats: {
+            championships: 0,
+            wins: 0,
+            podiums: 0,
+            poles: 0,
+            points: 0,
+            entries: 7
+        }
     }
 ];

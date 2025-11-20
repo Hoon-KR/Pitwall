@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  max-width: 1600px;
+  max-width: 1620px;
   margin: 0 auto;
 }
 
@@ -11,9 +11,7 @@
 .driver-card {
   display: flex; /* ⬅️ 핵심: 자식 요소를 가로로 나란히 배치 */
   flex-direction: row; /* ⬅️ 가로 방향 (기본값) */
-
-  height: 150px; /* ⬅️ (중요) 카드의 높이를 고정 */
-
+  height: 180px; /* ⬅️ (중요) 카드의 높이를 고정 */
   background-color: var(--secondary-bg);
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -21,6 +19,7 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   border-left: 5px solid #ccc;
 }
+
 .driver-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
@@ -44,9 +43,9 @@
   /* ⬅️ (수정) 정보들을 세로로 쌓고, 정중앙에 배치 */
   display: flex;
   flex-direction: column;
-  justify-content: center; /* 세로 중앙 */
+  justify-content: end; /* 세로 중앙 */
   align-items: center; /* 가로 중앙 */
-
+  margin-bottom: 15px;
   padding: 10px;
   box-sizing: border-box; /* ⬅️ 패딩이 60% 너비를 넘어가지 않게 함 */
 }
@@ -56,7 +55,7 @@
   font-size: 1.4em; /* ⬅️ 좁아진 공간에 맞게 살짝 줄임 */
   font-weight: bold;
   color: #ccc;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 }
 
 /* (유지) 로고+이름을 묶는 그룹 */
@@ -117,4 +116,46 @@
 }
 .driver-card[data-team="haas"] {
   border-left-color: #b6b6b4;
+}
+
+
+/* --- 포인트 뱃지 스타일 --- */
+.driver-card {
+    position: relative; /* 뱃지를 안에 가두기 위해 필수 */
+}
+
+.point-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.95); /* 흰색 배경 (살짝 투명) */
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15); /* 그림자 */
+    z-index: 10;
+    
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 순위 (1위, 2위...) */
+.point-badge .rank-idx {
+    color: #333; /* 순위는 검정색 */
+    font-size: 0.85rem;
+    border-right: 1px solid #ddd; /* 구분선 */
+    padding-right: 8px;
+}
+
+/* 포인트 (PTS) */
+.point-badge .p-val {
+    /* 글자색은 JS에서 팀 컬러로 지정됨 */
+}
+
+/* 마우스를 올렸을 때 뱃지도 살짝 강조 */
+.driver-card:hover .point-badge {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }

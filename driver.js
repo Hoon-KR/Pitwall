@@ -1,23 +1,45 @@
-// HTML 문서 로드가 끝나면 즉시 실행
+// driver.js
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. (변경) driverData가 이 파일에 없으므로 grid-container만 가져옴
     const gridContainer = document.getElementById('driver-grid');
 
-    // 2. (방어 코드) driverData가 driver-data.js에서 로드되었는지 확인
+    // (방어 코드) 데이터 확인
     if (typeof driverData === 'undefined' || !gridContainer) {
-        console.error("driverData가 로드되지 않았거나 'driver-grid' ID를 찾을 수 없습니다.");
+        console.error("driverData가 로드되지 않았습니다.");
         return;
     }
 
-    // 3. 데이터 순회하며 HTML 생성하기
-    driverData.forEach(driver => {
-        // (수정) cardHTML 전체를 <a> 태그로 감쌉니다.
-        // (수정) <a> 태그의 href에 slug 값을 넣어 상세 페이지로 링크합니다.
+    // ========== 1. 포인트 순서대로 정렬 (내림차순) ==========
+    driverData.sort((a, b) => {
+        const pointsA = a.stats ? a.stats.points : 0;
+        const pointsB = b.stats ? b.stats.points : 0;
+        return pointsB - pointsA; // 높은 점수가 먼저 오도록
+    });
+    // ====================================================
+
+    // 팀 컬러 맵 (뱃지 테두리 색상용)
+    const teamColors = {
+        'mclaren': '#FF8700', 'mercedes': '#00D2BE', 'redbull': '#0600EF',
+        'ferrari': '#DC0000', 'williams': '#005AFF', 'rb': '#1633EF',
+        'astonmartin': '#006F62', 'haas': '#B6B6B4', 'sauber': '#00E00A', 'alpine': '#0090FF'
+    };
+
+    // 데이터 순회하며 HTML 생성
+    driverData.forEach((driver, index) => {
+        
+        // 팀 컬러 가져오기
+        const myColor = teamColors[driver.teamSlug] || '#333';
+        
+        // 포인트 가져오기 (없으면 0)
+        const points = driver.stats ? driver.stats.points : 0;
+
         const cardHTML = `
             <a href="driver-detail.html?driver=${driver.slug}" class="card-link">
                 <div class="driver-card" data-team="${driver.teamSlug}">
                     
+                    <div class="point-badge" style="border: 2px solid ${myColor}; color: ${myColor};">
+                        <span class="rank-idx">${index + 1}위</span> <span class="p-val">${points} PTS</span> </div>
                     <img src="img/drivers/profile/${driver.image}" 
                          alt="${driver.name}" 
                          class="driver-image" 
@@ -38,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </a>
         `;
-        // 4. 생성된 HTML 조각을 그리드 컨테이너에 추가하기
+        
         gridContainer.innerHTML += cardHTML;
     });
 });

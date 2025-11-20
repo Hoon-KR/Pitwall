@@ -57,6 +57,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("driver-age").textContent = "N/A";
   }
 
+  const stats = driver.stats || {};
+    document.getElementById('stat-champ').textContent = stats.championships || 0;
+    document.getElementById('stat-wins').textContent = stats.wins || 0;
+    document.getElementById('stat-podiums').textContent = stats.podiums || 0;
+    document.getElementById('stat-poles').textContent = stats.poles || 0;
+    document.getElementById('stat-points').textContent = stats.points || 0;
+    document.getElementById('stat-entries').textContent = stats.entries || 0;
+
   // 커리어 리스트
   const careerList = document.getElementById("driver-career");
   careerList.innerHTML = ""; // 초기화
