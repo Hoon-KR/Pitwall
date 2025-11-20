@@ -1,17 +1,13 @@
 // circuit.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const listContainer = document.getElementById('circuit-list');
 
-    // 서킷 데이터가 없으면 종료
     if (typeof circuitData === 'undefined' || !listContainer) return;
 
     circuitData.forEach(circuit => {
         const card = document.createElement('div');
         card.className = 'circuit-card';
 
-        // 이미지 경로 (없으면 기본 이미지)
-        // ⚠️ 실제 이미지가 'img/circuit/' 폴더에 있어야 합니다.
         const imgSrc = `img/circuit/${circuit.image}`; 
 
         card.innerHTML = `
@@ -41,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
 
                 <p class="circuit-desc">${circuit.description}</p>
+                
+                <div class="circuit-view-point">
+                    ${circuit.viewingPoint}
+                </div>
             </div>
         `;
 
