@@ -1,97 +1,106 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>드라이버 상세 정보 - Pitwall</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="driver-detail.css" />
-  </head>
 
-  <body>
-    <header>
-      <div class="logo">
-        <a href="index.html">Pitwall</a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>드라이버 상세 정보 - Pitwall</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="driver-detail.css" />
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html">Pitwall</a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#">최신 뉴스</a></li>
+        <li><a href="#">일정/결과</a></li>
+        <li><a href="#">순위</a></li>
+        <li>
+          <a href="constructor.html" class="active">F1 정보 ▾</a>
+          <ul class="dropdown-content">
+            <li><a href="constructor.html">팀</a></li>
+            <li><a href="driver.html">드라이버</a></li>
+            <li><a href="glossary.html">용어</a></li>
+          </ul>
+        </li>
+        <li><a href="board.html">커뮤니티</a></li>
+      </ul>
+    </nav>
+    <div class="user-actions">
+      <div id="logged-out-view" style="display: none">
+        <a href="login.html" class="btn">로그인</a>
+        <a href="signup.html" class="btn btn-accent">회원가입</a>
       </div>
-      <nav>
-        <ul>
-          <li><a href="#">최신 뉴스</a></li>
-          <li><a href="#">일정/결과</a></li>
-          <li><a href="#">순위</a></li>
-          <li>
-            <a href="constructor.html" class="active">F1 정보 ▾</a>
-            <ul class="dropdown-content">
-              <li><a href="constructor.html">팀</a></li>
-              <li><a href="driver.html">드라이버</a></li>
-              <li><a href="glossary.html">용어</a></li>
-            </ul>
-          </li>
-          <li><a href="board.html">커뮤니티</a></li>
-        </ul>
-      </nav>
-      <div class="user-actions">
-        <div id="logged-out-view" style="display: none">
-          <a href="login.html" class="btn">로그인</a>
-          <a href="signup.html" class="btn btn-accent">회원가입</a>
-        </div>
-        <div id="logged-in-view" style="display: none">
-          <span id="user-nickname" class="nickname-display"></span>
-          <a href="my-info.html" class="btn">내 정보 관리</a>
-          <a href="#" id="logout-button" class="btn">로그아웃</a>
-        </div>
+      <div id="logged-in-view" style="display: none">
+        <span id="user-nickname" class="nickname-display"></span>
+        <a href="my-info.html" class="btn">내 정보 관리</a>
+        <a href="#" id="logout-button" class="btn">로그아웃</a>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main>
-      <div style="max-width: 1100px; margin: 20px auto">
-        <a href="driver.html" class="back-link">← 그리드로 돌아가기</a>
+  <main>
+    <div style="max-width: 1100px; margin: 20px auto">
+      <a href="driver.html" class="back-link">← 그리드로 돌아가기</a>
+    </div>
+
+    <div class="profile-container">
+      <div class="profile-image">
+        <img id="driver-img" src="" alt="드라이버 사진" />
       </div>
 
-      <div class="profile-container">
-        <div class="profile-image">
-          <img id="driver-img" src="" alt="드라이버 사진" />
-        </div>
-
-        <div class="profile-info">
-          <h1 id="driver-name"></h1>
+      <div class="profile-info">
+        <h1 id="driver-name"></h1>
+        <div class="name-row">
           <h2 id="driver-name-kr" class="korean-name"></h2>
-          <p id="driver-number"></p>
-          <hr />
-
-          <h2>기본 정보</h2>
-          <div class="info-grid">
-            <p><strong>국적:</strong> <span id="driver-nationality"></span></p>
-            <p><strong>나이:</strong> <span id="driver-age"></span></p>
-            <p><strong>생년월일:</strong> <span id="driver-dob"></span></p>
-            <p><strong>소속 팀:</strong> <span id="driver-team"></span></p>
-          </div>
-
-          <hr>
-            <h2>통계</h2>
-            <div class="stats-grid">
-                <div class="stat-item"><span class="stat-label">월드 챔피언 </span><span class="stat-value" id="stat-champ">0</span></div>
-                <div class="stat-item"><span class="stat-label">레이스 우승 </span><span class="stat-value" id="stat-wins">0</span></div>
-                <div class="stat-item"><span class="stat-label">포디움 </span><span class="stat-value" id="stat-podiums">0</span></div>
-                <div class="stat-item"><span class="stat-label">폴 포지션 </span><span class="stat-value" id="stat-poles">0</span></div>
-                <div class="stat-item"><span class="stat-label">현 시즌 포인트 </span><span class="stat-value" id="stat-points">0</span></div>
-                <div class="stat-item"><span class="stat-label">레이스 참가 </span><span class="stat-value" id="stat-entries">0</span></div>
-            </div>
-            
-          <hr>
-            <h2>F1 커리어</h2>
-            <ul id="driver-career" class="career-list"></ul>
+          <img id="driver-flag" class="flag-icon" src="" alt="flag">
         </div>
-      </div>
-    </main>
 
-    <script src="script.js"></script>
-    <script src="driver-data.js"></script>
-    <script src="driver-detail.js"></script>
-  </body>
+        <p id="driver-number"></p>
+        <hr />
+
+        <h2>기본 정보</h2>
+        <div class="info-grid">
+          <p><strong>국적:</strong> <span id="driver-nationality"></span></p>
+          <p><strong>나이:</strong> <span id="driver-age"></span></p>
+          <p><strong>생년월일:</strong> <span id="driver-dob"></span></p>
+          <p><strong>소속 팀:</strong> <span id="driver-team"></span></p>
+        </div>
+
+        <hr>
+        <h2>통계</h2>
+        <div class="stats-grid">
+          <div class="stat-item"><span class="stat-label">월드 챔피언 </span><span class="stat-value"
+              id="stat-champ">0</span></div>
+          <div class="stat-item"><span class="stat-label">레이스 우승 </span><span class="stat-value" id="stat-wins">0</span>
+          </div>
+          <div class="stat-item"><span class="stat-label">포디움 </span><span class="stat-value" id="stat-podiums">0</span>
+          </div>
+          <div class="stat-item"><span class="stat-label">폴 포지션 </span><span class="stat-value" id="stat-poles">0</span>
+          </div>
+          <div class="stat-item"><span class="stat-label">현 시즌 포인트 </span><span class="stat-value"
+              id="stat-points">0</span></div>
+          <div class="stat-item"><span class="stat-label">레이스 참가 </span><span class="stat-value"
+              id="stat-entries">0</span></div>
+        </div>
+
+        <hr>
+        <h2>F1 커리어</h2>
+        <ul id="driver-career" class="career-list"></ul>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="driver-data.js"></script>
+  <script src="driver-detail.js"></script>
+</body>
+
 </html>
