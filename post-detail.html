@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>F1 팀 상세 정보 - Pitwall</title>
+    <title>게시글 상세 - Pitwall</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -11,9 +11,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="constructor-detail.css" />
   </head>
-
   <body>
     <header>
       <div class="logo">
@@ -28,7 +26,7 @@
           <li><a href="board.html">커뮤니티</a></li>
 
           <li>
-            <a href="glossary.html" class="active">F1 정보 ▾</a>
+            <a href="glossary.html">F1 정보 ▾</a>
             <ul class="dropdown-content">
               <li><a href="glossary.html">F1용어사전</a></li>
               <li><a href="driver.html">드라이버</a></li>
@@ -60,67 +58,50 @@
       </div>
     </header>
 
-    <section class="team-hero" id="hero-section">
-      <a href="constructor.html" class="back-btn">← 그리드로 돌아가기</a>
-
-      <div class="hero-content">
-        <div class="hero-text">
-          <img id="d-logo" src="" alt="Team Logo" class="hero-logo" />
-          <h1 id="d-name-full"></h1>
-          <p class="hero-base">
-            📍 <span id="d-base"></span>
-            <img
-              id="d-flag"
-              class="team-flag-icon"
-              src=""
-              alt="flag"
-              style="display: none"
-            />
-          </p>
+    <main class="post-detail-container">
+      <!-- 게시글 본문 -->
+      <article class="post-view">
+        <div class="post-header">
+          <h1 id="post-title">제목을 불러오는 중...</h1>
+          <div class="post-meta-info">
+            <span id="post-author">작성자</span> |
+            <span id="post-date">날짜</span> | 조회
+            <span id="post-views">0</span>
+          </div>
         </div>
-        <img id="d-car" src="" alt="F1 Car" class="hero-car" />
-      </div>
-    </section>
+        <div class="post-body" id="post-content">
+          내용을 불러오는 중입니다...
+        </div>
+        <div class="post-actions">
+          <button id="like-btn" class="btn-like">
+            👍 좋아요 <span id="like-count">0</span>
+          </button>
+        </div>
+      </article>
 
-    <main class="detail-container">
-      <section class="spec-card">
-        <h2>팀 정보</h2>
-        <ul class="spec-list">
-          <li>
-            <span class="label">팀 수석</span>
-            <span class="value" id="d-chief"></span>
-          </li>
-          <li>
-            <span class="label">테크니컬 치프</span>
-            <span class="value" id="d-tech"></span>
-          </li>
-          <li>
-            <span class="label">섀시</span>
-            <span class="value" id="d-chassis"></span>
-          </li>
-          <li>
-            <span class="label">파워유닛</span>
-            <span class="value" id="d-pu"></span>
-          </li>
-          <li>
-            <span class="label">연혁</span>
-            <span class="value" id="d-entry"></span>
-          </li>
-          <li>
-            <span class="label">컨스트럭터 챔피언십 우승</span>
-            <span class="value highlight" id="d-titles"></span>
-          </li>
+      <!-- 댓글 섹션 -->
+      <section class="comment-section">
+        <h3>댓글</h3>
+        <ul id="comment-list">
+          <!-- 댓글이 여기에 동적으로 추가됩니다 -->
         </ul>
+
+        <!-- 댓글 작성 폼 -->
+        <form id="comment-form">
+          <textarea
+            id="comment-input"
+            placeholder="댓글을 입력하세요..."
+            required
+          ></textarea>
+          <button type="submit" class="btn btn-accent">등록</button>
+        </form>
       </section>
 
-      <section class="history-card">
-        <h2>팀 소개</h2>
-        <div class="history-text" id="d-history"></div>
-      </section>
+      <div style="margin-top: 20px">
+        <a href="board.html" class="btn">목록으로 돌아가기</a>
+      </div>
     </main>
 
     <script src="script.js"></script>
-    <script src="constructor-data.js"></script>
-    <script src="constructor-detail.js"></script>
   </body>
 </html>

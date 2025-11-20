@@ -1,10 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const db = require("./config/db"); // db.js 파일 import
 const jwt = require("jsonwebtoken");
 const { protect } = require("./middleware/authMiddleware");
-require("dotenv").config();
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET;
 
@@ -215,21 +215,141 @@ app.post("/api/posts", protect, async (req, res) => {
 // (게시글 목록은 로그인하지 않아도 볼 수 있으므로 'protect' 미들웨어가 없음)
 app.get("/api/posts", async (req, res) => {
   try {
-    // Users 테이블과 연결하여 user_id 대신 nickname을 가져옴
+    // 👇 views와 likes 컬럼도 가져오도록 수정했습니다.
     const sql = `
-            SELECT p.post_id, p.title, p.created_at, u.nickname 
+            SELECT p.post_id, p.title, p.created_at, p.views, p.likes, u.nickname 
             FROM Posts p
             JOIN Users u ON p.user_id = u.user_id
             ORDER BY p.created_at DESC
         `;
-    // ORDER BY ... DESC -> 최신순으로 정렬
 
     const [posts] = await db.query(sql);
-
-    // 3. 조회된 게시글 목록을 JSON 배열로 응답
     res.status(200).json(posts);
   } catch (error) {
     console.error("게시글 목록 조회 중 오류:", error);
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+// 3. 게시글 상세 보기 API (GET /api/posts/:id)
+app.get("/api/posts/:id", async (req, res) => {
+  const postId = req.params.id;
+  try {
+    // 1. 조회수 1 증가시키기
+    await db.query("UPDATE Posts SET views = views + 1 WHERE post_id = ?", [
+      postId,
+    ]);
+
+    // 2. 게시글 정보 + 작성자 닉네임 가져오기
+    const sql = `
+            SELECT p.*, u.nickname 
+            FROM Posts p
+            JOIN Users u ON p.user_id = u.user_id
+            WHERE p.post_id = ?
+        `;
+    const [results] = await db.query(sql, [postId]);
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "게시글을 찾을 수 없습니다." });
+    }
+    res.json(results[0]);
+  } catch (error) {
+    console.error("상세 조회 오류:", error);
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+// 4. 게시글 좋아요 API (POST /api/posts/:id/like)
+
+app.post("/api/posts/:id/like", protect, async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.user.user_id; // 로그인한 사용자 ID
+
+  try {
+    // 1. 이 사용자가 이미 좋아요를 눌렀는지 확인
+    const checkSql =
+      "SELECT * FROM PostLikes WHERE user_id = ? AND post_id = ?";
+    const [existingLike] = await db.query(checkSql, [userId, postId]);
+
+    if (existingLike.length > 0) {
+      // [취소 로직] 이미 눌렀다면 -> 좋아요 기록 삭제 & 카운트 감소
+      await db.query(
+        "DELETE FROM PostLikes WHERE user_id = ? AND post_id = ?",
+        [userId, postId]
+      );
+      await db.query("UPDATE Posts SET likes = likes - 1 WHERE post_id = ?", [
+        postId,
+      ]);
+
+      var message = "좋아요 취소";
+    } else {
+      // [등록 로직] 안 눌렀다면 -> 좋아요 기록 추가 & 카운트 증가
+      await db.query("INSERT INTO PostLikes (user_id, post_id) VALUES (?, ?)", [
+        userId,
+        postId,
+      ]);
+      await db.query("UPDATE Posts SET likes = likes + 1 WHERE post_id = ?", [
+        postId,
+      ]);
+
+      var message = "좋아요!";
+    }
+
+    // 변경된 좋아요 수 조회해서 반환
+    const [updatedPost] = await db.query(
+      "SELECT likes FROM Posts WHERE post_id = ?",
+      [postId]
+    );
+
+    // liked: true면 현재 좋아요 상태, false면 취소 상태 (프론트엔드에서 버튼 색깔 바꿀 때 사용 가능)
+    const isLiked = existingLike.length === 0;
+
+    res.json({
+      message: message,
+      likes: updatedPost[0].likes,
+      liked: isLiked,
+    });
+  } catch (error) {
+    console.error("좋아요 오류:", error);
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+// 5. 댓글 목록 조회 API (GET /api/posts/:id/comments)
+app.get("/api/posts/:id/comments", async (req, res) => {
+  const postId = req.params.id;
+  try {
+    const sql = `
+            SELECT c.*, u.nickname 
+            FROM Comments c
+            JOIN Users u ON c.user_id = u.user_id
+            WHERE c.post_id = ?
+            ORDER BY c.created_at ASC
+        `;
+    const [comments] = await db.query(sql, [postId]);
+    res.json(comments);
+  } catch (error) {
+    console.error("댓글 조회 오류:", error);
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+// 6. 댓글 작성 API (POST /api/posts/:id/comments)
+app.post("/api/posts/:id/comments", protect, async (req, res) => {
+  const postId = req.params.id;
+  const { content } = req.body;
+  const { user_id } = req.user;
+
+  if (!content)
+    return res.status(400).json({ message: "내용을 입력해주세요." });
+
+  try {
+    const sql =
+      "INSERT INTO Comments (post_id, user_id, content) VALUES (?, ?, ?)";
+    await db.query(sql, [postId, user_id, content]);
+    res.status(201).json({ message: "댓글 작성 완료" });
+  } catch (error) {
+    console.error("댓글 작성 오류:", error);
     res.status(500).json({ message: "서버 오류" });
   }
 });

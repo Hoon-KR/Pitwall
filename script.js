@@ -264,9 +264,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const postDate = new Date(post.created_at).toLocaleDateString("ko-KR");
 
         postElement.innerHTML = `
-                    <h3><a href="#">${post.title}</a></h3>
+                    <h3><a href="post-detail.html?id=${post.post_id}">${
+          post.title
+        }</a></h3>
                     <div class="post-meta">
-                        <span>작성자: ${post.nickname}</span> | <span>${postDate}</span>
+                        <span>작성자: ${post.nickname}</span> | 
+                        <span>${postDate}</span> | 
+                        <span>조회 ${post.view || 0}</span> | 
+                        <span>👍 ${post.likes || 0}</span>
                     </div>
                 `;
         postListDiv.appendChild(postElement);
@@ -319,5 +324,125 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(`오류: ${error.message}`);
       }
     });
+  }
+
+  // --- 8. '게시글 상세' 페이지 로직 (post-detail.html) ---
+  if (document.title.includes("게시글 상세")) {
+    // 1. URL에서 글 번호(id) 가져오기 (예: post-detail.html?id=5)
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("id");
+
+    if (!postId) {
+      alert("잘못된 접근입니다.");
+      window.location.href = "board.html";
+    }
+
+    loadPostDetail(postId);
+    loadComments(postId);
+
+    // 2. 좋아요 버튼 클릭 이벤트
+    document.getElementById("like-btn").addEventListener("click", async () => {
+      const token = sessionStorage.getItem("token");
+      if (!token) return alert("로그인이 필요합니다.");
+
+      try {
+        const res = await fetch(
+          `http://localhost:3001/api/posts/${postId}/like`,
+          {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById("like-count").textContent = data.likes;
+        } else {
+          alert(data.message);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    // 3. 댓글 작성 이벤트
+    document
+      .getElementById("comment-form")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const token = sessionStorage.getItem("token");
+        if (!token) return alert("로그인이 필요합니다.");
+
+        const content = document.getElementById("comment-input").value;
+
+        try {
+          const res = await fetch(
+            `http://localhost:3001/api/posts/${postId}/comments`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ content }),
+            }
+          );
+          if (res.ok) {
+            document.getElementById("comment-input").value = ""; // 입력창 비우기
+            loadComments(postId); // 댓글 목록 새로고침
+          } else {
+            alert("댓글 작성 실패");
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+  }
+
+  // [함수] 게시글 상세 내용 불러오기
+  async function loadPostDetail(id) {
+    try {
+      const res = await fetch(`http://localhost:3001/api/posts/${id}`);
+      const post = await res.json();
+
+      if (!res.ok) throw new Error(post.message);
+
+      document.getElementById("post-title").textContent = post.title;
+      document.getElementById("post-author").textContent = post.nickname;
+      document.getElementById("post-date").textContent = new Date(
+        post.created_at
+      ).toLocaleDateString();
+      document.getElementById("post-views").textContent = post.views;
+      document.getElementById("post-content").innerText = post.content; // innerText로 줄바꿈 반영
+      document.getElementById("like-count").textContent = post.likes;
+    } catch (err) {
+      alert("글을 불러올 수 없습니다.");
+      window.location.href = "board.html";
+    }
+  }
+
+  // [함수] 댓글 목록 불러오기
+  async function loadComments(id) {
+    const list = document.getElementById("comment-list");
+    list.innerHTML = "";
+    try {
+      const res = await fetch(`http://localhost:3001/api/posts/${id}/comments`);
+      const comments = await res.json();
+
+      comments.forEach((cmt) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+                    <div class="cmt-meta">
+                        <strong>${cmt.nickname}</strong> 
+                        <span>${new Date(
+                          cmt.created_at
+                        ).toLocaleString()}</span>
+                    </div>
+                    <div class="cmt-body">${cmt.content}</div>
+                `;
+        list.appendChild(li);
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 });

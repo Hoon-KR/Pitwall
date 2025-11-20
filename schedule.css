@@ -1,252 +1,240 @@
-/* schedule.css */
+/* schedule.css - Pitwall 다크 모드 완벽 적용 */
+
+/* 1. 충돌 방지: body 및 기본 스타일 */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
-    color: #333;
+  padding: 0;
 }
 
-.navbar {
-    background-color: #fff;
-    padding: 15px 30px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+h1 {
+  color: var(--text-color);
+  margin-bottom: 2rem;
 }
 
-.navbar a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-}
-
-.navbar h1 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-/* ========== ⬇️ 그리드 수정 (3열 -> 4열) ⬇️ ========== */
+/* ========== 그리드 레이아웃 (4열) ========== */
 .schedule-grid {
-    display: grid;
-    /* repeat(3, 1fr) -> repeat(4, 1fr)로 변경 */
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    /* 4열이므로 최대 너비를 더 넓게 잡음 */
-    max-width: 1800px;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 20px 50px 20px;
 }
 
-/* ================================================== */
-
-/* 카드 디자인 */
+/* 2. 카드 디자인 */
 .race-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s;
+  background-color: var(--secondary-bg); /* 남색 배경 */
+  color: var(--text-color); /* 흰색 글씨 */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #2a3f5a; /* 테두리 */
 }
 
 .race-card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  border-color: var(--accent-color);
 }
 
-/* 카드 헤더 */
+/* 3. 카드 헤더 */
 .card-header {
-    background-color: #f5f5f5;
-    padding: 10px 20px;
-    font-weight: 800;
-    font-size: 0.9rem;
-    color: #333;
-    border-bottom: 1px solid #eee;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 12px 20px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--accent-color);
+  border-bottom: 1px solid #2a3f5a;
 }
 
-/* 카드 본문 */
+/* 4. 카드 본문 */
 .card-body {
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 상단 정보 */
 .gp-info-top {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 .gp-text {
-    flex: 1;
+  flex: 1;
 }
 
-/* 텍스트 영역 확보 */
-
 .gp-text h2 {
-    margin: 0 0 5px 0;
-    font-size: 1.2rem;
-    /* 4열에 맞춰 폰트 살짝 축소 */
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  margin: 0 0 5px 0;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-color);
 }
 
 .flag-icon {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid #eee;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #555;
 }
 
 .gp-dates {
-    font-style: italic;
-    color: #666;
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-    display: block;
+  font-style: italic;
+  color: #ffffff; /* 항상 흰색 */
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  display: block;
 }
 
 .circuit-name {
-    font-size: 0.8rem;
-    color: #333;
-    margin: 0;
-    font-weight: bold;
+  font-size: 0.85rem;
+  color: #ffffff; /* 항상 흰색 */
+  margin: 0;
+  font-weight: bold;
 }
 
 .circuit-loc {
-    font-size: 0.75rem;
-    color: #888;
+  font-size: 0.75rem;
+  color: #8892b0;
 }
 
-/* 서킷 트랙 이미지 */
 .circuit-layout-img {
-    width: 115px;
-    height: 60px;
-    object-fit: contain;
-    opacity: 1;
-    margin-left: 5px;
-}
-
-/* 세션 시간표 */
-.session-list {
-    margin-top: auto;
-    /* 내용이 적어도 하단 정렬 */
-    border-top: 1px solid #f0f0f0;
-    padding-top: 10px;
-}
-
-.session-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    /* 4열에 맞춰 폰트 축소 */
-    padding: 3px 0;
-    color: #555;
-}
-
-.session-name {
-    font-weight: 500;
-}
-
-.session-time {
-    text-align: right;
-}
-
-/* 토글 스위치 영역 */
-.timezone-toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 15px;
-    font-size: 0.8rem;
-    color: #666;
-}
-
-.switch {
-    width: 32px;
-    height: 18px;
-    background-color: #ddd;
-    border-radius: 20px;
-    position: relative;
-}
-
-.switch::after {
-    content: '';
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    background-color: white;
-    border-radius: 50%;
-    top: 2px;
-    left: 2px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-/* 결과 버튼 */
-.result-btn {
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    transition: 0.2s;
-    font-size: 0.9rem;
-}
-
-.result-btn:hover {
-    background-color: #f9f9f9;
-    border-color: #ccc;
+  width: 115px;
+  height: 60px;
+  object-fit: contain;
+  margin-left: 5px;
+  filter: invert(1) opacity(0.8); /* 흰색 선으로 반전 */
 }
 
 .circuit-link {
-    display: block;
-    /* 이미지를 감싸기 위해 블록 요소로 */
-    text-decoration: none;
-    cursor: pointer;
-    /* 손가락 커서 */
-    transition: transform 0.2s ease;
-    /* 부드러운 움직임 */
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
 }
 
-/* 마우스 올렸을 때 효과 */
 .circuit-link:hover .circuit-layout-img {
-    transform: scale(1.1);
-    /* 1.1배 확대 */
-    opacity: 1;
-    /* 혹시 흐리게 되어있다면 선명하게 */
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
-    /* 그림자 추가 */
+  transform: scale(1.1);
+  filter: invert(1) opacity(1) drop-shadow(0 0 2px white);
 }
 
-/* ========== ⬇️ 반응형 수정 (4열 대응) ⬇️ ========== */
+/* 5. 세션 시간표 */
+.session-list {
+  margin-top: auto;
+  border-top: 1px solid #2a3f5a;
+  padding-top: 15px;
+}
+
+.session-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  padding: 4px 0;
+  color: #c9d1d9;
+}
+
+.session-name {
+  font-weight: 500;
+}
+
+.session-time {
+  text-align: right;
+  /* 👇 핵심: 부모 요소에서 기본적으로 흰색과 굵게 설정 */
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* 날짜와 시간 개별 요소 스타일 */
+.s-date {
+  margin-right: 5px;
+  color: #ffffff; /* 날짜는 항상 흰색 */
+}
+
+.s-time {
+  color: #ffffff; /* 기본 시간 흰색 (JS가 현지시간일 때만 변경함) */
+}
+
+/* 6. 토글 스위치 */
+.timezone-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+  font-size: 0.8rem;
+  color: #8892b0; /* 기본 글자색 (연한 네이비) */
+  cursor: pointer;
+}
+
+.switch {
+  width: 32px;
+  height: 18px;
+  background-color: #4a5568;
+  border-radius: 20px;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.switch.active {
+  background-color: var(--accent-color);
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background-color: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+}
+
+.switch.active::after {
+  transform: translateX(14px);
+}
+
+/* 7. 결과 버튼 */
+.result-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background-color: transparent;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.result-btn:hover {
+  background-color: var(--accent-color);
+  color: white;
+  box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
+}
+
+/* 반응형 */
 @media (max-width: 1400px) {
-    .schedule-grid {
-        grid-template-columns: repeat(3, 1fr);
-        /* 화면 줄면 3열 */
-    }
+  .schedule-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
-
 @media (max-width: 1000px) {
-    .schedule-grid {
-        grid-template-columns: repeat(2, 1fr);
-        /* 더 줄면 2열 */
-    }
+  .schedule-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
-
 @media (max-width: 600px) {
-    .schedule-grid {
-        grid-template-columns: 1fr;
-        /* 모바일 1열 */
-    }
+  .schedule-grid {
+    grid-template-columns: 1fr;
+  }
 }

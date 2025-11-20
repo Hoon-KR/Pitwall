@@ -1,25 +1,75 @@
 <!DOCTYPE html>
 <html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2025 F1 경기 일정 - Pitwall</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="schedule.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025 F1 경기 일정</title>
-    <link rel="stylesheet" href="schedule.css">
-</head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="index.html">Pitwall</a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="pickteam.html">응원 팀 추천</a></li>
+          <li><a href="#">최신 뉴스</a></li>
+          <li><a href="schedule.html" class="active">경기 일정</a></li>
+          <li><a href="#">순위</a></li>
+          <li><a href="board.html">커뮤니티</a></li>
 
-<body>
+          <li>
+            <a href="glossary.html">F1 정보 ▾</a>
+            <ul class="dropdown-content">
+              <li><a href="glossary.html">F1용어사전</a></li>
+              <li><a href="driver.html">드라이버</a></li>
+              <li><a href="constructor.html">팀</a></li>
+              <li><a href="circuit.html">서킷</a></li>
+            </ul>
+          </li>
 
-    <nav class="navbar">
-        <a href="driver.html">← 홈으로</a>
+          <li>
+            <a href="">Shop ▾</a>
+            <ul class="dropdown-content">
+              <li><a href="https://f1store.formula1.com/en/">F1 store</a></li>
+              <li><a href="https://www.fuelforfans.com/">Fuel for Fans</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="user-actions">
+        <div id="logged-out-view">
+          <a href="login.html" class="btn">로그인</a>
+          <a href="signup.html" class="btn btn-accent">회원가입</a>
+        </div>
+        <div id="logged-in-view" style="display: none">
+          <span id="user-nickname" class="nickname-display"></span>
+          <a href="my-info.html" class="btn">내 정보 관리</a>
+          <a href="#" id="logout-button" class="btn">로그아웃</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div style="text-align: center; margin: 2rem 0">
         <h1>2025 F1 시즌 일정</h1>
-    </nav>
+      </div>
 
-    <div class="schedule-grid" id="schedule-grid">
-    </div>
+      <div class="schedule-grid" id="schedule-grid"></div>
+    </main>
 
+    <script src="script.js"></script>
     <script src="schedule-data.js"></script>
     <script src="schedule.js"></script>
-</body>
-
+  </body>
 </html>

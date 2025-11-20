@@ -1,5 +1,6 @@
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const JWT_SECRET_KEY = "pitwall_secret_key"; // server.js와 동일한 키
+const JWT_SECRET_KEY = process.env.JWT_SECRET; // server.js와 동일한 키
 
 const protect = (req, res, next) => {
   let token;
