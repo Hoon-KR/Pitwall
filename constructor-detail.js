@@ -17,6 +17,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. HTML 요소들에 데이터 채워 넣기
     document.getElementById('d-name-full').textContent = team.teamNameFull;
     document.getElementById('d-base').textContent = team.base;
+
+    const baseLocation = team.base || "";
+    let flagFile = "";
+
+    // 본거지 텍스트에 포함된 국가명으로 파일 찾기
+    if (baseLocation.includes("United Kingdom")) flagFile = "영국.png";
+    else if (baseLocation.includes("Italy")) flagFile = "이탈리아.png";
+    else if (baseLocation.includes("Switzerland")) flagFile = "스위스.png"; // 자우버
+    else if (baseLocation.includes("United States")) flagFile = "미국.png";       // 하스
+    else if (baseLocation.includes("France")) flagFile = "프랑스.png";           // 알핀
+    else if (baseLocation.includes("Germany")) flagFile = "독일.png";         // (혹시 모를 대비)
+    
+    // 국기 이미지 설정
+    const flagImg = document.getElementById('d-flag');
+    if (flagFile) {
+        flagImg.src = `img/country/${flagFile}`;
+        flagImg.style.display = 'inline-block'; // 이미지가 있을 때만 보이기
+    } else {
+        flagImg.style.display = 'none'; // 없으면 숨김
+    }
+
     document.getElementById('d-logo').src = `img/constructor/logo/${team.logoImage}`;
     document.getElementById('d-car').src = `img/constructor/car/${team.carImage}`;
 
