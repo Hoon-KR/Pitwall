@@ -190,3 +190,33 @@ h2 {
     margin-top: -30px;
   }
 }
+
+
+/* constructor-detail.css 맨 아래 추가 */
+
+/* 팀 국기 스타일 */
+.team-flag-icon {
+    width: 28px;        /* 글자 크기에 맞춰 적당히 */
+    height: 28px;
+    border-radius: 50%; /* 원형 */
+    object-fit: cover;
+    margin-left: 8px;   /* 글자와 국기 사이 간격 */
+    vertical-align: middle; /* 텍스트와 높이 맞추기 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* 📍 이모지와 텍스트, 국기가 한 줄에 잘 오도록 정렬 */
+.hero-base {
+    display: flex;
+    align-items: center;
+    justify-content: left; /* 가운데 정렬 (필요시 left로 변경) */
+    gap: 5px;
+}
+
+/* 모바일 반응형 대응 */
+@media (max-width: 900px) {
+    .hero-base {
+        justify-content: center;
+    }
+}

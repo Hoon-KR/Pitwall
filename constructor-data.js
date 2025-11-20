@@ -12,7 +12,7 @@ const constructorData = [
         carImage: "맥라렌.png",
         logoImage: "맥라렌.png",
         
-        base: "Woking, United Kingdom",
+        base: "Woking Surrey, United Kingdom",
         teamChief: "Andrea Stella",
         techChief: "Rob Marshall",
         chassis: "MCL39",
@@ -108,7 +108,7 @@ const constructorData = [
         carImage: "윌리엄스.png",
         logoImage: "윌리엄스.png",
 
-        base: "Grove, United Kingdom",
+        base: "Grove Oxfordshire, United Kingdom",
         teamChief: "James Vowles",
         techChief: "Pat Fry",
         chassis: "FW47",
