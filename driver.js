@@ -62,15 +62,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // ========== 3. HTML 생성 (기존 로직) ==========
-    gridContainer.innerHTML = ''; // 기존 내용 비우기 (중복 방지)
+    gridContainer.innerHTML = ''; 
 
     driverData.forEach((driver, index) => {
+        
+        // 팀 컬러 가져오기 (없으면 기본 검정)
         const myColor = teamColors[driver.teamSlug] || '#333';
+        
         const points = driver.stats ? driver.stats.points : 0;
 
         const cardHTML = `
             <a href="driver-detail.html?driver=${driver.slug}" class="card-link">
-                <div class="driver-card" data-team="${driver.teamSlug}">
+                
+                <div class="driver-card" data-team="${driver.teamSlug}" style="--team-color: ${myColor};">
                     
                     <div class="point-badge" style="border: 2px solid ${myColor}; color: ${myColor};">
                         <span class="rank-idx">${index + 1}위</span>
@@ -84,17 +88,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                     
                     <div class="driver-info">
                         <div class="driver-number">No.${driver.number}</div>
+
                         <div class="team-info">
-                            <img src="img/constructor/logo/${driver.teamLogo}" alt="${driver.team}" class="team-logo">
+                            <img src="img/constructor/logo/${driver.teamLogo}" alt="${driver.team}" class="team-logo-circle">
+                            
                             <div class="name-wrapper">
                                 <h3>${driver.name}</h3>
                                 <div class="name-kr">${driver.nameKr}</div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </a>
         `;
+        
         gridContainer.innerHTML += cardHTML;
     });
 });
