@@ -30,7 +30,7 @@
 .circuit-card {
     background-color: #172a46;
     border-radius: 16px;
-    overflow: hidden; /* 이미지가 둥근 모서리를 넘지 않게 */
+    overflow: hidden; /* 이미지 확대 시 튀어나옴 방지 */
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid #2a3f5a;
@@ -45,18 +45,27 @@
 /* 트랙 이미지 영역 */
 .track-image-container {
     width: 100%;
-    height: 200px; /* 높이 고정 */
-    background-color: #ffffff; /* 트랙 맵이 잘 보이게 흰 배경 (선택 사항) */
+    height: 200px;
+    
+ 
+    background-color: #000000; 
+    
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 0;
+    
+    /* 👇 오타 수정완료! (s 제거함) 👇 */
+    overflow: hidden; 
 }
 
 .track-map {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* 비율 유지하며 안에 맞춤 */
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 비율 유지하며 전체 표시 */
+    
+    /* 확대 코드 제거됨 (이미지 잘림 방지) */
+    
     filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
 }
 
@@ -81,7 +90,7 @@
 }
 
 .circuit-flag {
-    font-size: 1.5rem; /* 국기 이모지 크기 */
+    font-size: 1.5rem;
 }
 
 /* 스펙 (길이, 랩 수 등) */
@@ -106,13 +115,14 @@
     line-height: 1.6;
     color: #8892b0;
     word-break: keep-all;
+}
 
-    /* 관전 포인트 박스 디자인 */
+/* 관전 포인트 박스 디자인 */
 .circuit-view-point {
     margin-top: 1.2rem;
     padding: 1rem;
-    background-color: rgba(255, 255, 255, 0.05); /* 살짝 투명한 배경 */
-    border-left: 4px solid var(--accent-color); /* 왼쪽에 주황색 강조 선 */
+    background-color: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid var(--accent-color);
     border-radius: 0 8px 8px 0;
     font-size: 0.95rem;
     color: #e2e8f0;
@@ -120,10 +130,8 @@
     word-break: keep-all;
 }
 
-/* 관전 포인트 내 강조(굵은 글씨) 색상 */
 .circuit-view-point strong {
     color: var(--accent-color);
     font-weight: 700;
     margin-right: 4px;
-}
 }

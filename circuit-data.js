@@ -2,7 +2,7 @@
 const circuitData = [
     {
         id: "albert-park",
-        name: "Albert Park Circuit",
+        name: "앨버트 파크 서킷",
         location: "호주 🇦🇺",
         length: "5.278 km",
         laps: 58,
@@ -20,7 +20,7 @@ const circuitData = [
         type: "고정형",
         image: "china.png",
         description: "타이어 관리가 매우 까다로운 트랙입니다. 끝없이 이어지는 듯한 1번 코너와 F1 캘린더 중 가장 긴 직선 구간 중 하나를 보유하고 있습니다.",
-        viewingPoint: "🌀 <strong>달팽이 코너:</strong> 끝없이 말려 들어가는 독특한 'Turn 1'에서의 진입 라인 싸움과, 1.2km 백스트레이트 끝에서의 슬립스트림 대결이 백미입니다."
+        viewingPoint: "<strong>달팽이 코너:</strong> 끝없이 말려 들어가는 독특한 'Turn 1'에서의 진입 라인 싸움과, 1.2km 백스트레이트 끝에서의 슬립스트림 대결이 백미입니다."
     },
     {
         id: "suzuka",
@@ -134,8 +134,8 @@ const circuitData = [
     },
     {
         id: "spa",
-        name: "Circuit de Spa-Francorchamps",
-        location: "벨기에 🇧🇪 (스파)",
+        name: "스파프랑코르샹 서킷",
+        location: "벨기에 🇧🇪 ",
         length: "7.004 km",
         laps: 44,
         type: "고정형 (Permanent)",
@@ -145,8 +145,8 @@ const circuitData = [
     },
     {
         id: "hungaroring",
-        name: "Hungaroring",
-        location: "헝가리 🇭🇺 (부다페스트)",
+        name: "헝가로링",
+        location: "헝가리 🇭🇺",
         length: "4.381 km",
         laps: 70,
         type: "고정형 (Permanent)",
@@ -156,8 +156,8 @@ const circuitData = [
     },
     {
         id: "zandvoort",
-        name: "Circuit Zandvoort",
-        location: "네덜란드 🇳🇱 (잔드보르트)",
+        name: "잔드보르트 서킷",
+        location: "네덜란드 🇳🇱",
         length: "4.259 km",
         laps: 72,
         type: "고정형 (Permanent)",
@@ -167,8 +167,8 @@ const circuitData = [
     },
     {
         id: "monza",
-        name: "Autodromo Nazionale Monza",
-        location: "이탈리아 🇮🇹 (몬자)",
+        name: "아우토드로모 나치오날레 몬차",
+        location: "이탈리아 🇮🇹",
         length: "5.793 km",
         laps: 53,
         type: "고정형 (Permanent)",
@@ -178,8 +178,8 @@ const circuitData = [
     },
     {
         id: "baku",
-        name: "Baku City Circuit",
-        location: "아제르바이잔 🇦🇿 (바쿠)",
+        name: "바쿠 시티 서킷",
+        location: "아제르바이잔 🇦🇿",
         length: "6.003 km",
         laps: 51,
         type: "도심형 (Street)",
@@ -189,8 +189,8 @@ const circuitData = [
     },
     {
         id: "singapore",
-        name: "Marina Bay Street Circuit",
-        location: "싱가포르 🇸🇬 (마리나 베이)",
+        name: "마리나 베이 스트리트 서킷",
+        location: "싱가포르 🇸🇬",
         length: "4.940 km",
         laps: 62,
         type: "도심형 (Street)",
@@ -200,8 +200,8 @@ const circuitData = [
     },
     {
         id: "cota",
-        name: "Circuit of The Americas",
-        location: "미국 🇺🇸 (오스틴)",
+        name: "서킷 오브 디 아메리카스",
+        location: "미국 🇺🇸",
         length: "5.513 km",
         laps: 56,
         type: "고정형 (Permanent)",
@@ -211,8 +211,8 @@ const circuitData = [
     },
     {
         id: "mexico",
-        name: "Autódromo Hermanos Rodríguez",
-        location: "멕시코 🇲🇽 (멕시코시티)",
+        name: "아우토드로모 에르마노스 로드리게스",
+        location: "멕시코 🇲🇽",
         length: "4.304 km",
         laps: 71,
         type: "고정형 (Permanent)",
@@ -222,8 +222,8 @@ const circuitData = [
     },
     {
         id: "brazil",
-        name: "Autódromo de Interlagos",
-        location: "브라질 🇧🇷 (상파울루)",
+        name: "인터라고스 서킷",
+        location: "브라질 🇧🇷",
         length: "4.309 km",
         laps: 71,
         type: "고정형 (Permanent)",
@@ -233,8 +233,8 @@ const circuitData = [
     },
     {
         id: "vegas",
-        name: "Las Vegas Strip Circuit",
-        location: "미국 🇺🇸 (라스베가스)",
+        name: "라스베이거스 스트립 서킷",
+        location: "미국 🇺🇸",
         length: "6.201 km",
         laps: 50,
         type: "도심형 (Street)",
@@ -244,8 +244,8 @@ const circuitData = [
     },
     {
         id: "qatar",
-        name: "Lusail International Circuit",
-        location: "카타르 🇶🇦 (루사일)",
+        name: "루사일 인터내셔널 서킷",
+        location: "카타르 🇶🇦",
         length: "5.419 km",
         laps: 57,
         type: "고정형 (Permanent)",
@@ -255,8 +255,8 @@ const circuitData = [
     },
     {
         id: "abudhabi",
-        name: "Yas Marina Circuit",
-        location: "아랍에미리트 🇦🇪 (아부다비)",
+        name: "야스 마리나 서킷",
+        location: "아랍에미리트 🇦🇪",
         length: "5.281 km",
         laps: 58,
         type: "고정형 (Permanent)",
