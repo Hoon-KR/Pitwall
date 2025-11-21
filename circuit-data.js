@@ -124,7 +124,7 @@ const circuitData = [
     {
         id: "silverstone",
         name: "실버스톤 서킷",
-        location: "영국 🇬🇧 (실버스톤)",
+        location: "영국 🇬🇧",
         length: "5.891 km",
         laps: 52,
         type: "고정형 (Permanent)",
