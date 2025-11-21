@@ -67,10 +67,11 @@
 }
 
 .driver-info .team-logo {
-  width: 30px;
-  height: 30px; /* ⬅️ (중요) 원을 만들려면 가로/세로 크기를 같게! */
+  width: 35px;
+  height: 35px; /* ⬅️ (중요) 원을 만들려면 가로/세로 크기를 같게! */
   object-fit: contain; /* ⬅️ 이미지가 원 안에 잘리지 않게 함 */
   border-radius: 50%; /* ⬅️ 50% = 원형 */
+  margin-right: 10px;
 }
 
 .driver-info h3 {
