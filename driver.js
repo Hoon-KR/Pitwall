@@ -25,8 +25,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // 우리가 가진 데이터(driverData)를 한 명씩 돌면서 API 데이터와 합체!
         driverData.forEach(localDriver => {
-            // API에서 드라이버 번호(permanentNumber)가 같은 사람 찾기
-            const match = apiDrivers.find(apiD => apiD.Driver.permanentNumber === String(localDriver.number));
+            const match = apiDrivers.find(apiD => {
+                // 예: "Max Verstappen" 안에 "Verstappen"이 포함되어 있는지 확인
+                // API의 성(familyName)을 가져와서 비교
+                return localDriver.name.includes(apiD.Driver.familyName);
+            });
+
+            if (match) {
+                // 찾았으면 점수 업데이트
+                // (단, API 점수가 0점이면 무시하고 우리가 쓴 수동 데이터 유지 - 안전장치)
+                if (parseFloat(match.points) > 0) {
+                    if (!localDriver.stats) localDriver.stats = {};
+                    localDriver.stats.points = parseFloat(match.points);
+                    localDriver.stats.wins = parseInt(match.wins);
+                    console.log(`${localDriver.name} API 업데이트 완료: ${match.points}점`);
+                }
+            }
 
             if (match) {
                 // 찾았으면 점수와 순위를 업데이트!
@@ -62,14 +76,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // ========== 3. HTML 생성 (기존 로직) ==========
-    gridContainer.innerHTML = ''; 
+    gridContainer.innerHTML = '';
 
     driverData.forEach((driver, index) => {
-        
+
         // 팀 컬러 가져오기 (없으면 기본 검정)
         const myColor = teamColors[driver.teamSlug] || '#333';
-        
-        const points = driver.stats ? driver.stats.points : 0;
+
+        let points = 0;
+        if (driver.stats && driver.stats.points > 0) {
+            points = driver.stats.points; // API 점수가 유효하면 사용
+        } else {
+            points = driver.stats ? driver.stats.points : 0;
+        }
 
         const cardHTML = `
             <a href="driver-detail.html?driver=${driver.slug}" class="card-link">
@@ -102,7 +121,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
             </a>
         `;
-        
+
         gridContainer.innerHTML += cardHTML;
     });
 });

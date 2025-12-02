@@ -164,11 +164,11 @@ const driverData = [
         ],
         stats: {
             championships: 4,
-            wins: 68,
-            podiums: 124,
+            wins: 70,
+            podiums: 126,
             poles: 47,
-            points: 341,
-            entries: 230
+            points: 396,
+            entries: 232
         }
     },
     {
