@@ -5,6 +5,9 @@ const bcrypt = require("bcrypt");
 const db = require("./config/db"); // db.js 파일 import
 const jwt = require("jsonwebtoken");
 const { protect } = require("./middleware/authMiddleware");
+const axios = require("axios"); //뉴스 크롤링api - html 가져옴
+const cheerio = require("cheerio"); //뉴스 크롤링api - html 정보 뽑아옴
+
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET;
 
@@ -383,6 +386,79 @@ app.get("/api/news/:id", async (req, res) => {
     res.status(500).json({ message: "서버 오류" });
   }
 });
+
+//--[기능] F1 뉴스 크롤링 API
+// --- [기능] f1-boxbox 뉴스 크롤링 API ---
+app.post("/api/news/crawl", async (req, res) => {
+  try {
+    const targetUrl = "https://f1-boxbox.com/ko/formula-1/news";
+
+    // 1. HTML 가져오기
+    const response = await axios.get(targetUrl, {
+      headers: {
+        // 로봇이 아닌 척 브라우저 정보(User-Agent)를 같이 보냅니다.
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    });
+    
+    const html = response.data;
+    const $ = cheerio.load(html);
+    const newsList = [];
+
+    // 2. 데이터 추출 (분석한 HTML 구조 적용)
+    $("ul.grid > li").each((i, elem) => { 
+        if (newsList.length >= 5) return; // 최신 5개만 가져오기
+
+        // (1) 제목
+        const title = $(elem).find("h3").text().trim(); 
+        
+        // (2) 링크
+        let link = $(elem).find("a").attr("href");
+        if (link && !link.startsWith("http")) {
+            link = `https://f1-boxbox.com${link}`;
+        }
+
+        // (3) 이미지
+        const image_url = $(elem).find("img").attr("src") || "";
+
+        // (4) 요약 (본문 미리보기가 없어서 카테고리 정보 활용)
+        let category = $(elem).find("span.bg-brand-f1").text().trim(); 
+        const summary = category ? `[${category}] 기사 내용을 확인해보세요.` : "F1 BoxBox에서 기사 원문을 확인하세요.";
+
+        if (title) {
+            newsList.push({
+                title: title,
+                summary: summary,
+                content: link, 
+                image_url: image_url,
+                source: "F1 BoxBox"
+            });
+        }
+    });
+
+    // 3. DB 저장
+    let savedCount = 0;
+    for (const news of newsList) {
+      // 중복 확인
+      const [exists] = await db.query("SELECT news_id FROM News WHERE title = ?", [news.title]);
+      
+      if (exists.length === 0) {
+        await db.query(
+          "INSERT INTO News (title, summary, content, image_url, source) VALUES (?, ?, ?, ?, ?)",
+          [news.title, news.summary, news.content, news.image_url, news.source]
+        );
+        savedCount++;
+      }
+    }
+
+    res.status(200).json({ message: "크롤링 완료!", total: newsList.length, saved: savedCount });
+
+  } catch (error) {
+    console.error("크롤링 중 오류:", error);
+    res.status(500).json({ message: "크롤링 실패", error: error.message });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`🚀 서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
