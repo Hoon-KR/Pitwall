@@ -52,3 +52,14 @@ CREATE TABLE IF NOT EXISTS PostLikes (
     -- 한 유저는 한 글에 한 번만 좋아요 가능
     UNIQUE KEY unique_like (user_id, post_id)
 );
+-- 5. 뉴스(news) 테이블
+CREATE TABLE IF NOT EXISTS News (
+    news_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    summary TEXT,  -- 뉴스 목록에서 보여줄 짧은 요약
+    content TEXT NOT NULL, -- 뉴스 상세 내용
+    image_url VARCHAR(255), -- 뉴스 썸네일 이미지 주소
+    source VARCHAR(100), -- 출처 (예: F1 Official, Motorsport.com 등)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

@@ -354,6 +354,36 @@ app.post("/api/posts/:id/comments", protect, async (req, res) => {
   }
 });
 
+//뉴스 기능 
+// 1. 뉴스 목록 조회 API
+app.get("/api/news", async (req, res) => {
+  try {
+    const sql = "SELECT * FROM News ORDER BY created_at DESC";
+    const [rows] = await db.query(sql);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("뉴스 조회 오류:", error);
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+// 2. 뉴스 상세 조회 API
+app.get("/api/news/:id", async (req, res) => {
+  try {
+    const newsId = req.params.id;
+    const sql = "SELECT * FROM News WHERE news_id = ?";
+    const [rows] = await db.query(sql, [newsId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "뉴스를 찾을 수 없습니다." });
+    }
+    res.status(200).json(rows[0]);
+  } catch (error) {
+    console.error("뉴스 상세 조회 오류:", error);
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
 });
