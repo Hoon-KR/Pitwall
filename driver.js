@@ -1,39 +1,27 @@
 // driver.js
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // async: 비동기 함수 (데이터가 올 때까지 기다릴 수 있음)
 
     const gridContainer = document.getElementById('driver-grid');
 
-    // (방어 코드)
     if (typeof driverData === 'undefined' || !gridContainer) {
         console.error("데이터나 그리드 컨테이너가 없습니다.");
         return;
     }
 
-    // ============================================================
-    // 📡 1. API에서 실시간 점수 가져오기 (NEW)
-    // ============================================================
+    // 1. API에서 실시간 점수 가져오기 (NEW)
     try {
-        // 2025년 데이터가 아직 없으므로 테스트를 위해 'current'(현재시즌)를 씁니다.
-        // 나중에는 '2025'로 바꾸면 됩니다.
         const response = await fetch('https://api.jolpi.ca/ergast/f1/current/driverStandings.json');
         const data = await response.json();
 
-        // API에서 가져온 드라이버 목록
         const apiDrivers = data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
 
-        // 우리가 가진 데이터(driverData)를 한 명씩 돌면서 API 데이터와 합체!
         driverData.forEach(localDriver => {
             const match = apiDrivers.find(apiD => {
-                // 예: "Max Verstappen" 안에 "Verstappen"이 포함되어 있는지 확인
-                // API의 성(familyName)을 가져와서 비교
                 return localDriver.name.includes(apiD.Driver.familyName);
             });
 
             if (match) {
-                // 찾았으면 점수 업데이트
-                // (단, API 점수가 0점이면 무시하고 우리가 쓴 수동 데이터 유지 - 안전장치)
                 if (parseFloat(match.points) > 0) {
                     if (!localDriver.stats) localDriver.stats = {};
                     localDriver.stats.points = parseFloat(match.points);
@@ -43,25 +31,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             if (match) {
-                // 찾았으면 점수와 순위를 업데이트!
-                // stats 객체가 없으면 새로 만듦
                 if (!localDriver.stats) localDriver.stats = {};
 
                 localDriver.stats.points = parseFloat(match.points); // 포인트 업데이트
                 localDriver.stats.wins = parseInt(match.wins);       // 우승 횟수 업데이트
-                // 순위는 배열 정렬로 해결하므로 굳이 저장 안 해도 됨
                 console.log(`${localDriver.name} 점수 업데이트 완료: ${match.points}점`);
             }
         });
 
     } catch (error) {
         console.error("API 데이터를 가져오는데 실패했습니다. 기존 데이터를 사용합니다.", error);
-        // 실패해도 괜찮습니다. 우리가 입력해둔 수동 데이터가 있으니까요!
     }
-    // ============================================================
 
 
-    // ========== 2. 포인트 순서대로 정렬 (내림차순) ==========
     driverData.sort((a, b) => {
         const pointsA = a.stats ? a.stats.points : 0;
         const pointsB = b.stats ? b.stats.points : 0;

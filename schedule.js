@@ -119,7 +119,6 @@ function toggleTimezone(element, gpIndex) {
   const switchEl = element.querySelector(".switch");
   const labelEl = element.querySelector(".toggle-label");
   const gpData = scheduleData[gpIndex];
-
   const isLocalMode = switchEl.classList.toggle("active");
 
   // 1. 토글 버튼 라벨 색상 변경
@@ -128,7 +127,6 @@ function toggleTimezone(element, gpIndex) {
     labelEl.style.color = "#e10600"; // 강조색 (빨강)
   } else {
     labelEl.textContent = "한국 시간 (KST)";
-    // 👇 연한 네이비색 (#8892b0) 으로 복구
     labelEl.style.color = "#8892b0";
   }
 
@@ -140,34 +138,22 @@ function toggleTimezone(element, gpIndex) {
   sessionRows.forEach((row) => {
     const dateSpan = row.querySelector(".s-date");
     const timeSpan = row.querySelector(".s-time");
-
     const kstDate = row.dataset.kstDate;
     const kstTime = row.dataset.kstTime;
 
     if (isLocalMode) {
       // [현지 시간 모드]
       const converted = convertToLocal(kstDate, kstTime, gpData.gmtOffset);
-
       dateSpan.textContent = converted.date;
       timeSpan.textContent = converted.time;
-
-      // 👇 날짜: 항상 흰색 유지
       dateSpan.style.color = "#ffffff";
-
-      // 👇 시간: 현지 시간임을 강조하기 위해 빨간색으로 변경
       timeSpan.style.color = "#e10600";
     } else {
       // [한국 시간 모드]
       dateSpan.textContent = kstDate;
       timeSpan.textContent = kstTime;
-
-      // 👇 날짜: 항상 흰색 유지
       dateSpan.style.color = "#ffffff";
-
-      // 👇 시간: 원래대로 흰색 복구
       timeSpan.style.color = "#ffffff";
     }
-
-    // 폰트 굵기는 CSS에서 이미 bold로 설정했으므로 JS에서 건드리지 않음 (항상 굵게 유지됨)
   });
 }

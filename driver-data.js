@@ -153,12 +153,12 @@ const driverData = [
         nameKr: "막스 베르스타펜",
         team: "Red Bull Racing",
         teamSlug: "redbull",
-        slug: "max_verstappen", // ⬅️ (필수) URL용 ID
+        slug: "max_verstappen", // (필수) URL용 ID
         image: "막스 베르스타펜.png",
         teamLogo: "레드불.png",
-        dob: "1997-09-30", // ⬅️ (추가) 생년월일
-        nationality: "Dutch 🇳🇱", // ⬅️ (추가) 국적
-        career: [ // ⬅️ (추가) F1 경력
+        dob: "1997-09-30",
+        nationality: "Dutch 🇳🇱",
+        career: [
             { team: "Toro Rosso", years: "2015-2016" },
             { team: "Red Bull", years: "2016-ing" }
         ],
