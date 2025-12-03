@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitwall - 뉴스 상세</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 상세 페이지 전용 스타일 */
+        .article-container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            color: #fff;
+        }
+        
+        .article-header { margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px; }
+        .article-source { color: #e10600; font-weight: bold; font-size: 0.9rem; margin-bottom: 10px; display: inline-block;}
+        .article-date { color: #888; font-size: 0.9rem; float: right; }
+        .article-title { font-size: 2rem; line-height: 1.3; margin: 10px 0; }
+        
+        .article-image-box { 
+            width: 100%; 
+            margin-bottom: 40px; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid #333;
+        }
+        .article-image { width: 100%; display: block; }
+
+        .article-body { 
+            font-size: 1.1rem; 
+            line-height: 1.8; 
+            color: #ddd; 
+            white-space: pre-wrap; /* 줄바꿈 그대로 표현 */
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 50px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .back-btn:hover { background-color: #555; }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="article-container">
+        <div id="article-content">
+            <p style="text-align:center; margin-top:50px;">기사를 불러오는 중입니다...</p>
+        </div>
+        
+        <a href="news.html" class="back-btn">← 목록으로 돌아가기</a>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // 1. URL에서 글 번호(id) 가져오기 (예: news-detail.html?id=5)
+            const urlParams = new URLSearchParams(window.location.search);
+            const newsId = urlParams.get('id');
+
+            const contentDiv = document.getElementById("article-content");
+
+            if (!newsId) {
+                contentDiv.innerHTML = "<p>잘못된 접근입니다.</p>";
+                return;
+            }
+
+            try {
+                // 2. 서버에 상세 정보 요청
+                const response = await fetch(`http://localhost:3001/api/news/${newsId}`);
+                
+                if (!response.ok) throw new Error("기사를 찾을 수 없습니다.");
+                
+                const news = await response.json();
+
+                // 3. 날짜 포맷팅
+                const date = new Date(news.created_at).toLocaleDateString("ko-KR", {
+                    year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit"
+                });
+
+                // 4. 화면에 그리기
+                contentDiv.innerHTML = `
+                    <header class="article-header">
+                        <span class="article-source">${news.source || 'Pitwall News'}</span>
+                        <span class="article-date">${date}</span>
+                        <h1 class="article-title">${news.title}</h1>
+                    </header>
+
+                    <div class="article-image-box">
+                        <img src="${news.image_url}" alt="기사 이미지" class="article-image" onerror="this.style.display='none'">
+                    </div>
+
+                    <div class="article-body">${news.content}</div>
+                `;
+
+            } catch (error) {
+                console.error(error);
+                contentDiv.innerHTML = `<p style="text-align:center; color:#e10600;">⚠️ ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

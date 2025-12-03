@@ -17,19 +17,40 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
             gap: 25px; 
         }
+        
+        /* 링크 스타일 제거 (카드 전체를 클릭 가능하게) */
+        .news-link {
+            text-decoration: none;
+            color: inherit;
+            display: block; /* 블록 요소로 만들어 카드 전체 감싸기 */
+        }
+
         .news-card { 
             background: #1e1e1e; 
             border-radius: 10px; 
             overflow: hidden; 
             transition: transform 0.3s;
             border: 1px solid #333;
+            height: 100%; /* 카드 높이 맞춤 */
+            display: flex;
+            flex-direction: column;
         }
         .news-card:hover { transform: translateY(-5px); border-color: #e10600; }
         .news-thumb { width: 100%; height: 200px; object-fit: cover; }
-        .news-content { padding: 20px; }
+        .news-content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
         .news-source { color: #e10600; font-weight: bold; font-size: 0.9rem; }
         .news-title { color: #fff; margin: 10px 0; font-size: 1.2rem; line-height: 1.4; }
-        .news-summary { color: #ccc; font-size: 0.95rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .news-summary { 
+            -webkit-line-clamp: 3; 
+            line-clamp: 3; 
+            -webkit-box-orient: vertical; 
+            overflow: hidden;
+            display: -webkit-box; /* 필수 속성 추가 */
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            flex: 1; /* 내용이 적어도 날짜를 아래로 밀어냄 */
+        }
         .news-date { color: #666; font-size: 0.8rem; margin-top: 15px; text-align: right; }
     </style>
 </head>
@@ -40,6 +61,10 @@
         <section class="hero-section">
             <h1 class="hero-title">🏁 F1 최신 뉴스</h1>
             <p class="hero-desc">트랙 위의 가장 핫한 소식을 실시간으로 확인하세요.</p>
+            
+            <button onclick="crawlNews()" style="padding: 10px 20px; background: red; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px;">
+                🔄 최신 뉴스 긁어오기 (관리자용)
+            </button>
         </section>
 
         <div id="news-list" class="news-grid">
@@ -49,9 +74,20 @@
 
     <script src="script.js"></script>
     <script>
-        // 헤더 로드 (기존 코드 활용)
-        // 만약 헤더가 별도 파일이 아니라면 index.html의 <header> 부분을 복사해오세요.
-        
+        // 크롤링 함수
+        async function crawlNews() {
+            if(!confirm("최신 뉴스를 가져오시겠습니까? (시간이 조금 걸립니다)")) return;
+            
+            try {
+                const res = await fetch('http://localhost:3001/api/news/crawl', { method: 'POST' });
+                const data = await res.json();
+                alert(`${data.saved}건의 새로운 뉴스가 저장되었습니다!`);
+                location.reload(); 
+            } catch (error) {
+                alert("크롤링 실패! 서버 콘솔을 확인하세요.");
+            }
+        }
+
         // 뉴스 불러오기 함수
         async function loadNews() {
             const newsList = document.getElementById('news-list');
@@ -64,16 +100,19 @@
                     return;
                 }
 
+                // ▼▼▼ 수정한 부분: <a> 태그로 감싸서 상세 페이지(news-detail.html)로 이동하게 함 ▼▼▼
                 newsList.innerHTML = data.map(news => `
-                    <article class="news-card">
-                        <img src="${news.image_url}" alt="뉴스 이미지" class="news-thumb" onerror="this.src='https://via.placeholder.com/300?text=Pitwall+News'">
-                        <div class="news-content">
-                            <div class="news-source">${news.source || 'Pitwall News'}</div>
-                            <h3 class="news-title">${news.title}</h3>
-                            <p class="news-summary">${news.summary || news.content.substring(0, 50) + '...'}</p>
-                            <div class="news-date">${new Date(news.created_at).toLocaleDateString()}</div>
-                        </div>
-                    </article>
+                    <a href="news-detail.html?id=${news.news_id}" class="news-link">
+                        <article class="news-card">
+                            <img src="${news.image_url}" alt="뉴스 이미지" class="news-thumb" onerror="this.src='https://via.placeholder.com/300?text=Pitwall+News'">
+                            <div class="news-content">
+                                <div class="news-source">${news.source || 'Pitwall News'}</div>
+                                <h3 class="news-title">${news.title}</h3>
+                                <p class="news-summary">${news.summary || news.content.substring(0, 50) + '...'}</p>
+                                <div class="news-date">${new Date(news.created_at).toLocaleDateString()}</div>
+                            </div>
+                        </article>
+                    </a>
                 `).join('');
                 
             } catch (error) {
