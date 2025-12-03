@@ -85,4 +85,45 @@
                 const res = await fetch('http://localhost:3001/api/news/crawl', { method: 'POST' });
                 const data = await res.json();
                 alert(`${data.saved}건의 새로운 뉴스가 저장되었습니다!`);
-                location
+                location.reload(); 
+            } catch (error) {
+                alert("크롤링 실패! 서버 콘솔을 확인하세요.");
+            }
+        }
+
+        // 뉴스 불러오기 함수
+        async function loadNews() {
+            const newsList = document.getElementById('news-list');
+            try {
+                const res = await fetch('http://localhost:3001/api/news');
+                const data = await res.json();
+                
+                if(data.length === 0) {
+                    newsList.innerHTML = '<p style="color:white;">등록된 뉴스가 없습니다.</p>';
+                    return;
+                }
+
+                newsList.innerHTML = data.map(news => `
+                    <a href="news-detail.html?id=${news.news_id}" class="news-link">
+                        <article class="news-card">
+                            <img src="${news.image_url}" alt="뉴스 이미지" class="news-thumb" onerror="this.src='https://via.placeholder.com/300?text=Pitwall+News'">
+                            <div class="news-content">
+                                <div class="news-source">${news.source || 'Pitwall News'}</div>
+                                <h3 class="news-title">${news.title}</h3>
+                                <p class="news-summary">${news.summary || (news.content ? news.content.substring(0, 50) + '...' : '')}</p>
+                                <div class="news-date">${new Date(news.created_at).toLocaleDateString()}</div>
+                            </div>
+                        </article>
+                    </a>
+                `).join('');
+                
+            } catch (error) {
+                console.error(error);
+                newsList.innerHTML = '<p style="color:red;">뉴스를 불러오는데 실패했습니다.</p>';
+            }
+        }
+
+        loadNews();
+    </script>
+</body>
+</html>
