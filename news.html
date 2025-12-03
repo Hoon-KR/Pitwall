@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pitwall - 최신 뉴스</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css">
     <style>
         /* 뉴스 페이지 전용 스타일 */
@@ -18,11 +22,10 @@
             gap: 25px; 
         }
         
-        /* 링크 스타일 제거 (카드 전체를 클릭 가능하게) */
         .news-link {
             text-decoration: none;
             color: inherit;
-            display: block; /* 블록 요소로 만들어 카드 전체 감싸기 */
+            display: block;
         }
 
         .news-card { 
@@ -31,7 +34,7 @@
             overflow: hidden; 
             transition: transform 0.3s;
             border: 1px solid #333;
-            height: 100%; /* 카드 높이 맞춤 */
+            height: 100%; 
             display: flex;
             flex-direction: column;
         }
@@ -45,17 +48,50 @@
             line-clamp: 3; 
             -webkit-box-orient: vertical; 
             overflow: hidden;
-            display: -webkit-box; /* 필수 속성 추가 */
+            display: -webkit-box;
             color: #ccc;
             font-size: 0.95rem;
             line-height: 1.6;
-            flex: 1; /* 내용이 적어도 날짜를 아래로 밀어냄 */
+            flex: 1;
         }
         .news-date { color: #666; font-size: 0.8rem; margin-top: 15px; text-align: right; }
     </style>
 </head>
 <body>
-    <div id="header-placeholder"></div>
+    <header>
+        <div class="logo">
+          <a href="index.html">Pitwall</a>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="pickteam.html">응원 팀 추천</a></li>
+            <li><a href="news.html" class="active">최신 뉴스</a></li>
+            <li><a href="schedule.html">경기 일정</a></li>
+             <li><a href="#">순위</a></li>
+            <li><a href="board.html">커뮤니티</a></li>
+            <li>
+              <a href="glossary.html">F1 정보 ▾</a>
+              <ul class="dropdown-content">
+                <li><a href="glossary.html">F1용어사전</a></li>
+                <li><a href="driver.html">드라이버</a></li>
+                <li><a href="constructor.html">팀</a></li>
+                <li><a href="circuit.html">서킷</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <div class="user-actions">
+          <div id="logged-out-view">
+            <a href="login.html" class="btn">로그인</a>
+            <a href="signup.html" class="btn btn-accent">회원가입</a>
+          </div>
+          <div id="logged-in-view" style="display: none">
+            <span id="user-nickname" class="nickname-display"></span>
+            <a href="my-info.html" class="btn">내 정보 관리</a>
+            <a href="#" id="logout-button" class="btn">로그아웃</a>
+          </div>
+        </div>
+    </header>
 
     <main class="news-container">
         <section class="hero-section">
@@ -100,7 +136,6 @@
                     return;
                 }
 
-                // ▼▼▼ 수정한 부분: <a> 태그로 감싸서 상세 페이지(news-detail.html)로 이동하게 함 ▼▼▼
                 newsList.innerHTML = data.map(news => `
                     <a href="news-detail.html?id=${news.news_id}" class="news-link">
                         <article class="news-card">
@@ -108,7 +143,7 @@
                             <div class="news-content">
                                 <div class="news-source">${news.source || 'Pitwall News'}</div>
                                 <h3 class="news-title">${news.title}</h3>
-                                <p class="news-summary">${news.summary || news.content.substring(0, 50) + '...'}</p>
+                                <p class="news-summary">${news.summary || (news.content ? news.content.substring(0, 50) + '...' : '')}</p>
                                 <div class="news-date">${new Date(news.created_at).toLocaleDateString()}</div>
                             </div>
                         </article>
