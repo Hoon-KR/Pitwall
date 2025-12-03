@@ -58,41 +58,8 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-          <a href="index.html">Pitwall</a>
-        </div>
-        <nav>
-          <ul>
-            <li><a href="pickteam.html">응원 팀 추천</a></li>
-            <li><a href="news.html" class="active">최신 뉴스</a></li>
-            <li><a href="schedule.html">경기 일정</a></li>
-             <li><a href="#">순위</a></li>
-            <li><a href="board.html">커뮤니티</a></li>
-            <li>
-              <a href="glossary.html">F1 정보 ▾</a>
-              <ul class="dropdown-content">
-                <li><a href="glossary.html">F1용어사전</a></li>
-                <li><a href="driver.html">드라이버</a></li>
-                <li><a href="constructor.html">팀</a></li>
-                <li><a href="circuit.html">서킷</a></li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
-        <div class="user-actions">
-          <div id="logged-out-view">
-            <a href="login.html" class="btn">로그인</a>
-            <a href="signup.html" class="btn btn-accent">회원가입</a>
-          </div>
-          <div id="logged-in-view" style="display: none">
-            <span id="user-nickname" class="nickname-display"></span>
-            <a href="my-info.html" class="btn">내 정보 관리</a>
-            <a href="#" id="logout-button" class="btn">로그아웃</a>
-          </div>
-        </div>
-    </header>
-
+    <div id="header-placeholder"></div>
+    <script src="header.js"></script>
     <main class="news-container">
         <section class="hero-section">
             <h1 class="hero-title">🏁 F1 최신 뉴스</h1>
@@ -118,45 +85,4 @@
                 const res = await fetch('http://localhost:3001/api/news/crawl', { method: 'POST' });
                 const data = await res.json();
                 alert(`${data.saved}건의 새로운 뉴스가 저장되었습니다!`);
-                location.reload(); 
-            } catch (error) {
-                alert("크롤링 실패! 서버 콘솔을 확인하세요.");
-            }
-        }
-
-        // 뉴스 불러오기 함수
-        async function loadNews() {
-            const newsList = document.getElementById('news-list');
-            try {
-                const res = await fetch('http://localhost:3001/api/news');
-                const data = await res.json();
-                
-                if(data.length === 0) {
-                    newsList.innerHTML = '<p style="color:white;">등록된 뉴스가 없습니다.</p>';
-                    return;
-                }
-
-                newsList.innerHTML = data.map(news => `
-                    <a href="news-detail.html?id=${news.news_id}" class="news-link">
-                        <article class="news-card">
-                            <img src="${news.image_url}" alt="뉴스 이미지" class="news-thumb" onerror="this.src='https://via.placeholder.com/300?text=Pitwall+News'">
-                            <div class="news-content">
-                                <div class="news-source">${news.source || 'Pitwall News'}</div>
-                                <h3 class="news-title">${news.title}</h3>
-                                <p class="news-summary">${news.summary || (news.content ? news.content.substring(0, 50) + '...' : '')}</p>
-                                <div class="news-date">${new Date(news.created_at).toLocaleDateString()}</div>
-                            </div>
-                        </article>
-                    </a>
-                `).join('');
-                
-            } catch (error) {
-                console.error(error);
-                newsList.innerHTML = '<p style="color:red;">뉴스를 불러오는데 실패했습니다.</p>';
-            }
-        }
-
-        loadNews();
-    </script>
-</body>
-</html>
+                location
