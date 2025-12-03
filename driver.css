@@ -186,3 +186,36 @@
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
+
+/* driver.css 맨 아래 반응형 부분 교체 */
+
+/* 📱 모바일 최적화 */
+@media (max-width: 600px) {
+    /* 1. 그리드: 1열로 변경하되 좌우 여백 확보 */
+    .driver-grid {
+        grid-template-columns: 1fr;
+        padding: 0 20px; /* 화면 끝에 안 붙게 */
+    }
+
+    /* 2. 카드 높이 자동 조절 */
+    .driver-card {
+        height: auto; /* 고정 높이 해제 (내용만큼만 차지하게) */
+        padding-top: 60px; /* 뱃지 공간 */
+        padding-bottom: 25px;
+    }
+
+    /* 3. 폰트 및 이미지 크기 미세 조정 */
+    .driver-image {
+        width: 120px;  /* 150px -> 120px */
+        height: 120px;
+    }
+    
+    .driver-number {
+        top: 50px; /* 위치 재조정 */
+        font-size: 1rem;
+    }
+
+    .name-wrapper h3 {
+        font-size: 1.1rem; /* 이름 살짝 작게 */
+    }
+}
