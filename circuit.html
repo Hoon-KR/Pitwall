@@ -1,73 +1,201 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>F1 서킷 정보 - Pitwall</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="circuit.css" />
-  </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitwall - F1 서킷 가이드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .circuit-container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* 검색창 */
+        .search-box { text-align: center; margin-bottom: 40px; }
+        .search-input {
+            padding: 12px 20px; width: 100%; max-width: 500px;
+            border-radius: 30px; border: 1px solid #444;
+            background: #222; color: white; font-size: 1.1rem; outline: none;
+        }
+        .search-input:focus { border-color: #e10600; }
 
-  <body>
-    <header>
-      <div class="logo">
-        <a href="index.html">Pitwall</a>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="pickteam.html">응원 팀 추천</a></li>
-          <li><a href="news.html">최신 뉴스</a></li>
-          <li><a href="schedule.html">경기 일정</a></li>
-          <li><a href="board.html">커뮤니티</a></li>
+        /* 그리드 */
+        .circuit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
 
-          <li>
-            <a href="glossary.html" class="active">F1 정보 ▾</a>
-            <ul class="dropdown-content">
-              <li><a href="glossary.html">F1용어사전</a></li>
-              <li><a href="driver.html">드라이버</a></li>
-              <li><a href="constructor.html">팀</a></li>
-              <li><a href="circuit.html">서킷</a></li>
-            </ul>
-          </li>
+        /* 카드 */
+        .circuit-card {
+            background: #1e1e1e; border-radius: 15px; overflow: hidden;
+            border: 1px solid #333; transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer; /* 클릭 가능 표시 */
+        }
+        .circuit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            border-color: #e10600;
+        }
 
-          <li>
-            <a href="">Shop ▾</a>
-            <ul class="dropdown-content">
-              <li><a href="https://f1store.formula1.com/en/">F1 store</a></li>
-              <li><a href="https://www.fuelforfans.com/">Fuel for Fans</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+        .circuit-img-box { padding: 20px; background: #fff; text-align: center; }
+        .circuit-img { width: 100%; height: auto; object-fit: contain; }
+        .circuit-info { padding: 25px; }
+        .circuit-name { font-size: 1.5rem; margin-bottom: 5px; color: #fff; }
+        .circuit-location { color: #888; font-size: 0.9rem; margin-bottom: 15px; }
+        
+        .stats-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+            margin-top: 20px; padding-top: 20px; border-top: 1px solid #333;
+        }
+        .stat-item span { display: block; color: #666; font-size: 0.8rem; }
+        .stat-item strong { color: #fff; font-size: 1.1rem; }
 
-      <div class="user-actions">
-        <div id="logged-out-view">
-          <a href="login.html" class="btn">로그인</a>
-          <a href="signup.html" class="btn btn-accent">회원가입</a>
+        /* --- 모달(팝업) 스타일 --- */
+        .modal-overlay {
+            display: none; /* 평소엔 숨김 */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); z-index: 1000;
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: #1e1e1e; width: 90%; max-width: 600px;
+            border-radius: 15px; padding: 30px; border: 1px solid #e10600;
+            position: relative; animation: popIn 0.3s ease;
+        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .close-btn {
+            position: absolute; top: 15px; right: 20px; font-size: 2rem; color: #aaa;
+            cursor: pointer; background: none; border: none;
+        }
+        .close-btn:hover { color: #fff; }
+
+        .record-list { list-style: none; padding: 0; margin-top: 20px; }
+        .record-item {
+            background: #2a2a2a; padding: 15px; border-radius: 8px;
+            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .record-type { color: #e10600; font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 5px; }
+        .record-val { color: #fff; font-size: 1.1rem; font-weight: bold; }
+        .record-driver { color: #aaa; font-size: 0.9rem; text-align: right; }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <script src="header.js"></script>
+
+    <main class="circuit-container">
+        <section style="text-align: center; margin-bottom: 40px;">
+            <h1 style="font-size: 3rem; margin-bottom: 10px;">🏎️ F1 Circuits</h1>
+            <p style="color: #aaa;">서킷을 클릭하여 상세 기록을 확인하세요.</p>
+        </section>
+
+        <div class="search-box">
+            <input type="text" id="search-input" class="search-input" placeholder="서킷 이름이나 국가 검색...">
         </div>
-        <div id="logged-in-view" style="display: none">
-          <span id="user-nickname" class="nickname-display"></span>
-          <a href="my-info.html" class="btn">내 정보 관리</a>
-          <a href="#" id="logout-button" class="btn">로그아웃</a>
+
+        <div id="circuit-list" class="circuit-grid">
+            <p style="color:white; text-align:center;">데이터를 불러오는 중...</p>
         </div>
-      </div>
-    </header>
-
-    <main>
-      <section class="circuit-hero">
-        <h1>🏁 F1 서킷 가이드</h1>
-        <p>전 세계의 F1 트랙들을 만나보세요.</p>
-      </section>
-
-      <div class="circuit-grid" id="circuit-list"></div>
     </main>
 
-    <footer>
-      <p>&copy; 2025 Pitwall. All rights reserved.</p>
-    </footer>
+    <div id="record-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <h2 id="modal-title" style="color:white; margin-bottom: 20px;">서킷 기록</h2>
+            <ul id="modal-records" class="record-list">
+                </ul>
+        </div>
+    </div>
 
     <script src="script.js"></script>
-    <script src="circuit-data.js"></script>
-    <script src="circuit.js"></script>
-  </body>
+    <script>
+        let allCircuits = [];
+
+        async function loadCircuits() {
+            try {
+                const res = await fetch('http://localhost:3001/api/circuits');
+                allCircuits = await res.json();
+                renderCircuits(allCircuits);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('circuit-list').innerHTML = '<p style="color:red; text-align:center;">로딩 실패</p>';
+            }
+        }
+
+        function renderCircuits(data) {
+            const container = document.getElementById('circuit-list');
+            container.innerHTML = data.map(c => `
+                <article class="circuit-card" onclick="openRecords(${c.circuit_id}, '${c.name}')">
+                    <div class="circuit-img-box">
+                        <img src="${c.image_url || 'img/circuit/default.png'}" alt="${c.name}" class="circuit-img">
+                    </div>
+                    <div class="circuit-info">
+                        <h2 class="circuit-name">${c.name}</h2>
+                        <p class="circuit-location">📍 ${c.location}</p>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item"><span>길이</span><strong>${c.length_km} km</strong></div>
+                            <div class="stat-item"><span>랩 수</span><strong>${c.laps} Laps</strong></div>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // --- [모달 관련 함수] ---
+        async function openRecords(circuitId, circuitName) {
+            const modal = document.getElementById('record-modal');
+            const list = document.getElementById('modal-records');
+            const title = document.getElementById('modal-title');
+
+            title.innerText = `📊 ${circuitName} 기록`;
+            list.innerHTML = '<p style="color:white; text-align:center;">기록을 불러오는 중...</p>';
+            modal.style.display = 'flex'; // 모달 열기
+
+            try {
+                // 기록 API 호출
+                const res = await fetch(`http://localhost:3001/api/circuits/${circuitId}/records`);
+                const records = await res.json();
+
+                if (records.length === 0) {
+                    list.innerHTML = '<p style="color:#aaa; text-align:center;">등록된 기록이 없습니다.</p>';
+                } else {
+                    list.innerHTML = records.map(r => `
+                        <li class="record-item">
+                            <div>
+                                <span class="record-type">${r.record_type}</span>
+                                <span class="record-val">${r.record_value}</span>
+                            </div>
+                            <div class="record-driver">
+                                <div>${r.driver_name}</div>
+                                <div style="font-size:0.8rem; color:#666;">${r.team_name} (${r.year})</div>
+                            </div>
+                        </li>
+                    `).join('');
+                }
+            } catch (err) {
+                list.innerHTML = '<p style="color:red; text-align:center;">기록 로딩 실패</p>';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('record-modal').style.display = 'none';
+        }
+
+        // 배경 클릭 시 닫기
+        document.getElementById('record-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('record-modal')) closeModal();
+        });
+
+        // 검색 기능
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const keyword = e.target.value.toLowerCase();
+            const filtered = allCircuits.filter(c => c.name.toLowerCase().includes(keyword) || c.location.toLowerCase().includes(keyword));
+            renderCircuits(filtered);
+        });
+
+        loadCircuits();
+    </script>
+</body>
 </html>

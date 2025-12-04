@@ -500,6 +500,30 @@ app.get("/api/news/:id", async (req, res) => {
   }
 });
 
+// 서킷 목록 조회 API (circuit.html 화면용)
+app.get("/api/circuits", async (req, res) => {
+  try {
+    const sql = "SELECT * FROM Circuits";
+    const [rows] = await db.query(sql);
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+// 서킷 기록 조회 API (모달 클릭용)
+app.get("/api/circuits/:id/records", async (req, res) => {
+  try {
+    const sql = "SELECT * FROM CircuitRecords WHERE circuit_id = ?";
+    const [rows] = await db.query(sql, [req.params.id]);
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+
+
 // 서버 실행
 app.listen(PORT, () => {
   console.log(`🚀 서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
