@@ -78,8 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="switch"></div>
                         <span class="toggle-label">한국 시간 (KST)</span>
                     </div>
-
-                    <button class="result-btn">결과</button>
                 </div>
             </div>
         `;

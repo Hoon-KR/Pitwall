@@ -201,27 +201,6 @@ h1 {
   transform: translateX(14px);
 }
 
-/* 7. 결과 버튼 */
-.result-btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 15px;
-  background-color: transparent;
-  border: 1px solid var(--accent-color);
-  color: var(--accent-color);
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.9rem;
-}
-
-.result-btn:hover {
-  background-color: var(--accent-color);
-  color: white;
-  box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
-}
-
 /* 반응형 */
 @media (max-width: 1400px) {
   .schedule-grid {
