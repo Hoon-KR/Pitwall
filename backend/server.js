@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const db = require("./config/db");
 const { protect } = require("./middleware/authMiddleware");
 
-// 크롤링을 위한 라이브러리 추가
+// 크롤링을 위한 라이브러리
 const axios = require("axios");
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
@@ -45,6 +45,7 @@ app.post("/api/signup", async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+    // is_admin 컬럼은 기본값(0)이 들어가므로 쿼리에서 생략 가능
     const sql =
       "INSERT INTO Users (username, password, nickname, email) VALUES (?, ?, ?, ?)";
     await db.query(sql, [username, hashedPassword, nickname, email]);
@@ -61,7 +62,7 @@ app.post("/api/signup", async (req, res) => {
   }
 });
 
-// 로그인 API
+// 로그인 API (관리자 정보 포함 수정됨)
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -77,23 +78,30 @@ app.post("/api/login", async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
 
     if (match) {
+      // 🔥 [수정] 토큰에 관리자 정보(is_admin) 포함
       const token = jwt.sign(
-        { user_id: user.user_id, nickname: user.nickname },
+        {
+          user_id: user.user_id,
+          nickname: user.nickname,
+          is_admin: user.is_admin, 
+        },
         JWT_SECRET_KEY,
         { expiresIn: "1h" }
       );
 
+      // 🔥 [수정] 응답에도 관리자 여부 포함 (프론트엔드 처리용)
       res.status(200).json({
         message: "로그인 성공!",
         token: token,
         nickname: user.nickname,
+        is_admin: user.is_admin 
       });
     } else {
       res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
     }
   } catch (error) {
     console.error("로그인 오류:", error);
-    res.status(500).json({ message: "서버 오류" });
+    res.status(500).json({ message: "서버 오류가 발생했습니다." });
   }
 });
 
@@ -233,6 +241,36 @@ app.get("/api/posts/:id", async (req, res) => {
   }
 });
 
+// 게시글 삭제 API (작성자 본인 또는 관리자만 가능)
+// 🔥 [추가] 관리자 권한 확인 로직 포함
+app.delete("/api/posts/:id", protect, async (req, res) => {
+  const postId = req.params.id;
+  const { user_id, is_admin } = req.user; // 토큰에서 꺼낸 정보
+
+  try {
+    // 1. 게시글 작성자 확인
+    const [post] = await db.query("SELECT user_id FROM Posts WHERE post_id = ?", [postId]);
+    
+    if (post.length === 0) {
+      return res.status(404).json({ message: "게시글이 없습니다." });
+    }
+
+    // 2. 권한 확인 (작성자 본인이거나 관리자면 통과)
+    // is_admin === 1 이면 관리자
+    if (post[0].user_id !== user_id && is_admin !== 1) {
+      return res.status(403).json({ message: "삭제 권한이 없습니다." });
+    }
+
+    // 3. 삭제 실행
+    await db.query("DELETE FROM Posts WHERE post_id = ?", [postId]);
+    res.status(200).json({ message: "게시글이 삭제되었습니다." });
+
+  } catch (error) {
+    console.error("게시글 삭제 오류:", error);
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
 // 좋아요 토글
 app.post("/api/posts/:id/like", protect, async (req, res) => {
   const postId = req.params.id;
@@ -313,7 +351,7 @@ app.post("/api/posts/:id/comments", protect, async (req, res) => {
 });
 
 // ==================================================================
-// 4. 🔥 F1 뉴스 크롤링 API (팀원이 추가한 기능 통합) 🔥
+// 4. 🔥 F1 뉴스 크롤링 API (관리자 전용) 🔥
 // ==================================================================
 
 // 시간 변환 보조 함수
@@ -341,12 +379,17 @@ function parseRelativeTime(timeStr) {
   return now;
 }
 
-// 뉴스 크롤링 실행 API
-app.post("/api/news/crawl", async (req, res) => {
+// 뉴스 크롤링 실행 API (관리자만 가능)
+app.post("/api/news/crawl", protect, async (req, res) => {
+  // 1. 관리자 권한 확인 (protect 미들웨어가 req.user를 만들어줌)
+  if (req.user.is_admin !== 1) {
+    return res.status(403).json({ message: "관리자만 실행할 수 있습니다." });
+  }
+
   let browser = null;
   try {
     const targetUrl = "https://f1-boxbox.com/ko/formula-1/news/article";
-    const TARGET_COUNT = 100;
+    const TARGET_COUNT = 50;
 
     console.log("🤖 브라우저 실행 중...");
 
@@ -500,7 +543,11 @@ app.get("/api/news/:id", async (req, res) => {
   }
 });
 
-// 서킷 목록 조회 API (circuit.html 화면용)
+// ==========================================
+// 5. 서킷 정보 API
+// ==========================================
+
+// 서킷 목록 조회 API
 app.get("/api/circuits", async (req, res) => {
   try {
     const sql = "SELECT * FROM Circuits";
@@ -521,8 +568,6 @@ app.get("/api/circuits/:id/records", async (req, res) => {
     res.status(500).json({ message: "서버 오류" });
   }
 });
-
-
 
 // 서버 실행
 app.listen(PORT, () => {
