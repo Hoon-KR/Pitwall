@@ -13,49 +13,9 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header>
-      <div class="logo">
-        <a href="index.html">Pitwall</a>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="pickteam.html">응원 팀 추천</a></li>
-          <li><a href="news.html">최신 뉴스</a></li>
-          <li><a href="schedule.html">경기 일정</a></li>
-          <li><a href="board.html">커뮤니티</a></li>
-
-          <li>
-            <a href="glossary.html">F1 정보 ▾</a>
-            <ul class="dropdown-content">
-              <li><a href="glossary.html">F1용어사전</a></li>
-              <li><a href="driver.html">드라이버</a></li>
-              <li><a href="constructor.html">팀</a></li>
-              <li><a href="circuit.html">서킷</a></li>
-            </ul>
-          </li>
-
-          <li>
-            <a href="">Shop ▾</a>
-            <ul class="dropdown-content">
-              <li><a href="https://f1store.formula1.com/en/">F1 store</a></li>
-              <li><a href="https://www.fuelforfans.com/">Fuel for Fans</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-
-      <div class="user-actions">
-        <div id="logged-out-view">
-          <a href="login.html" class="btn">로그인</a>
-          <a href="signup.html" class="btn btn-accent">회원가입</a>
-        </div>
-        <div id="logged-in-view" style="display: none">
-          <span id="user-nickname" class="nickname-display"></span>
-          <a href="my-info.html" class="btn">내 정보 관리</a>
-          <a href="#" id="logout-button" class="btn">로그아웃</a>
-        </div>
-      </div>
-    </header>
+    <!-- 헤더 (header.js로 관리) -->
+    <div id="header-placeholder"></div>
+    <script src="header.js"></script>
 
     <main class="post-detail-container">
       <!-- 게시글 본문 -->
@@ -68,13 +28,31 @@
             <span id="post-views">0</span>
           </div>
         </div>
+
+        <!-- ▼▼▼ 이미지 표시 영역 (이미지가 있을 때만 보임) ▼▼▼ -->
+        <div id="post-image-box" style="margin: 20px 0; display: none;">
+            <img id="post-image" src="" alt="첨부 이미지" style="max-width: 100%; border-radius: 10px;">
+        </div>
+        <!-- ▲▲▲ -->
+
         <div class="post-body" id="post-content">
           내용을 불러오는 중입니다...
         </div>
-        <div class="post-actions">
+        
+        <div class="post-actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
+          <!-- 좋아요 버튼 -->
           <button id="like-btn" class="btn-like">
             👍 좋아요 <span id="like-count">0</span>
           </button>
+
+          <!-- ▼▼▼ 수정/삭제 버튼 그룹 (작성자/관리자에게만 보임) ▼▼▼ -->
+          <div id="owner-btns" style="display: none;">
+              <button onclick="goToEdit()" class="btn" style="background: #444; margin-right: 5px; padding: 8px 15px; font-size: 0.9rem;">✏️ 수정</button>
+              <button onclick="deletePost()" class="btn btn-danger" style="background-color: #ff4d4d; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9rem;">
+                🗑️ 삭제
+              </button>
+          </div>
+          <!-- ▲▲▲ -->
         </div>
       </article>
 
@@ -96,11 +74,12 @@
         </form>
       </section>
 
-      <div style="margin-top: 20px">
-        <a href="board.html" class="btn">목록으로 돌아가기</a>
+      <div style="margin-top: 20px; text-align: center;">
+        <a href="board.html" class="btn" style="background-color: #333;">목록으로 돌아가기</a>
       </div>
     </main>
 
+    <!-- 스크립트 연결 -->
     <script src="script.js"></script>
   </body>
 </html>

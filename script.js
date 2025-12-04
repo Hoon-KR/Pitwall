@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutButton.addEventListener("click", (event) => {
       event.preventDefault();
       sessionStorage.removeItem("loggedInUser"); // 닉네임 삭제
-      sessionStorage.removeItem("token"); // 👈 토큰도 함께 삭제
+      sessionStorage.removeItem("token");        //  토큰 삭제
+      sessionStorage.removeItem("is_admin");      // 관리자 정보 삭제
       window.location.reload();
     });
   }
@@ -54,9 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           // 로그인 성공!
           // 1. 세션 스토리지에 백엔드가 보내준 '닉네임'과 '토큰'을 저장
-          sessionStorage.setItem("loggedInUser", result.nickname); // 👈 헤더 표시용 닉네임
-          sessionStorage.setItem("token", result.token); // 👈 인증용 토큰
-
+          sessionStorage.setItem("loggedInUser", result.nickname); // 헤더 표시용 닉네임
+          sessionStorage.setItem("token", result.token);           // 인증용 토큰
+          sessionStorage.setItem("is_admin", result.is_admin);     // 관리자 여부 저장
+ 
           // 2. 메인 페이지로 이동
           window.location.href = "index.html";
         } else {
@@ -403,7 +405,6 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch(`http://localhost:3001/api/posts/${id}`);
       const post = await res.json();
-
       if (!res.ok) throw new Error(post.message);
 
       document.getElementById("post-title").textContent = post.title;
@@ -414,10 +415,42 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("post-views").textContent = post.views;
       document.getElementById("post-content").innerText = post.content; // innerText로 줄바꿈 반영
       document.getElementById("like-count").textContent = post.likes;
+
+      //[추가] 삭제 버튼 표시 로직 (관리자 또는 작성자)
+      const isAdmin = sessionStorage.getItem("is_admin");
+      const currentUser = sessionStorage.getItem("loggedInUser"); // 닉네임
+
+      if (post.nickname === currentUser || isAdmin == "1") {
+          const deleteBtn = document.getElementById("delete-btn");
+          if(deleteBtn) {
+              deleteBtn.style.display = "block";
+              // 삭제 이벤트 연결
+              deleteBtn.onclick = () => deletePost(id);
+          }
+        }
     } catch (err) {
       alert("글을 불러올 수 없습니다.");
       window.location.href = "board.html";
     }
+  }
+
+  //[추가] 게시글 삭제 함수
+  async function deletePost(id) {
+      if(!confirm("정말 삭제하시겠습니까?")) return;
+      const token = sessionStorage.getItem("token");
+
+      const res = await fetch(`http://localhost:3001/api/posts/${id}`, {
+          method: "DELETE",
+          headers: { "Authorization": `Bearer ${token}` }
+      });
+
+      if(res.ok) {
+          alert("삭제되었습니다.");
+          window.location.href = "board.html";
+      } else {
+          const data = await res.json();
+          alert(data.message);
+      }
   }
 
   // [함수] 댓글 목록 불러오기

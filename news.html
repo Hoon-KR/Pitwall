@@ -77,12 +77,27 @@
 
     <script src="script.js"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const isAdmin = sessionStorage.getItem("is_admin");
+        const crawlBtn = document.querySelector("button[onclick='crawlNews()']");
+
+        // 관리자가 아니면(1이 아니면) 버튼 숨김
+        if (isAdmin != "1") {
+            if(crawlBtn) crawlBtn.style.display = "none";
+         }
+        });
+
+
         // 크롤링 함수
         async function crawlNews() {
             if(!confirm("최신 뉴스를 가져오시겠습니까? (시간이 조금 걸립니다)")) return;
-            
+            const token = sessionStorage.getItem("token"); // 토큰 가져오기
             try {
-                const res = await fetch('http://localhost:3001/api/news/crawl', { method: 'POST' });
+                const res = await fetch('http://localhost:3001/api/news/crawl', { method: 'POST',
+                headers: { 
+                    "Authorization": `Bearer ${token}` //토큰을 같이 보내야 함
+                }
+                 });
                 const data = await res.json();
                 alert(`${data.saved}건의 새로운 뉴스가 저장되었습니다!`);
                 location.reload(); 

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 수정 - Pitwall</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .write-container { max-width: 800px; margin: 40px auto; padding: 20px; }
+        input, textarea { width: 100%; padding: 10px; margin-bottom: 15px; background: #1e1e1e; border: 1px solid #333; color: white; border-radius: 5px; }
+        textarea { height: 300px; resize: vertical; }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <script src="header.js"></script>
+
+    <main class="write-container">
+        <h1>게시글 수정</h1>
+        <form id="edit-form">
+            <input type="text" id="edit-title" required>
+            <textarea id="edit-content" required></textarea>
+            
+            <div style="margin: 15px 0;">
+                <label style="color: #ccc;">현재 사진 유지됨 (변경하려면 선택)</label><br>
+                <input type="file" id="edit-image" accept="image/*" style="color: white; margin-top: 5px;">
+            </div>
+
+            <button type="submit" class="btn btn-accent">수정 완료</button>
+            <button type="button" onclick="history.back()" class="btn" style="background:#555;">취소</button>
+        </form>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // 수정 페이지 로드 시 기존 내용 채워넣기
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+        
+        async function loadData() {
+            const res = await fetch(`http://localhost:3001/api/posts/${postId}`);
+            const post = await res.json();
+            document.getElementById('edit-title').value = post.title;
+            document.getElementById('edit-content').value = post.content;
+        }
+        loadData();
+
+        // 수정 요청 보내기
+        document.getElementById('edit-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = sessionStorage.getItem('token');
+            const formData = new FormData();
+            formData.append('title', document.getElementById('edit-title').value);
+            formData.append('content', document.getElementById('edit-content').value);
+            
+            const fileInput = document.getElementById('edit-image');
+            if(fileInput.files[0]) {
+                formData.append('image', fileInput.files[0]);
+            }
+
+            try {
+                const res = await fetch(`http://localhost:3001/api/posts/${postId}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData 
+                });
+                if(res.ok) {
+                    alert("수정되었습니다.");
+                    window.location.href = `post-detail.html?id=${postId}`;
+                } else {
+                    alert("수정 실패");
+                }
+            } catch(err) { console.error(err); }
+        });
+    </script>
+</body>
+</html>
