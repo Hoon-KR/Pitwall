@@ -10,7 +10,6 @@ const headerHTML = `
       <li><a href="pickteam.html">응원 팀 추천</a></li>
       <li><a href="news.html">최신 뉴스</a></li>
       <li><a href="schedule.html">경기 일정</a></li>
-      <li><a href="">순위</a></li>
       <li><a href="board.html">커뮤니티</a></li>
       <li class="dropdown-parent">
         <a href="glossary.html">F1 정보 ▾</a>
@@ -45,26 +44,29 @@ const headerHTML = `
 `;
 
 // 1. HTML 삽입
-const placeholder = document.getElementById('header-placeholder');
+const placeholder = document.getElementById("header-placeholder");
 if (placeholder) {
-    placeholder.innerHTML = headerHTML;
+  placeholder.innerHTML = headerHTML;
 }
 
 // 2. 현재 페이지 표시 (Active 클래스 자동 추가)
-const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-const navLinks = document.querySelectorAll('nav a');
+const currentPath = window.location.pathname.split("/").pop() || "index.html";
+const navLinks = document.querySelectorAll("nav a");
 
-navLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    
-    // 링크가 현재 페이지와 같거나, 상세 페이지(news-detail.html)에서 부모 메뉴(news.html)를 켜야 할 때
-    if (href === currentPath || (currentPath.includes('news-detail') && href === 'news.html')) {
-        link.classList.add('active');
-        
-        // 드롭다운 메뉴(예: 드라이버)라면 부모(F1 정보)에도 active 표시
-        const parent = link.closest('.dropdown-parent');
-        if (parent) {
-            parent.querySelector('a').classList.add('active');
-        }
+navLinks.forEach((link) => {
+  const href = link.getAttribute("href");
+
+  // 링크가 현재 페이지와 같거나, 상세 페이지(news-detail.html)에서 부모 메뉴(news.html)를 켜야 할 때
+  if (
+    href === currentPath ||
+    (currentPath.includes("news-detail") && href === "news.html")
+  ) {
+    link.classList.add("active");
+
+    // 드롭다운 메뉴(예: 드라이버)라면 부모(F1 정보)에도 active 표시
+    const parent = link.closest(".dropdown-parent");
+    if (parent) {
+      parent.querySelector("a").classList.add("active");
     }
+  }
 });
