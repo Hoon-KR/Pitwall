@@ -37,7 +37,7 @@
             border-color: #e10600;
         }
 
-        .circuit-img-box { padding: 20px; background: #fff; text-align: center; }
+        .circuit-img-box { padding: 20px; background: #1e1e1e; text-align: center; }
         .circuit-img { width: 100%; height: auto; object-fit: contain; }
         .circuit-info { padding: 25px; }
         .circuit-name { font-size: 1.5rem; margin-bottom: 5px; color: #fff; }
@@ -125,6 +125,11 @@
 
         function renderCircuits(data) {
             const container = document.getElementById('circuit-list');
+            if (data.length === 0) {
+                container.innerHTML = '<p style="color:#aaa; text-align:center; grid-column: 1/-1;">검색 결과가 없습니다.</p>';
+                return;
+            }
+
             container.innerHTML = data.map(c => `
                 <article class="circuit-card" onclick="openRecords(${c.circuit_id}, '${c.name}')">
                     <div class="circuit-img-box">
@@ -134,9 +139,22 @@
                         <h2 class="circuit-name">${c.name}</h2>
                         <p class="circuit-location">📍 ${c.location}</p>
                         
+                        <div style="margin-top: 15px; color: #ccc; font-size: 0.9rem; line-height: 1.6;">
+                            <p class="circuit-desc">${c.description}</p>
+                            <div style="margin-top: 10px; padding: 10px; background: #2a2a2a; border-radius: 8px; border-left: 3px solid #e10600;">
+                                <strong style="color: #e10600; display:block; margin-bottom:5px;">👀 관전 포인트</strong>
+                                ${c.view_point || '정보 없음'}
+                            </div>
+                        </div>
                         <div class="stats-grid">
-                            <div class="stat-item"><span>길이</span><strong>${c.length_km} km</strong></div>
-                            <div class="stat-item"><span>랩 수</span><strong>${c.laps} Laps</strong></div>
+                            <div class="stat-item">
+                                <span>트랙 길이</span>
+                                <strong>${c.length_km} km</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>랩 수</span>
+                                <strong>${c.laps} Laps</strong>
+                            </div>
                         </div>
                     </div>
                 </article>
