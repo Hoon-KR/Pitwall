@@ -6,41 +6,51 @@ const headerHTML = `
     <a href="index.html">Pitwall</a>
   </div>
   <nav>
-    <ul>
-      <li><a href="pickteam.html">응원 팀 추천</a></li>
-      <li><a href="news.html">최신 뉴스</a></li>
-      <li><a href="schedule.html">경기 일정</a></li>
-      <li><a href="board.html">커뮤니티</a></li>
-      <li class="dropdown-parent">
-        <a href="glossary.html">F1 정보 ▾</a>
-        <ul class="dropdown-content">
-          <li><a href="glossary.html">F1용어사전</a></li>
-          <li><a href="driver.html">드라이버</a></li>
-          <li><a href="constructor.html">팀</a></li>
-          <li><a href="circuit.html">서킷</a></li>
-        </ul>
-         <li>
+        <ul>
+          <li><a href="pickteam.html">응원 팀 추천</a></li>
+          <li><a href="news.html">최신 뉴스</a></li>
+          <li><a href="schedule.html">경기 일정</a></li>
+          <li>
+            <!-- 👇 커뮤니티 드롭다운 메뉴 -->
+            <a href="board.html">커뮤니티 ▾</a>
+            <ul class="dropdown-content">
+              <li><a href="board.html">자유게시판</a></li>
+              <li><a href="prediction.html">순위 예측</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="glossary.html">F1 정보 ▾</a>
+            <ul class="dropdown-content">
+              <li><a href="glossary.html">F1용어사전</a></li>
+              <li><a href="driver.html">드라이버</a></li>
+              <li><a href="constructor.html">팀</a></li>
+              <li><a href="circuit.html">서킷</a></li>
+            </ul>
+          </li>
+
+          <li>
             <a href="">Shop ▾</a>
             <ul class="dropdown-content">
               <li><a href="https://f1store.formula1.com/en/">F1 store</a></li>
               <li><a href="https://www.fuelforfans.com/">Fuel for Fans</a></li>
             </ul>
           </li>
-      </li>
-    </ul>
-  </nav>
-  <div class="user-actions">
-    <div id="logged-out-view">
-      <a href="login.html" class="btn">로그인</a>
-      <a href="signup.html" class="btn btn-accent">회원가입</a>
-    </div>
-    <div id="logged-in-view" style="display: none">
-      <span id="user-nickname" class="nickname-display"></span>
-      <a href="my-info.html" class="btn">내 정보 관리</a>
-      <a href="#" id="logout-button" class="btn">로그아웃</a>
-    </div>
-  </div>
-</header>
+        </ul>
+      </nav>
+
+      <div class="user-actions">
+        <div id="logged-out-view">
+          <a href="login.html" class="btn">로그인</a>
+          <a href="signup.html" class="btn btn-accent">회원가입</a>
+        </div>
+        <div id="logged-in-view" style="display: none">
+          <span id="user-nickname" class="nickname-display"></span>
+          <a href="my-info.html" class="btn">내 정보 관리</a>
+          <a href="#" id="logout-button" class="btn">로그아웃</a>
+        </div>
+      </div>
+    </header>
 `;
 
 // 1. HTML 삽입

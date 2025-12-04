@@ -354,3 +354,31 @@ nav ul li:hover .dropdown-content {
   color: white;
   resize: none;
 }
+
+/* style.css 하단에 추가 */
+
+.delete-account-zone {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.delete-account-zone p {
+  color: #f87171; /* 연한 빨강 경고 문구 */
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.btn-danger {
+  background-color: #dc3545; /* 빨간색 배경 */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-danger:hover {
+  background-color: #c82333; /* 호버 시 더 진한 빨강 */
+}

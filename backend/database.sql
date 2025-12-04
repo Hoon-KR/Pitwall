@@ -66,3 +66,40 @@ CREATE TABLE IF NOT EXISTS News (
 
 
 
+--6. 이메일 인증번호 저장 테이블
+USE pitwall_db;
+
+CREATE TABLE EmailVerifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) NOT NULL,
+    code VARCHAR(6) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+--7. 순위예측 테이블
+USE pitwall_db;
+
+CREATE TABLE IF NOT EXISTS Predictions (
+    pred_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    round INT NOT NULL, 
+    first_place VARCHAR(100),
+    second_place VARCHAR(100),
+    third_place VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    UNIQUE KEY unique_prediction (user_id, round) 
+);
+
+
+--8. 순위예측 댓글 테이블
+USE pitwall_db;
+
+CREATE TABLE IF NOT EXISTS PredictionComments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    round INT NOT NULL,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);

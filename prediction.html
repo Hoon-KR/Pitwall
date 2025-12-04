@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>순위 예측 - Pitwall</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!-- 📊 Chart.js 라이브러리 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 📊 Chart.js 데이터 라벨 플러그인 (점수 표시용) -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <style>
+      .prediction-hero {
+        text-align: center;
+        padding: 3rem 1rem;
+        background: linear-gradient(
+            rgba(10, 25, 47, 0.8),
+            rgba(10, 25, 47, 0.9)
+          ),
+          url("https://media.formula1.com/image/upload/f_auto/q_auto/v1677244985/content/dam/fom-website/manual/Misc/2023-Season-Guide/2023-Season-Guide-Header.jpg.transform/9col/image.jpg");
+        background-size: cover;
+        background-position: center;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border: 1px solid #2a3f5a;
+      }
+
+      .prediction-form-container {
+        background-color: var(--secondary-bg);
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 800px;
+        margin: 0 auto 3rem auto;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .race-selector {
+        width: 100%;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        border-radius: 8px;
+        border: 1px solid var(--accent-color);
+        background-color: #0a192f;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .podium-inputs {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 2rem 0;
+        flex-wrap: wrap;
+      }
+
+      .podium-input {
+        text-align: center;
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .podium-input label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+      }
+
+      .podium-select {
+        width: 100%;
+        padding: 0.8rem;
+        border-radius: 8px;
+        border: 1px solid #2a3f5a;
+        background-color: #0a192f;
+        color: white;
+        text-align: center;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      .podium-select:disabled {
+        background-color: #2a3f5a;
+        color: #8892b0;
+        cursor: not-allowed;
+        border-color: #444;
+      }
+
+      .submit-pred-btn {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 30px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.3s;
+      }
+      .submit-pred-btn:hover {
+        background-color: #e03e00;
+      }
+      .submit-pred-btn:disabled {
+        background-color: #555;
+        cursor: not-allowed;
+      }
+
+      .chart-container {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #2a3f5a;
+      }
+      .chart-container h3 {
+        text-align: center;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+      }
+
+      /* 댓글 영역 스타일 */
+      .prediction-comments {
+        max-width: 800px;
+        margin: 0 auto 3rem auto;
+        background-color: var(--secondary-bg);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .comment-header {
+        border-bottom: 1px solid #2a3f5a;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        color: var(--accent-color);
+      }
+
+      .comment-list {
+        list-style: none;
+        padding: 0;
+        max-height: 400px;
+        overflow-y: auto;
+        margin-bottom: 1.5rem;
+      }
+
+      .comment-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 1rem 0;
+      }
+      .comment-meta {
+        font-size: 0.85rem;
+        color: #8892b0;
+        margin-bottom: 5px;
+      }
+      .comment-meta strong {
+        color: white;
+        margin-right: 8px;
+      }
+      .comment-content {
+        color: #e0e0e0;
+        line-height: 1.5;
+      }
+
+      .comment-form {
+        display: flex;
+        gap: 10px;
+      }
+      .comment-input {
+        flex: 1;
+        height: 50px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #2a3f5a;
+        background: #0a192f;
+        color: white;
+        resize: none;
+      }
+      .comment-submit-btn {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 0 1.5rem;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .comment-submit-btn:hover {
+        background-color: #e03e00;
+      }
+
+      .comment-list::-webkit-scrollbar {
+        width: 8px;
+      }
+      .comment-list::-webkit-scrollbar-thumb {
+        background: #2a3f5a;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo"><a href="index.html">Pitwall</a></div>
+      <nav>
+        <ul>
+          <li><a href="pickteam.html">응원 팀 추천</a></li>
+          <li><a href="news.html">최신 뉴스</a></li>
+          <li><a href="schedule.html">경기 일정</a></li>
+          <li>
+            <!-- 👇 커뮤니티 드롭다운 메뉴 -->
+            <a href="board.html">커뮤니티 ▾</a>
+            <ul class="dropdown-content">
+              <li><a href="board.html">자유게시판</a></li>
+              <li><a href="prediction.html">순위 예측</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="glossary.html">F1 정보 ▾</a>
+            <ul class="dropdown-content">
+              <li><a href="glossary.html">F1용어사전</a></li>
+              <li><a href="driver.html">드라이버</a></li>
+              <li><a href="constructor.html">팀</a></li>
+              <li><a href="circuit.html">서킷</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="">Shop ▾</a>
+            <ul class="dropdown-content">
+              <li><a href="https://f1store.formula1.com/en/">F1 store</a></li>
+              <li><a href="https://www.fuelforfans.com/">Fuel for Fans</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="user-actions">
+        <div id="logged-out-view">
+          <a href="login.html" class="btn">로그인</a>
+          <a href="signup.html" class="btn btn-accent">회원가입</a>
+        </div>
+        <div id="logged-in-view" style="display: none">
+          <span id="user-nickname" class="nickname-display"></span>
+          <a href="my-info.html" class="btn">내 정보 관리</a>
+          <a href="#" id="logout-button" class="btn">로그아웃</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="prediction-hero">
+        <h1>🏆 F1 그랑프리 순위 예측</h1>
+        <p>이번 경기의 우승자는 누가 될까요? (1위 3점, 2위 2점, 3위 1점)</p>
+      </section>
+
+      <div class="prediction-form-container">
+        <label
+          for="race-select"
+          style="display: block; margin-bottom: 0.5rem; color: #8892b0"
+          >예측할 경기를 선택하세요:</label
+        >
+        <select id="race-select" class="race-selector">
+          <option value="" disabled selected>경기를 선택해주세요</option>
+        </select>
+
+        <form id="prediction-form">
+          <div class="podium-inputs">
+            <div class="podium-input">
+              <label>🥇 1위 (Winner)</label>
+              <select id="pred-1st" class="podium-select" required>
+                <option value="">선수 선택</option>
+              </select>
+            </div>
+            <div class="podium-input">
+              <label>🥈 2위 (2nd)</label>
+              <select id="pred-2nd" class="podium-select" required>
+                <option value="">선수 선택</option>
+              </select>
+            </div>
+            <div class="podium-input">
+              <label>🥉 3위 (3rd)</label>
+              <select id="pred-3rd" class="podium-select" required>
+                <option value="">선수 선택</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" id="submit-btn" class="submit-pred-btn">
+            예측 제출하기
+          </button>
+        </form>
+
+        <div class="chart-container" style="display: none" id="stats-section">
+          <h3>
+            📊 팬들이 예상한 <span id="chart-title">경기</span> 드라이버 순위
+            (Top 5)
+          </h3>
+          <canvas id="predictionChart"></canvas>
+        </div>
+      </div>
+
+      <!-- 댓글 영역 -->
+      <div
+        class="prediction-comments"
+        id="comment-section"
+        style="display: none"
+      >
+        <h3 class="comment-header">
+          🏁 <span id="comment-race-title"></span> 응원 및 예측 토론
+        </h3>
+        <ul id="pred-comment-list" class="comment-list"></ul>
+        <form id="pred-comment-form" class="comment-form">
+          <textarea
+            id="pred-comment-input"
+            class="comment-input"
+            placeholder="로그인 후 의견을 남겨보세요..."
+            required
+          ></textarea>
+          <button type="submit" class="comment-submit-btn">등록</button>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Pitwall. All rights reserved.</p>
+    </footer>
+
+    <script src="schedule-data.js"></script>
+    <script src="driver-data.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+      // 플러그인 등록
+      Chart.register(ChartDataLabels);
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const raceSelect = document.getElementById("race-select");
+        const pred1st = document.getElementById("pred-1st");
+        const pred2nd = document.getElementById("pred-2nd");
+        const pred3rd = document.getElementById("pred-3rd");
+        const submitBtn = document.getElementById("submit-btn");
+
+        const statsSection = document.getElementById("stats-section");
+        const chartTitle = document.getElementById("chart-title");
+
+        // 댓글 관련
+        const commentSection = document.getElementById("comment-section");
+        const commentRaceTitle = document.getElementById("comment-race-title");
+        const commentList = document.getElementById("pred-comment-list");
+        const commentForm = document.getElementById("pred-comment-form");
+        const commentInput = document.getElementById("pred-comment-input");
+
+        let myChart = null;
+        let myPredictions = {};
+
+        // 0. 내 예측 기록 가져오기
+        async function fetchMyPredictions() {
+          const token = sessionStorage.getItem("token");
+          if (!token) return;
+
+          try {
+            const res = await fetch("http://localhost:3001/api/predictions", {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            data.forEach((p) => {
+              myPredictions[p.round] = p;
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        }
+        await fetchMyPredictions();
+
+        // 1. 경기 목록
+        if (typeof scheduleData !== "undefined") {
+          scheduleData.forEach((gp) => {
+            const option = document.createElement("option");
+            option.value = gp.round;
+            option.textContent = `Round ${gp.round} - ${gp.gpName}`;
+            raceSelect.appendChild(option);
+          });
+        }
+
+        // 2. 드라이버 목록
+        const fillDrivers = (selectElement) => {
+          if (typeof driverData !== "undefined") {
+            driverData.forEach((d) => {
+              const option = document.createElement("option");
+              option.value = d.name;
+              option.textContent = `${d.name} (${d.nameKr})`;
+              selectElement.appendChild(option);
+            });
+          }
+        };
+        fillDrivers(pred1st);
+        fillDrivers(pred2nd);
+        fillDrivers(pred3rd);
+
+        // 3. 경기 선택 시
+        raceSelect.addEventListener("change", (e) => {
+          const round = e.target.value;
+          const raceName = e.target.options[e.target.selectedIndex].text;
+
+          chartTitle.textContent = raceName;
+          commentRaceTitle.textContent = raceName;
+
+          if (myPredictions[round]) {
+            const saved = myPredictions[round];
+            pred1st.value = saved.first_place;
+            pred2nd.value = saved.second_place;
+            pred3rd.value = saved.third_place;
+            pred1st.disabled = true;
+            pred2nd.disabled = true;
+            pred3rd.disabled = true;
+            submitBtn.disabled = true;
+            submitBtn.textContent = "제출 완료 (수정 불가)";
+          } else {
+            pred1st.value = "";
+            pred2nd.value = "";
+            pred3rd.value = "";
+            pred1st.disabled = false;
+            pred2nd.disabled = false;
+            pred3rd.disabled = false;
+            submitBtn.disabled = false;
+            submitBtn.textContent = "예측 제출하기";
+          }
+
+          loadStats(round);
+          loadComments(round);
+        });
+
+        // 4. 예측 제출
+        document
+          .getElementById("prediction-form")
+          .addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const token = sessionStorage.getItem("token");
+            if (!token) {
+              alert("로그인 필요");
+              location.href = "login.html";
+              return;
+            }
+
+            const round = raceSelect.value;
+            if (!round) return alert("경기 선택 필요");
+
+            const p1 = pred1st.value;
+            const p2 = pred2nd.value;
+            const p3 = pred3rd.value;
+            if (p1 === p2 || p1 === p3 || p2 === p3)
+              return alert("1,2,3위 선수는 달라야 합니다.");
+            if (!confirm("제출 후 수정 불가합니다. 제출하시겠습니까?")) return;
+
+            try {
+              const response = await fetch(
+                "http://localhost:3001/api/predictions",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify({
+                    round,
+                    first_place: p1,
+                    second_place: p2,
+                    third_place: p3,
+                  }),
+                }
+              );
+
+              if (response.ok) {
+                alert("제출 완료!");
+                myPredictions[round] = {
+                  first_place: p1,
+                  second_place: p2,
+                  third_place: p3,
+                };
+                pred1st.disabled = true;
+                pred2nd.disabled = true;
+                pred3rd.disabled = true;
+                submitBtn.disabled = true;
+                submitBtn.textContent = "제출 완료";
+                loadStats(round);
+              } else {
+                const err = await response.json();
+                alert(err.message);
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          });
+
+        // 5. 댓글 작성
+        commentForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const token = sessionStorage.getItem("token");
+          if (!token) {
+            alert("로그인 필요");
+            return;
+          }
+
+          const round = raceSelect.value;
+          const content = commentInput.value;
+
+          try {
+            const res = await fetch(
+              `http://localhost:3001/api/predictions/${round}/comments`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ content }),
+              }
+            );
+            if (res.ok) {
+              commentInput.value = "";
+              loadComments(round);
+            } else {
+              alert("댓글 작성 실패");
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        });
+
+        async function loadComments(round) {
+          try {
+            const res = await fetch(
+              `http://localhost:3001/api/predictions/${round}/comments`
+            );
+            const comments = await res.json();
+            commentSection.style.display = "block";
+            commentList.innerHTML = "";
+            if (comments.length === 0) {
+              commentList.innerHTML =
+                '<li style="text-align:center; color:#8892b0; padding:1rem;">첫 댓글을 남겨보세요!</li>';
+              return;
+            }
+            comments.forEach((cmt) => {
+              const li = document.createElement("li");
+              li.className = "comment-item";
+              li.innerHTML = `
+                            <div class="comment-meta">
+                                <strong>${
+                                  cmt.nickname
+                                }</strong><span>${new Date(
+                cmt.created_at
+              ).toLocaleString()}</span>
+                            </div>
+                            <div class="comment-content">${cmt.content}</div>
+                        `;
+              commentList.appendChild(li);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        }
+
+        // 6. 그래프 그리기 (점수 계산 + 색상 + 라벨)
+        async function loadStats(round) {
+          try {
+            const res = await fetch(
+              `http://localhost:3001/api/predictions/stats?round=${round}`
+            );
+            const data = await res.json(); // 서버에서 이미 점수 합산된 데이터 옴
+
+            statsSection.style.display = "block";
+            const top5Data = data.slice(0, 5);
+
+            // 순위별 색상
+            const rankColors = {
+              1: "rgba(255, 215, 0, 0.8)",
+              2: "rgba(192, 192, 192, 0.8)",
+              3: "rgba(205, 127, 50, 0.8)",
+              4: "rgba(255, 69, 0, 0.6)",
+              5: "rgba(255, 69, 0, 0.4)",
+            };
+
+            // 순위 계산 (동점자 처리)
+            let rank = 0;
+            let prevScore = -1; // 득표수 대신 점수(score)로 비교
+            const rankedData = top5Data.map((item, index) => {
+              // 서버에서 score라는 이름으로 보내주므로 item.score 사용
+              if (item.score !== prevScore) rank = index + 1;
+              prevScore = item.score;
+              return { ...item, rank };
+            });
+
+            const rankCounts = {};
+            rankedData.forEach((item) => {
+              rankCounts[item.rank] = (rankCounts[item.rank] || 0) + 1;
+            });
+
+            const labels = [];
+            const backgroundColors = [];
+
+            rankedData.forEach((item) => {
+              const prefix = rankCounts[item.rank] > 1 ? "공동 " : "";
+              labels.push(`${prefix}${item.rank}위 ${item.driver}`);
+              backgroundColors.push(
+                rankColors[item.rank] || "rgba(255, 255, 255, 0.3)"
+              );
+            });
+
+            // 값은 점수(score)
+            const scores = rankedData.map((item) => item.score);
+            const ctx = document
+              .getElementById("predictionChart")
+              .getContext("2d");
+
+            if (myChart) myChart.destroy();
+
+            myChart = new Chart(ctx, {
+              type: "bar",
+              data: {
+                labels: labels,
+                datasets: [
+                  {
+                    label: "예측 점수 합계",
+                    data: scores,
+                    backgroundColor: backgroundColors,
+                    borderColor: "rgba(255, 255, 255, 0.5)",
+                    borderWidth: 1,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: { display: false },
+                    grid: { display: false },
+                  },
+                  x: { ticks: { color: "white" }, grid: { display: false } },
+                },
+                plugins: {
+                  legend: { display: false },
+                  datalabels: {
+                    color: "white",
+                    font: { weight: "bold", size: 14 },
+                    // 📝 그래프 중앙 라벨 포맷 (점수 표시)
+                    formatter: (value) => value + "점",
+                    anchor: "center",
+                    align: "center",
+                  },
+                },
+              },
+              plugins: [ChartDataLabels],
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

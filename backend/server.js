@@ -8,6 +8,7 @@ const { protect } = require("./middleware/authMiddleware");
 const path = require("path");
 const multer = require("multer"); // 파일 업로드용
 const fs = require("fs");
+const nodemailer = require("nodemailer");
 
 // 크롤링을 위한 라이브러리
 const axios = require("axios");
@@ -100,7 +101,7 @@ app.post("/api/login", async (req, res) => {
         {
           user_id: user.user_id,
           nickname: user.nickname,
-          is_admin: user.is_admin, 
+          is_admin: user.is_admin,
         },
         JWT_SECRET_KEY,
         { expiresIn: "1h" }
@@ -111,7 +112,7 @@ app.post("/api/login", async (req, res) => {
         message: "로그인 성공!",
         token: token,
         nickname: user.nickname,
-        is_admin: user.is_admin 
+        is_admin: user.is_admin,
       });
     } else {
       res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
@@ -195,6 +196,21 @@ app.put("/api/my-info/password", protect, async (req, res) => {
   }
 });
 
+app.delete("/api/my-info", protect, async (req, res) => {
+  const { user_id } = req.user; // 토큰에서 사용자 ID 추출
+
+  try {
+    // Users 테이블에서 삭제 (CASCADE 설정 덕분에 글, 댓글 등도 자동 삭제됨)
+    const sql = "DELETE FROM Users WHERE user_id = ?";
+    await db.query(sql, [user_id]);
+
+    res.status(200).json({ message: "회원 탈퇴가 완료되었습니다." });
+  } catch (error) {
+    console.error("회원 탈퇴 오류:", error);
+    res.status(500).json({ message: "서버 오류가 발생했습니다." });
+  }
+});
+
 // ==========================================
 // 3. 커뮤니티 게시판 API
 // ==========================================
@@ -266,8 +282,12 @@ app.delete("/api/posts/:id", protect, async (req, res) => {
   const { user_id, is_admin } = req.user;
 
   try {
-    const [post] = await db.query("SELECT user_id FROM Posts WHERE post_id = ?", [postId]);
-    if (post.length === 0) return res.status(404).json({ message: "게시글 없음" });
+    const [post] = await db.query(
+      "SELECT user_id FROM Posts WHERE post_id = ?",
+      [postId]
+    );
+    if (post.length === 0)
+      return res.status(404).json({ message: "게시글 없음" });
 
     // 작성자 본인이거나 관리자만 삭제 가능
     if (post[0].user_id !== user_id && is_admin !== 1) {
@@ -283,32 +303,35 @@ app.delete("/api/posts/:id", protect, async (req, res) => {
 
 // 5. 게시글 수정 API
 app.put("/api/posts/:id", protect, upload.single("image"), async (req, res) => {
-    const postId = req.params.id;
-    const { title, content } = req.body;
-    const { user_id } = req.user;
-    
-    try {
-        // 작성자 확인
-        const [post] = await db.query("SELECT * FROM Posts WHERE post_id = ?", [postId]);
-        if (post.length === 0) return res.status(404).json({ message: "게시글 없음" });
-        if (post[0].user_id !== user_id) return res.status(403).json({ message: "수정 권한이 없습니다." });
+  const postId = req.params.id;
+  const { title, content } = req.body;
+  const { user_id } = req.user;
 
-        // 이미지 처리 (새 이미지가 없으면 기존 이미지 유지)
-        let image_url = post[0].image_url;
-        if (req.file) {
-            image_url = `/uploads/${req.file.filename}`;
-        }
+  try {
+    // 작성자 확인
+    const [post] = await db.query("SELECT * FROM Posts WHERE post_id = ?", [
+      postId,
+    ]);
+    if (post.length === 0)
+      return res.status(404).json({ message: "게시글 없음" });
+    if (post[0].user_id !== user_id)
+      return res.status(403).json({ message: "수정 권한이 없습니다." });
 
-        await db.query(
-            "UPDATE Posts SET title = ?, content = ?, image_url = ? WHERE post_id = ?",
-            [title, content, image_url, postId]
-        );
-        res.json({ message: "게시글 수정 완료" });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "서버 오류" });
+    // 이미지 처리 (새 이미지가 없으면 기존 이미지 유지)
+    let image_url = post[0].image_url;
+    if (req.file) {
+      image_url = `/uploads/${req.file.filename}`;
     }
+
+    await db.query(
+      "UPDATE Posts SET title = ?, content = ?, image_url = ? WHERE post_id = ?",
+      [title, content, image_url, postId]
+    );
+    res.json({ message: "게시글 수정 완료" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "서버 오류" });
+  }
 });
 
 // 좋아요 토글
@@ -393,23 +416,27 @@ app.post("/api/posts/:id/comments", protect, async (req, res) => {
 // 6. 댓글 삭제 API
 // 6. 🔥 [신규] 댓글 삭제 API
 app.delete("/api/comments/:id", protect, async (req, res) => {
-    const commentId = req.params.id;
-    const { user_id, is_admin } = req.user;
+  const commentId = req.params.id;
+  const { user_id, is_admin } = req.user;
 
-    try {
-        const [comment] = await db.query("SELECT user_id FROM Comments WHERE comment_id = ?", [commentId]);
-        if (comment.length === 0) return res.status(404).json({ message: "댓글 없음" });
+  try {
+    const [comment] = await db.query(
+      "SELECT user_id FROM Comments WHERE comment_id = ?",
+      [commentId]
+    );
+    if (comment.length === 0)
+      return res.status(404).json({ message: "댓글 없음" });
 
-        // 작성자 본인이거나 관리자만 삭제 가능
-        if (comment[0].user_id !== user_id && is_admin !== 1) {
-            return res.status(403).json({ message: "삭제 권한이 없습니다." });
-        }
-
-        await db.query("DELETE FROM Comments WHERE comment_id = ?", [commentId]);
-        res.json({ message: "댓글 삭제 완료" });
-    } catch (error) {
-        res.status(500).json({ message: "서버 오류" });
+    // 작성자 본인이거나 관리자만 삭제 가능
+    if (comment[0].user_id !== user_id && is_admin !== 1) {
+      return res.status(403).json({ message: "삭제 권한이 없습니다." });
     }
+
+    await db.query("DELETE FROM Comments WHERE comment_id = ?", [commentId]);
+    res.json({ message: "댓글 삭제 완료" });
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류" });
+  }
 });
 
 // ==================================================================
@@ -631,6 +658,206 @@ app.get("/api/circuits/:id/records", async (req, res) => {
   }
 });
 
+// 5. 📧 이메일 인증 API
+// ==========================================
+
+// 메일 전송 설정 (Transporter)
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+  },
+});
+
+// [API] 인증번호 발송
+app.post("/api/email/send", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // 1. 이미 가입된 이메일인지 확인
+    const [users] = await db.query(
+      "SELECT user_id FROM Users WHERE email = ?",
+      [email]
+    );
+    if (users.length > 0) {
+      return res.status(409).json({ message: "이미 가입된 이메일입니다." });
+    }
+
+    // 2. 6자리 랜덤 숫자 생성
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // 3. DB에 인증번호 저장 (기존 거 지우고 새로 저장)
+    await db.query("DELETE FROM EmailVerifications WHERE email = ?", [email]);
+    await db.query(
+      "INSERT INTO EmailVerifications (email, code) VALUES (?, ?)",
+      [email, code]
+    );
+
+    // 4. 메일 발송
+    const mailOptions = {
+      from: process.env.MAIL_USER,
+      to: email,
+      subject: "[Pitwall] 회원가입 인증번호입니다.",
+      text: `안녕하세요! Pitwall 가입을 환영합니다.\n\n인증번호: [ ${code} ]\n\n이 번호를 입력하여 가입을 완료해주세요.`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    res
+      .status(200)
+      .json({ message: "인증번호가 발송되었습니다. 이메일을 확인해주세요." });
+  } catch (error) {
+    console.error("메일 전송 오류:", error);
+    res.status(500).json({ message: "메일 전송 실패" });
+  }
+});
+
+// [API] 인증번호 확인
+app.post("/api/email/verify", async (req, res) => {
+  const { email, code } = req.body;
+
+  try {
+    const [rows] = await db.query(
+      "SELECT * FROM EmailVerifications WHERE email = ? AND code = ?",
+      [email, code]
+    );
+
+    if (rows.length > 0) {
+      // 인증 성공 시 기록 삭제 (재사용 방지)
+      await db.query("DELETE FROM EmailVerifications WHERE email = ?", [email]);
+      res.status(200).json({ message: "인증 성공!" });
+    } else {
+      res.status(400).json({ message: "인증번호가 일치하지 않습니다." });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+// 5. 순위 예측 API (추가됨)
+// ==========================================
+
+// 예측 제출 (등록 또는 수정)
+app.post("/api/predictions", protect, async (req, res) => {
+  const { round, first_place, second_place, third_place } = req.body;
+  const { user_id } = req.user;
+
+  // 입력값 검증
+  if (!round || !first_place || !second_place || !third_place) {
+    return res.status(400).json({ message: "모든 항목을 입력해주세요." });
+  }
+
+  try {
+    // MySQL의 "ON DUPLICATE KEY UPDATE" 문법 사용
+    // (이미 해당 라운드에 예측한 기록이 있으면 -> 내용을 업데이트함)
+    const sql = `
+            INSERT INTO Predictions (user_id, round, first_place, second_place, third_place)
+            VALUES (?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+            first_place = VALUES(first_place),
+            second_place = VALUES(second_place),
+            third_place = VALUES(third_place)
+        `;
+
+    await db.query(sql, [
+      user_id,
+      round,
+      first_place,
+      second_place,
+      third_place,
+    ]);
+
+    res.status(200).json({ message: `Round ${round} 예측이 저장되었습니다!` });
+  } catch (error) {
+    console.error("예측 저장 오류:", error);
+    res.status(500).json({ message: "서버 오류가 발생했습니다." });
+  }
+});
+
+// 내 예측 내역 가져오기 (선택 사항: 나중에 예측 페이지 로드 시 보여주기 위함)
+app.get("/api/predictions", protect, async (req, res) => {
+  const { user_id } = req.user;
+  try {
+    const [rows] = await db.query(
+      "SELECT * FROM Predictions WHERE user_id = ?",
+      [user_id]
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+// backend/server.js
+
+// [수정됨] 순위 예측 통계 가져오기 (가중치 점수 합산)
+app.get("/api/predictions/stats", async (req, res) => {
+  const { round } = req.query;
+
+  if (!round)
+    return res.status(400).json({ message: "라운드 정보가 필요합니다." });
+
+  try {
+    // 1위=3점, 2위=2점, 3위=1점으로 계산하여 합산하는 쿼리
+    const sql = `
+            SELECT driver, SUM(points) as score FROM (
+                SELECT first_place as driver, 3 as points FROM Predictions WHERE round = ?
+                UNION ALL
+                SELECT second_place as driver, 2 as points FROM Predictions WHERE round = ?
+                UNION ALL
+                SELECT third_place as driver, 1 as points FROM Predictions WHERE round = ?
+            ) as combined_scores
+            GROUP BY driver
+            ORDER BY score DESC
+            LIMIT 5
+        `;
+
+    // ?가 3개이므로 round 변수도 3번 넣어줍니다.
+    const [rows] = await db.query(sql, [round, round, round]);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("통계 조회 오류:", error);
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+// [추가] 예측 댓글 목록 조회
+app.get("/api/predictions/:round/comments", async (req, res) => {
+  const { round } = req.params;
+  try {
+    const sql = `
+            SELECT c.*, u.nickname 
+            FROM PredictionComments c
+            JOIN Users u ON c.user_id = u.user_id
+            WHERE c.round = ?
+            ORDER BY c.created_at DESC
+        `;
+    const [rows] = await db.query(sql, [round]);
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+// [추가] 예측 댓글 작성
+app.post("/api/predictions/:round/comments", protect, async (req, res) => {
+  const { round } = req.params;
+  const { content } = req.body;
+  const { user_id } = req.user;
+
+  if (!content)
+    return res.status(400).json({ message: "내용을 입력해주세요." });
+
+  try {
+    await db.query(
+      "INSERT INTO PredictionComments (round, user_id, content) VALUES (?, ?, ?)",
+      [round, user_id, content]
+    );
+    res.status(201).json({ message: "댓글이 등록되었습니다." });
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
 // 서버 실행
 app.listen(PORT, () => {
   console.log(`🚀 서버가 http://localhost:${PORT} 에서 실행 중입니다.`);

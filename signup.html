@@ -43,9 +43,49 @@
             <label for="nickname">닉네임</label>
             <input type="text" id="nickname" name="nickname" required />
           </div>
+          <!-- signup.html 의 이메일 입력 부분 수정 -->
+
           <div class="form-group">
             <label for="email">이메일</label>
-            <input type="email" id="email" name="email" required />
+            <div style="display: flex; gap: 10px">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                style="flex: 1"
+              />
+              <button
+                type="button"
+                id="send-code-btn"
+                class="btn"
+                style="padding: 0 15px; font-size: 0.9rem"
+              >
+                인증번호 받기
+              </button>
+            </div>
+            <div class="validation-message"></div>
+          </div>
+
+          <!-- 👇 인증번호 입력칸 (처음엔 숨김) -->
+          <div class="form-group" id="verification-group" style="display: none">
+            <label for="verification-code">인증번호</label>
+            <div style="display: flex; gap: 10px">
+              <input
+                type="text"
+                id="verification-code"
+                placeholder="6자리 숫자 입력"
+              />
+              <button
+                type="button"
+                id="verify-code-btn"
+                class="btn btn-accent"
+                style="padding: 0 15px; font-size: 0.9rem"
+              >
+                확인
+              </button>
+            </div>
+            <div class="validation-message" id="verify-message"></div>
           </div>
           <button type="submit" class="btn btn-accent form-btn">
             가입하기

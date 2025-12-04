@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutButton.addEventListener("click", (event) => {
       event.preventDefault();
       sessionStorage.removeItem("loggedInUser"); // 닉네임 삭제
-      sessionStorage.removeItem("token");        //  토큰 삭제
-      sessionStorage.removeItem("is_admin");      // 관리자 정보 삭제
+      sessionStorage.removeItem("token"); //  토큰 삭제
+      sessionStorage.removeItem("is_admin"); // 관리자 정보 삭제
       window.location.reload();
     });
   }
@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
           // 로그인 성공!
           // 1. 세션 스토리지에 백엔드가 보내준 '닉네임'과 '토큰'을 저장
           sessionStorage.setItem("loggedInUser", result.nickname); // 헤더 표시용 닉네임
-          sessionStorage.setItem("token", result.token);           // 인증용 토큰
-          sessionStorage.setItem("is_admin", result.is_admin);     // 관리자 여부 저장
- 
+          sessionStorage.setItem("token", result.token); // 인증용 토큰
+          sessionStorage.setItem("is_admin", result.is_admin); // 관리자 여부 저장
+
           // 2. 메인 페이지로 이동
           window.location.href = "index.html";
         } else {
@@ -72,16 +72,106 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- 4. 회원가입 폼 처리 (기존 코드와 동일) ---
+  // --- 4. 회원가입 폼 처리 (이메일 인증 기능 추가됨) ---
   const signupForm = document.getElementById("signup-form");
   if (signupForm) {
+    let isEmailVerified = false; // 이메일 인증 완료 여부를 저장하는 변수
+
+    // [1] 인증번호 받기 버튼 클릭 이벤트
+    const sendCodeBtn = document.getElementById("send-code-btn");
+    if (sendCodeBtn) {
+      sendCodeBtn.addEventListener("click", async () => {
+        const email = document.getElementById("email").value;
+        if (!email) return alert("이메일을 입력해주세요.");
+
+        try {
+          // 백엔드에 메일 발송 요청
+          const res = await fetch("http://localhost:3001/api/email/send", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          });
+          const data = await res.json();
+
+          if (res.ok) {
+            alert(data.message); // "인증번호가 발송되었습니다"
+            // 인증번호 입력칸 보이기
+            document.getElementById("verification-group").style.display =
+              "block";
+            // 이메일 수정 못하게 막기
+            document.getElementById("email").readOnly = true;
+          } else {
+            alert(data.message); // "이미 가입된 이메일입니다" 등
+          }
+        } catch (err) {
+          console.error(err);
+          alert("메일 전송 중 오류가 발생했습니다.");
+        }
+      });
+    }
+
+    // [2] 인증번호 확인 버튼 클릭 이벤트
+    const verifyCodeBtn = document.getElementById("verify-code-btn");
+    if (verifyCodeBtn) {
+      verifyCodeBtn.addEventListener("click", async () => {
+        const email = document.getElementById("email").value;
+        const code = document.getElementById("verification-code").value;
+
+        if (!code) return alert("인증번호를 입력해주세요.");
+
+        try {
+          // 백엔드에 인증번호 확인 요청
+          const res = await fetch("http://localhost:3001/api/email/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, code }),
+          });
+
+          if (res.ok) {
+            alert("이메일 인증이 완료되었습니다!");
+            isEmailVerified = true; // ⭐ 인증 상태를 true로 변경
+
+            // UI 변경: 인증 완료 표시
+            const msgDiv = document.getElementById("verify-message");
+            if (msgDiv) {
+              msgDiv.textContent = "인증 완료 ✅";
+              msgDiv.className = "validation-message success";
+            }
+            // 입력창 숨기기 및 버튼 비활성화
+            document.getElementById("verification-group").style.display =
+              "none";
+            sendCodeBtn.disabled = true;
+            sendCodeBtn.textContent = "인증됨";
+          } else {
+            alert("인증번호가 일치하지 않습니다.");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("인증 확인 중 오류가 발생했습니다.");
+        }
+      });
+    }
+
+    // [3] 최종 회원가입 버튼 클릭 (기존 코드 수정)
     signupForm.addEventListener("submit", async (event) => {
       event.preventDefault();
+
+      // 🚨 가장 중요한 부분: 이메일 인증을 안 했으면 가입 차단
+      if (!isEmailVerified) {
+        return alert("이메일 인증을 먼저 완료해주세요!");
+      }
 
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
       const nickname = document.getElementById("nickname").value;
       const email = document.getElementById("email").value;
+
+      // 비밀번호 확인 로직 (선택 사항이지만 추천)
+      const confirmPassword = document.getElementById("confirm-password").value;
+      if (password !== confirmPassword) {
+        return alert("비밀번호가 일치하지 않습니다.");
+      }
+
       const formData = { username, password, nickname, email };
 
       try {
@@ -224,6 +314,47 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(`오류: ${error.message}`);
       }
     });
+    // [함수 4] 회원 탈퇴 버튼 클릭 처리
+    const deleteBtn = document.getElementById("delete-account-btn");
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", async () => {
+        // 1. 확인 대화상자 띄우기 (실수 방지)
+        const isConfirmed = confirm(
+          "정말로 탈퇴하시겠습니까?\n탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다."
+        );
+
+        if (!isConfirmed) return; // 취소 누르면 중단
+
+        try {
+          // 2. 탈퇴 API 호출
+          const response = await fetch("http://localhost:3001/api/my-info", {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`, // 토큰 필수
+            },
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            alert("회원 탈퇴가 완료되었습니다. 이용해 주셔서 감사합니다.");
+
+            // 3. 브라우저에 저장된 정보 싹 지우기 (로그아웃 처리)
+            sessionStorage.removeItem("loggedInUser");
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("is_admin");
+
+            // 4. 메인 페이지로 이동
+            window.location.href = "index.html";
+          } else {
+            throw new Error(result.message);
+          }
+        } catch (error) {
+          console.error("탈퇴 처리 중 오류:", error);
+          alert(`오류 발생: ${error.message}`);
+        }
+      });
+    }
   }
 
   // --- 6. '커뮤니티 게시판' 페이지 로직 (board.html) ---
@@ -421,13 +552,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const currentUser = sessionStorage.getItem("loggedInUser"); // 닉네임
 
       if (post.nickname === currentUser || isAdmin == "1") {
-          const deleteBtn = document.getElementById("delete-btn");
-          if(deleteBtn) {
-              deleteBtn.style.display = "block";
-              // 삭제 이벤트 연결
-              deleteBtn.onclick = () => deletePost(id);
-          }
+        const deleteBtn = document.getElementById("delete-btn");
+        if (deleteBtn) {
+          deleteBtn.style.display = "block";
+          // 삭제 이벤트 연결
+          deleteBtn.onclick = () => deletePost(id);
         }
+      }
     } catch (err) {
       alert("글을 불러올 수 없습니다.");
       window.location.href = "board.html";
@@ -436,21 +567,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //[추가] 게시글 삭제 함수
   async function deletePost(id) {
-      if(!confirm("정말 삭제하시겠습니까?")) return;
-      const token = sessionStorage.getItem("token");
+    if (!confirm("정말 삭제하시겠습니까?")) return;
+    const token = sessionStorage.getItem("token");
 
-      const res = await fetch(`http://localhost:3001/api/posts/${id}`, {
-          method: "DELETE",
-          headers: { "Authorization": `Bearer ${token}` }
-      });
+    const res = await fetch(`http://localhost:3001/api/posts/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      if(res.ok) {
-          alert("삭제되었습니다.");
-          window.location.href = "board.html";
-      } else {
-          const data = await res.json();
-          alert(data.message);
-      }
+    if (res.ok) {
+      alert("삭제되었습니다.");
+      window.location.href = "board.html";
+    } else {
+      const data = await res.json();
+      alert(data.message);
+    }
   }
 
   // [함수] 댓글 목록 불러오기

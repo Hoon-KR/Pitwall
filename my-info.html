@@ -23,7 +23,14 @@
           <li><a href="pickteam.html">응원 팀 추천</a></li>
           <li><a href="news.html">최신 뉴스</a></li>
           <li><a href="schedule.html">경기 일정</a></li>
-          <li><a href="board.html">커뮤니티</a></li>
+          <li>
+            <!-- 👇 커뮤니티 드롭다운 메뉴 -->
+            <a href="board.html">커뮤니티 ▾</a>
+            <ul class="dropdown-content">
+              <li><a href="board.html">자유게시판</a></li>
+              <li><a href="prediction.html">순위 예측</a></li>
+            </ul>
+          </li>
 
           <li>
             <a href="glossary.html">F1 정보 ▾</a>
@@ -113,6 +120,14 @@
             비밀번호 변경
           </button>
         </form>
+        <hr class="form-divider" />
+
+        <!-- 회원 탈퇴 영역 -->
+        <div class="delete-account-zone">
+          <h3>회원 탈퇴</h3>
+          <p>탈퇴 시 작성한 모든 게시글과 댓글이 영구적으로 삭제됩니다.</p>
+          <button id="delete-account-btn" class="btn-danger">회원 탈퇴</button>
+        </div>
       </div>
     </main>
 
