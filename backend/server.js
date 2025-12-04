@@ -5,6 +5,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("./config/db");
 const { protect } = require("./middleware/authMiddleware");
+const path = require("path");
+const multer = require("multer"); // 파일 업로드용
+const fs = require("fs");
 
 // 크롤링을 위한 라이브러리
 const axios = require("axios");
@@ -13,12 +16,26 @@ const puppeteer = require("puppeteer");
 
 const app = express();
 const PORT = 3001;
-
 // JWT 비밀키 설정
 const JWT_SECRET_KEY = process.env.JWT_SECRET || "pitwall_secret_key";
 
 app.use(cors());
 app.use(express.json());
+app.use("/uploads", express.static("uploads")); //업로드된 사진을 브라우저에서 볼 수 있게 폴더 공개
+
+// --- Multer 설정 (사진 저장) ---
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // uploads 폴더가 없으면 생성
+    if (!fs.existsSync("uploads")) fs.mkdirSync("uploads");
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    // 파일명 중복 방지를 위해 날짜+원본이름 사용
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 
 // 데이터베이스 연결 테스트
 async function testDbConnection() {
@@ -182,26 +199,28 @@ app.put("/api/my-info/password", protect, async (req, res) => {
 // 3. 커뮤니티 게시판 API
 // ==========================================
 
-// 게시글 작성
-app.post("/api/posts", protect, async (req, res) => {
+// 3-1)게시글 작성
+app.post("/api/posts", protect, upload.single("image"), async (req, res) => {
   const { title, content } = req.body;
   const { user_id } = req.user;
+  const image_url = req.file ? `/uploads/${req.file.filename}` : null; // 사진이 있으면 경로 저장
 
   if (!title || !content)
-    return res.status(400).json({ message: "내용을 입력해주세요." });
+    return res.status(400).json({ message: "제목과 내용을 입력해주세요." });
 
   try {
     await db.query(
-      "INSERT INTO Posts (title, content, user_id) VALUES (?, ?, ?)",
-      [title, content, user_id]
+      "INSERT INTO Posts (title, content, user_id, image_url) VALUES (?, ?, ?, ?)",
+      [title, content, user_id, image_url]
     );
     res.status(201).json({ message: "게시글 등록 완료" });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "서버 오류" });
   }
 });
 
-// 게시글 목록 조회
+// 3-2)게시글 목록 조회
 app.get("/api/posts", async (req, res) => {
   try {
     const sql = `
@@ -217,7 +236,7 @@ app.get("/api/posts", async (req, res) => {
   }
 });
 
-// 게시글 상세 조회
+// 3-3)게시글 상세 조회
 app.get("/api/posts/:id", async (req, res) => {
   const postId = req.params.id;
   try {
@@ -241,34 +260,55 @@ app.get("/api/posts/:id", async (req, res) => {
   }
 });
 
-// 게시글 삭제 API (작성자 본인 또는 관리자만 가능)
-// 🔥 [추가] 관리자 권한 확인 로직 포함
+// 4. 게시글 삭제 API (작성자 본인 또는 관리자만 가능)
 app.delete("/api/posts/:id", protect, async (req, res) => {
   const postId = req.params.id;
-  const { user_id, is_admin } = req.user; // 토큰에서 꺼낸 정보
+  const { user_id, is_admin } = req.user;
 
   try {
-    // 1. 게시글 작성자 확인
     const [post] = await db.query("SELECT user_id FROM Posts WHERE post_id = ?", [postId]);
-    
-    if (post.length === 0) {
-      return res.status(404).json({ message: "게시글이 없습니다." });
-    }
+    if (post.length === 0) return res.status(404).json({ message: "게시글 없음" });
 
-    // 2. 권한 확인 (작성자 본인이거나 관리자면 통과)
-    // is_admin === 1 이면 관리자
+    // 작성자 본인이거나 관리자만 삭제 가능
     if (post[0].user_id !== user_id && is_admin !== 1) {
       return res.status(403).json({ message: "삭제 권한이 없습니다." });
     }
 
-    // 3. 삭제 실행
     await db.query("DELETE FROM Posts WHERE post_id = ?", [postId]);
-    res.status(200).json({ message: "게시글이 삭제되었습니다." });
-
+    res.status(200).json({ message: "게시글 삭제 완료" });
   } catch (error) {
-    console.error("게시글 삭제 오류:", error);
     res.status(500).json({ message: "서버 오류" });
   }
+});
+
+// 5. 게시글 수정 API
+app.put("/api/posts/:id", protect, upload.single("image"), async (req, res) => {
+    const postId = req.params.id;
+    const { title, content } = req.body;
+    const { user_id } = req.user;
+    
+    try {
+        // 작성자 확인
+        const [post] = await db.query("SELECT * FROM Posts WHERE post_id = ?", [postId]);
+        if (post.length === 0) return res.status(404).json({ message: "게시글 없음" });
+        if (post[0].user_id !== user_id) return res.status(403).json({ message: "수정 권한이 없습니다." });
+
+        // 이미지 처리 (새 이미지가 없으면 기존 이미지 유지)
+        let image_url = post[0].image_url;
+        if (req.file) {
+            image_url = `/uploads/${req.file.filename}`;
+        }
+
+        await db.query(
+            "UPDATE Posts SET title = ?, content = ?, image_url = ? WHERE post_id = ?",
+            [title, content, image_url, postId]
+        );
+        res.json({ message: "게시글 수정 완료" });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "서버 오류" });
+    }
 });
 
 // 좋아요 토글
@@ -348,6 +388,28 @@ app.post("/api/posts/:id/comments", protect, async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "서버 오류" });
   }
+});
+
+// 6. 댓글 삭제 API
+// 6. 🔥 [신규] 댓글 삭제 API
+app.delete("/api/comments/:id", protect, async (req, res) => {
+    const commentId = req.params.id;
+    const { user_id, is_admin } = req.user;
+
+    try {
+        const [comment] = await db.query("SELECT user_id FROM Comments WHERE comment_id = ?", [commentId]);
+        if (comment.length === 0) return res.status(404).json({ message: "댓글 없음" });
+
+        // 작성자 본인이거나 관리자만 삭제 가능
+        if (comment[0].user_id !== user_id && is_admin !== 1) {
+            return res.status(403).json({ message: "삭제 권한이 없습니다." });
+        }
+
+        await db.query("DELETE FROM Comments WHERE comment_id = ?", [commentId]);
+        res.json({ message: "댓글 삭제 완료" });
+    } catch (error) {
+        res.status(500).json({ message: "서버 오류" });
+    }
 });
 
 // ==================================================================
