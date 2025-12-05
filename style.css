@@ -382,3 +382,81 @@ nav ul li:hover .dropdown-content {
 .btn-danger:hover {
   background-color: #c82333; /* 호버 시 더 진한 빨강 */
 }
+
+/* style.css 하단에 추가 */
+
+/* --- 메인 페이지 바로가기 섹션 --- */
+.main-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  max-width: 1500px;
+  margin: 0 auto 4rem auto;
+  padding: 0 5%;
+}
+
+.shortcut-card {
+  position: relative;
+  height: 400px;
+  border-radius: 15px;
+  overflow: hidden;
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #2a3f5a;
+
+  /* 배경 이미지 설정 (실제 이미지 URL로 교체 가능) */
+  background-size: cover;
+  background-position: center;
+}
+
+/* 각 카드별 배경 이미지 (Unsplash 무료 이미지 사용 예시) */
+.news-bg {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("img/drivers/detail/image001.jpg");
+}
+.recommend-bg {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("img/drivers/detail/조지\ 러셀.png");
+}
+.schedule-bg {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("img/drivers/detail/image002.jpg");
+}
+
+.shortcut-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+  border-color: var(--accent-color);
+}
+
+.shortcut-content {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+}
+
+.shortcut-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* 2. 글자 그림자 진하게 수정 (가독성 핵심!) */
+.shortcut-content h2 {
+  font-size: 1.8rem;
+  margin: 0 0 5px 0;
+  font-weight: 800;
+  /* 👇 그림자를 진하고 넓게 퍼지게 설정 (검은색 90%) */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.shortcut-content p {
+  font-size: 1rem;
+  margin: 0;
+  color: #e0e0e0;
+  /* 👇 본문에도 진한 그림자 추가 */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
