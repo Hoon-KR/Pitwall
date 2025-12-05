@@ -20,10 +20,10 @@ const driverData = [
         stats: {
             championships: 0,
             wins: 5,
-            podiums: 23,
+            podiums: 24,
             poles: 7,
-            points: 276,
-            entries: 149
+            points: 309,
+            entries: 151
         }
     },
     {
@@ -43,10 +43,10 @@ const driverData = [
         stats: {
             championships: 0,
             wins: 0,
-            podiums: 2,
+            podiums: 3,
             poles: 0,
-            points: 122,
-            entries: 21
+            points: 150,
+            entries: 23
         }
     },
     // === Ferrari ===
@@ -70,8 +70,8 @@ const driverData = [
             wins: 8,
             podiums: 50,
             poles: 27,
-            points: 214,
-            entries: 170
+            points: 230,
+            entries: 172
         }
     },
     {
@@ -95,8 +95,8 @@ const driverData = [
             wins: 105,
             podiums: 202,
             poles: 104,
-            points: 148,
-            entries: 377
+            points: 152,
+            entries: 379
         }
     },
     // === McLaren ===
@@ -118,9 +118,9 @@ const driverData = [
             championships: 0,
             wins: 11,
             podiums: 43,
-            poles: 15,
-            points: 390,
-            entries: 149
+            poles: 16,
+            points: 408,
+            entries: 151
         }
     },
     {
@@ -140,10 +140,10 @@ const driverData = [
         stats: {
             championships: 0,
             wins: 9,
-            podiums: 24,
-            poles: 5,
-            points: 366,
-            entries: 67
+            podiums: 25,
+            poles: 6,
+            points: 392,
+            entries: 69
         }
     },
     // === Red Bull Racing ===
@@ -192,7 +192,7 @@ const driverData = [
             podiums: 0,
             poles: 0,
             points: 28,
-            entries: 111
+            entries: 113
         }
     },
     // === Aston Martin ===
@@ -222,8 +222,8 @@ const driverData = [
             wins: 32,
             podiums: 106,
             poles: 22,
-            points: 40,
-            entries: 425
+            points: 48,
+            entries: 427
         }
     },
     {
@@ -247,7 +247,7 @@ const driverData = [
             podiums: 3,
             poles: 1,
             points: 32,
-            entries: 189
+            entries: 191
         }
     },
     // === Williams ===
@@ -273,7 +273,7 @@ const driverData = [
             podiums: 2,
             poles: 0,
             points: 73,
-            entries: 126
+            entries: 128
         }
     },
     {
@@ -297,10 +297,10 @@ const driverData = [
         stats: {
             championships: 0,
             wins: 4,
-            podiums: 28,
+            podiums: 29,
             poles: 6,
-            points: 38,
-            entries: 229
+            points: 64,
+            entries: 231
         }
     },
     // === Visa Cash App RB ===
@@ -324,8 +324,8 @@ const driverData = [
             wins: 0,
             podiums: 0,
             poles: 0,
-            points: 36,
-            entries: 32
+            points: 38,
+            entries: 34
         }
 
     },
@@ -348,8 +348,8 @@ const driverData = [
             wins: 0,
             podiums: 1,
             poles: 0,
-            points: 43,
-            entries: 21
+            points: 51,
+            entries: 23
         }
     },
     // === Sauber ===
@@ -379,8 +379,8 @@ const driverData = [
             wins: 0,
             podiums: 1,
             poles: 1,
-            points: 43,
-            entries: 251
+            points: 49,
+            entries: 253
         }
     },
     {
@@ -403,7 +403,7 @@ const driverData = [
             podiums: 0,
             poles: 0,
             points: 19,
-            entries: 21
+            entries: 23
         }
     },
     // === Haas ===
@@ -427,8 +427,8 @@ const driverData = [
             wins: 0,
             podiums: 0,
             poles: 0,
-            points: 40,
-            entries: 24
+            points: 41,
+            entries: 26
         }
     },
     {
@@ -453,8 +453,8 @@ const driverData = [
             wins: 1,
             podiums: 4,
             poles: 0,
-            points: 30,
-            entries: 177
+            points: 32,
+            entries: 179
         }
     },
     // === Alpine ===
@@ -481,7 +481,7 @@ const driverData = [
             podiums: 5,
             poles: 0,
             points: 22,
-            entries: 175
+            entries: 177
         }
     },
     {
@@ -505,7 +505,7 @@ const driverData = [
             podiums: 0,
             poles: 0,
             points: 0,
-            entries: 24
+            entries: 26
         }
     },
     {
