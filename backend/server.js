@@ -16,13 +16,14 @@ const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 // JWT 비밀키 설정
 const JWT_SECRET_KEY = process.env.JWT_SECRET || "pitwall_secret_key";
 
 app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static("uploads")); //업로드된 사진을 브라우저에서 볼 수 있게 폴더 공개
+app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Multer 설정 (사진 저장) ---
 const storage = multer.diskStorage({
@@ -858,6 +859,7 @@ app.post("/api/predictions/:round/comments", protect, async (req, res) => {
     res.status(500).json({ message: "서버 오류" });
   }
 });
+
 // 서버 실행
 app.listen(PORT, () => {
   console.log(`🚀 서버가 http://localhost:${PORT} 에서 실행 중입니다.`);

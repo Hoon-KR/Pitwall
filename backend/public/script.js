@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = { username, password };
 
       try {
-        const response = await fetch("http://localhost:3001/api/login", {
+        const response = await fetch("/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
@@ -75,42 +75,50 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- 4. 회원가입 폼 처리 (이메일 인증 기능 추가됨) ---
   const signupForm = document.getElementById("signup-form");
   if (signupForm) {
-    let isEmailVerified = false; // 이메일 인증 완료 여부를 저장하는 변수
+    let isEmailVerified = false;
 
-    // [1] 인증번호 받기 버튼 클릭 이벤트
+    // [1] 인증번호 받기 버튼
     const sendCodeBtn = document.getElementById("send-code-btn");
     if (sendCodeBtn) {
       sendCodeBtn.addEventListener("click", async () => {
         const email = document.getElementById("email").value;
         if (!email) return alert("이메일을 입력해주세요.");
 
+        // 버튼 중복 클릭 방지 (로딩 효과)
+        sendCodeBtn.disabled = true;
+        sendCodeBtn.textContent = "전송 중...";
+
         try {
-          // 백엔드에 메일 발송 요청
-          const res = await fetch("http://localhost:3001/api/email/send", {
+          const res = await fetch("/api/email/send", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              "ngrok-skip-browser-warning": "true" // ngrok 경고 무시용
+            },
             body: JSON.stringify({ email }),
           });
+
           const data = await res.json();
 
           if (res.ok) {
             alert(data.message); // "인증번호가 발송되었습니다"
-            // 인증번호 입력칸 보이기
-            document.getElementById("verification-group").style.display =
-              "block";
-            // 이메일 수정 못하게 막기
+            document.getElementById("verification-group").style.display = "block";
             document.getElementById("email").readOnly = true;
           } else {
-            alert(data.message); // "이미 가입된 이메일입니다" 등
+            alert(data.message); // "이미 가입된 이메일입니다"
+            sendCodeBtn.disabled = false; // 실패 시 버튼 다시 활성화
+            sendCodeBtn.textContent = "인증번호 받기";
           }
         } catch (err) {
           console.error(err);
-          alert("메일 전송 중 오류가 발생했습니다.");
+          alert("메일 전송 실패! (서버 콘솔을 확인하세요)");
+          sendCodeBtn.disabled = false;
+          sendCodeBtn.textContent = "인증번호 받기";
         }
       });
     }
 
-    // [2] 인증번호 확인 버튼 클릭 이벤트
+    // [2] 인증번호 확인 버튼 (기존 코드 유지하되 주소만 확인)
     const verifyCodeBtn = document.getElementById("verify-code-btn");
     if (verifyCodeBtn) {
       verifyCodeBtn.addEventListener("click", async () => {
@@ -120,34 +128,32 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!code) return alert("인증번호를 입력해주세요.");
 
         try {
-          // 백엔드에 인증번호 확인 요청
-          const res = await fetch("http://localhost:3001/api/email/verify", {
+          const res = await fetch("/api/email/verify", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              "ngrok-skip-browser-warning": "true"
+            },
             body: JSON.stringify({ email, code }),
           });
 
           if (res.ok) {
-            alert("이메일 인증이 완료되었습니다!");
-            isEmailVerified = true; // ⭐ 인증 상태를 true로 변경
+            alert("이메일 인증 완료!");
+            isEmailVerified = true;
 
-            // UI 변경: 인증 완료 표시
             const msgDiv = document.getElementById("verify-message");
             if (msgDiv) {
               msgDiv.textContent = "인증 완료 ✅";
               msgDiv.className = "validation-message success";
             }
-            // 입력창 숨기기 및 버튼 비활성화
-            document.getElementById("verification-group").style.display =
-              "none";
-            sendCodeBtn.disabled = true;
+            document.getElementById("verification-group").style.display = "none";
             sendCodeBtn.textContent = "인증됨";
           } else {
             alert("인증번호가 일치하지 않습니다.");
           }
         } catch (err) {
           console.error(err);
-          alert("인증 확인 중 오류가 발생했습니다.");
+          alert("오류가 발생했습니다.");
         }
       });
     }
@@ -175,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = { username, password, nickname, email };
 
       try {
-        const response = await fetch("http://localhost:3001/api/signup", {
+        const response = await fetch("/api/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
@@ -216,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // [함수 1] 내 정보 불러오기
     async function fetchMyInfo() {
       try {
-        const response = await fetch("http://localhost:3001/api/my-info", {
+        const response = await fetch("/api/my-info", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -244,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const response = await fetch(
-          "http://localhost:3001/api/my-info/nickname",
+          "/api/my-info/nickname",
           {
             method: "PUT",
             headers: {
@@ -285,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const response = await fetch(
-          "http://localhost:3001/api/my-info/password",
+          "/api/my-info/password",
           {
             method: "PUT",
             headers: {
@@ -327,7 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
           // 2. 탈퇴 API 호출
-          const response = await fetch("http://localhost:3001/api/my-info", {
+          const response = await fetch("/api/my-info", {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`, // 토큰 필수
@@ -373,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function fetchPosts() {
     const postListDiv = document.getElementById("post-list");
     try {
-      const response = await fetch("http://localhost:3001/api/posts");
+      const response = await fetch("/api/posts");
       if (!response.ok) {
         throw new Error("게시글을 불러오는데 실패했습니다.");
       }
@@ -397,9 +403,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const postDate = new Date(post.created_at).toLocaleDateString("ko-KR");
 
         postElement.innerHTML = `
-                    <h3><a href="post-detail.html?id=${post.post_id}">${
-          post.title
-        }</a></h3>
+                    <h3><a href="post-detail.html?id=${post.post_id}">${post.title
+          }</a></h3>
                     <div class="post-meta">
                         <span>작성자: ${post.nickname}</span> | 
                         <span>${postDate}</span> | 
@@ -434,7 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const content = document.getElementById("content").value;
 
       try {
-        const response = await fetch("http://localhost:3001/api/posts", {
+        const response = await fetch("/api/posts", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -480,7 +485,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const res = await fetch(
-          `http://localhost:3001/api/posts/${postId}/like`,
+          `/api/posts/${postId}/like`,
           {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
@@ -509,7 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
           const res = await fetch(
-            `http://localhost:3001/api/posts/${postId}/comments`,
+            `/api/posts/${postId}/comments`,
             {
               method: "POST",
               headers: {
@@ -534,7 +539,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // [함수] 게시글 상세 내용 불러오기
   async function loadPostDetail(id) {
     try {
-      const res = await fetch(`http://localhost:3001/api/posts/${id}`);
+      const res = await fetch(`/api/posts/${id}`);
       const post = await res.json();
       if (!res.ok) throw new Error(post.message);
 
@@ -570,7 +575,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!confirm("정말 삭제하시겠습니까?")) return;
     const token = sessionStorage.getItem("token");
 
-    const res = await fetch(`http://localhost:3001/api/posts/${id}`, {
+    const res = await fetch(`/api/posts/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -589,7 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const list = document.getElementById("comment-list");
     list.innerHTML = "";
     try {
-      const res = await fetch(`http://localhost:3001/api/posts/${id}/comments`);
+      const res = await fetch(`/api/posts/${id}/comments`);
       const comments = await res.json();
 
       comments.forEach((cmt) => {
@@ -598,8 +603,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="cmt-meta">
                         <strong>${cmt.nickname}</strong> 
                         <span>${new Date(
-                          cmt.created_at
-                        ).toLocaleString()}</span>
+          cmt.created_at
+        ).toLocaleString()}</span>
                     </div>
                     <div class="cmt-body">${cmt.content}</div>
                 `;

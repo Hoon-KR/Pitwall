@@ -151,7 +151,7 @@
         try {
           // 2. 서버에 상세 정보 요청
           const response = await fetch(
-            `http://localhost:3001/api/news/${newsId}`
+            `/api/news/${newsId}`
           );
 
           if (!response.ok) throw new Error("기사를 찾을 수 없습니다.");
